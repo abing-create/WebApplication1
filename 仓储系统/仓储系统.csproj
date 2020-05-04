@@ -137,6 +137,8 @@
     <Compile Include="DataAccessLayer\UserBusinessLayer.cs" />
     <Compile Include="DataAccessLayer\WarehouseBusinessLayer.cs" />
     <Compile Include="DataAccessLayer\WarehouseERPDAL.cs" />
+    <Compile Include="Filters\LoginAttribute.cs" />
+    <Compile Include="Filters\MultiButtonAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

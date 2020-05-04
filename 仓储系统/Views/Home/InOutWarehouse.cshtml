@@ -4,21 +4,21 @@
     ViewBag.Title = "InOutWarehouse";
 }
 
-@using (Html.BeginForm("InOutWarehouse", "Home", FormMethod.Post))
-{
-    <div class="container dropdown">
-        <h2>InOutWarehouse</h2>
 
+<div class="container dropdown">
+    <h2>InOutWarehouse</h2>
+    @using (Html.BeginForm("MakeTableSubmit", "Home", FormMethod.Post))
+    {
+        <!--单击后自动生成一张出入库表-->
+        <input class="col-lg-2" type="submit" value="入库" id="IntoWarehouse" name="Sumbit" />
+        <input class="col-lg-2" type="submit" value="出库" id="OutWarehouse" name="Sumbit" />
+    }
+
+
+    @using (Html.BeginForm("InOutWarehouse", "Home", FormMethod.Post))
+    {
+        <input class="col-lg-2" type="submit" value="制作单号" id="MakeTable" name="Sumbit" />
         <table class="table-borderless">
-            <tr>
-                <td colspan="2">
-                    <!--单击后自动生成一张出入库表-->
-                    <input class="col-lg-2" type="submit" value="入库" id="IntoWarehouse" name="Sumbit" />
-                    <input class="col-lg-2" type="submit" value="出库" id="OutWarehouse" name="Sumbit" />
-
-                    <input class="col-lg-2" type="submit" value="制作单号" id="MakeTable" name="MakeTable" />
-                </td>
-            </tr>
             <tr>
                 <td colspan="2">
                     <select id="sid" name="sid">
@@ -103,9 +103,8 @@
                 </td>
             </tr>
         </table>
-
-    </div>
-}
+    }
+</div>
 
 @{
     Html.RenderAction("InOutTable");

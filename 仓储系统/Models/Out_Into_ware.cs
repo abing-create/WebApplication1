@@ -8,7 +8,7 @@ namespace 仓储系统.Models
 {
     public enum IO_Type 
     {
-        OUT,//入库
+        OUT = 1,//入库
         INTO//出库
     }
 

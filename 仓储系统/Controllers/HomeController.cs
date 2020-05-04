@@ -7,17 +7,20 @@ using 仓储系统.ViewModels;
 using 仓储系统.DataAccessLayer;
 using 仓储系统.Models;
 using 仓储系统.BusinessLayer;
+using 仓储系统.Filters;
 
 namespace 仓储系统.Controllers
 {
+    [Login]
     public class HomeController : Controller
     {
+        private IO_Type IO_Type;
         public static level level;  //等级!
         private string Table_Id;    //出入库表单号
         private int userId = 0;     //登录者编号!
         private int wareId = 0;     //仓库编号!
-        
 
+        [HttpGet]
         public ActionResult InOutWarehouse()
         {
             InOutWarehouseViewModel inOutWarehouseViewModel = new InOutWarehouseViewModel();
@@ -28,8 +31,10 @@ namespace 仓储系统.Controllers
         }
 
         [HttpPost]
-        public ActionResult InOutWarehouse(string Sumbit)
+        //[MultiButton("入库")]
+        public ActionResult MakeTableSubmit(string Sumbit)
         {
+            //string Sumbit = "入库";
             Out_Into_ware out_Into_Ware = new Out_Into_ware();
             out_Into_Ware.Make_date = DateTime.Now;//时间
             out_Into_Ware.User_id = userId;//负责人编号
@@ -115,6 +120,7 @@ namespace 仓储系统.Controllers
             return View("Information", informationViewModel);
         }
 
+        [HttpGet]
         public ActionResult InformationAdmin()
         {
             if (level.Admin == (level)Session["level"])

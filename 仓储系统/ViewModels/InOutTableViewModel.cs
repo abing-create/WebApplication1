@@ -16,7 +16,7 @@ namespace 仓储系统.ViewModels
         /// <summary>
         /// 出入库表单
         /// </summary>
-        public Out_Into_ware out_Into_ware { get; set; }
+        //public Out_Into_ware out_Into_ware { get; set; }
 
         /// <summary>
         /// 出库还是入库

@@ -5,45 +5,46 @@
     ViewBag.Title = "Information";
 }
 
-@using (Html.BeginForm("Information", "Home", FormMethod.Post))
-{
-    <div class="container">
-        <h2>Information</h2>
+
+<div class="container">
+    <h2>Information</h2>
+    @using (Html.BeginForm("Information", "Home", FormMethod.Post))
+    {
         <input type="submit" class="btn btn-primary" name="select" value="查询记录">
-        <input type="button" class="btn btn-primary" onclick="$('#updataUser').modal('show')" value="修改信息">
-        <input type="button" class="btn btn-primary" onclick="$('#addUser').modal('show')" value="添加用户">
+    }
 
+    <input type="button" class="btn btn-primary" onclick="$('#updataUser').modal('show')" value="修改信息">
+    <input type="button" class="btn btn-primary" onclick="$('#addUser').modal('show')" value="添加用户">
+
+    @{
+        Html.RenderAction("InformationAdmin");
+    }
+
+    @{
+        Html.RenderAction("LoginRecord");
+    }
+
+    @*<a href="#" data-toggle="modal" data-target="#deleteConfirmationModal">Delete</a>*@
+    <div class="modal fade" id="addUser" tabindex="-1" role="dialog" aria-hidden="true">
         @{
-            Html.RenderAction("InformationAdmin");
+            Html.RenderAction("Test");
         }
+    </div>
 
+    <div class="modal fade" id="updataUser" tabindex="-1" role="dialog" aria-hidden="true">
         @{
-            Html.RenderAction("LoginRecord");
+            Html.RenderAction("UpdataUser");
         }
+    </div>
 
-        @*<a href="#" data-toggle="modal" data-target="#deleteConfirmationModal">Delete</a>*@
-        <div class="modal fade" id="addUser" tabindex="-1" role="dialog" aria-hidden="true">
-            @{
-                Html.RenderAction("Test");
-            }
-        </div>
-
-        <div class="modal fade" id="updataUser" tabindex="-1" role="dialog" aria-hidden="true">
-            @{
-                Html.RenderAction("UpdataUser");
-            }
-        </div>
-
-        <div class="container">
-            <div class="row">
-                <div class=" col">
-                    @{
-                        Html.RenderAction("AddNew");
-                    }
-                </div>
+    <div class="container">
+        <div class="row">
+            <div class=" col">
+                @{
+                    Html.RenderAction("AddNew");
+                }
             </div>
         </div>
     </div>
-}
-
+</div>
 

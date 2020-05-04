@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.29418.71
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "仓储系统", "仓储系统\仓储系统.csproj", "{9794E213-14E3-4638-83F7-30F1966E4019}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "demo2", "..\demo2\demo2.csproj", "{11D114FA-0080-4746-BE99-211F3292E723}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "弹出", "弹出\弹出.csproj", "{BAFDA26D-A0DA-4AA7-B432-1ABD5BE0E752}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{9794E213-14E3-4638-83F7-30F1966E4019}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9794E213-14E3-4638-83F7-30F1966E4019}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9794E213-14E3-4638-83F7-30F1966E4019}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11D114FA-0080-4746-BE99-211F3292E723}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11D114FA-0080-4746-BE99-211F3292E723}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11D114FA-0080-4746-BE99-211F3292E723}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11D114FA-0080-4746-BE99-211F3292E723}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAFDA26D-A0DA-4AA7-B432-1ABD5BE0E752}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAFDA26D-A0DA-4AA7-B432-1ABD5BE0E752}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAFDA26D-A0DA-4AA7-B432-1ABD5BE0E752}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAFDA26D-A0DA-4AA7-B432-1ABD5BE0E752}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
