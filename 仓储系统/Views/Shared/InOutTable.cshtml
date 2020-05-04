@@ -1,0 +1,38 @@
+﻿@using 仓储系统.ViewModels
+@model InOutTableViewModel
+
+    <h3 class="text-center">@Model.type 表</h3>
+<div class="container">
+    <div class="row">
+        <table border="1" class="table table-bordered">
+            <tr>
+                <th scope="col">条码编号</th>
+                <th scope="col">商品编号</th>
+                <th scope="col">商品名称</th>
+                <th scope="col">分类</th>
+                <th scope="col">规格</th>
+                <th scope="col">单价</th>
+                <th scope="col">商品数量</th>
+                <th scope="col">日期</th>
+                <th scope="col" colspan="2">操作</th>
+            </tr>
+            @foreach (CommodityViewModel item in Model.commodityViewModels)
+            {
+        <tr>
+            <td>@item.commodity.Co_bar_code</td>
+            <td>@item.commodity.Co_Id</td>
+            <td>@item.commodity.Co_name</td>
+            <td>@item.commodity.Co_type</td>
+            <td>@item.commodity.Co_specification</td>
+            <td>@item.commodity.Co_price</td>
+            <td>@item.Count</td>
+            <td>@item.Out_into_date</td>
+            <td>
+                <a href="#"> 修改</a>
+                <a href="#">删除</a>
+            </td>
+        </tr>
+            }
+        </table>
+    </div>
+</div>

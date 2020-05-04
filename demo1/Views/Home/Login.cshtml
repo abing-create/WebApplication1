@@ -1,0 +1,60 @@
+﻿@using AquaWeb.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "登录";
+}
+
+
+<div id="loginModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="text-center text-primary">登录</h1>
+            </div>
+            <div class="modal-body">
+
+                @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form col-md-12 center-block", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="form-group">
+
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control input-lg", placeholder = "电子邮件" })
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control input-lg", placeholder = "登录密码" })
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-lg btn-block">立刻登录</button>
+                        <span>@Html.ActionLink("忘记了密码?", "ForgotPassword")</span>
+                        <span>@Html.ActionLink("注册新用户", "Register", "", new { @class = "pull-right" })</span>
+                    </div>
+                }
+
+            </div>
+            <div class="modal-footer">
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<div>
+    <section id="socialLoginForm">
+        @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+    </section>
+</div>
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

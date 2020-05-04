@@ -1,0 +1,59 @@
+﻿@model 仓储系统.ViewModels.LayoutViewModel
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="~/Scripts/jquery-3.3.1.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+    <link href="~/Content/themes/base/all.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Content/themes/bootstrap.min.css" k>
+    <script href="~/Scripts/themes/bootstrap.min.js"></script>
+    <script src="~/Scripts/layer/layer.js"></script>
+
+    <title>@ViewBag.Title - 我的 ASP.NET 应用程序</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("出库入库", "InOutWarehouse", "Home")</li>
+                    <li>@Html.ActionLink("用户信息", "Information", "Home")</li>
+                    <li>@Html.ActionLink("物品设置", "Attributes", "Home")</li>
+                    <li>@Html.ActionLink("存储管理", "Storage", "Home")</li>
+                    <li>@Html.ActionLink("仓库管理", "Warehouse", "Home")</li>
+                    <li>@Html.ActionLink("退出登录", "Login", "Account")</li>
+                </ul>
+                <form class="navbar-form navbar-right" role="search">
+                    <a class="pull-right" color="red"> Hello, @Model.UserName</a>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid body-content">
+        @RenderBody()
+    </div>
+    <div class="container body-content">
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - 我的 ASP.NET 应用程序</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

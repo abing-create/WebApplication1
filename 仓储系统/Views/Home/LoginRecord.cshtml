@@ -1,0 +1,21 @@
+﻿@using 仓储系统.ViewModels
+@model 仓储系统.ViewModels.RecordListViewModel
+
+
+
+<h3 class="text-center">登录记录</h3>
+<table border="1" class="table table-bordered">
+    <tr>
+        <th scope="col">员工编号</th>
+        <th scope="col">员工姓名</th>
+        <th scope="col">登录日期</th>
+    </tr>
+    @foreach (RecordViewModel item in @Model.records)
+    {
+        <tr>
+            <td>@item.record.U_id</td>
+            <td>@item.record.U_name</td>
+            <td>@item.record.Record_date</td>
+        </tr>
+    }
+</table>

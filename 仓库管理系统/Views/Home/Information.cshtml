@@ -1,0 +1,28 @@
+﻿@using 仓库管理系统.ViewModels
+@model 仓库管理系统.ViewModels.InformationViewModel
+@{
+    ViewBag.Title = "Information";
+}
+
+<h2>Information</h2>
+<button type="submit" class="btn_login btn-default">查看</button>
+<button type="submit" class="btn_login btn-default">修改</button>
+<button type="submit" class="btn_login btn-default">添加</button>
+<button type="submit" class="btn_login btn-default">删除</button>
+
+<table border="1">
+    <tr>
+        <th>员工编号</th>
+        <th>员工姓名</th>
+        <th>登录日期</th>
+    </tr>
+    @foreach (RecordViewModel item in Model.record)
+    {
+        <tr>
+            <td>@item.record.U_id</td>
+            <td>@item.record.U_name</td>
+            <td>@item.record.Record_date</td>
+        </tr>
+    }
+</table>
+

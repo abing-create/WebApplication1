@@ -1,0 +1,97 @@
+﻿@using 仓储系统.ViewModels
+@model CreateWarehouseViewModel
+
+
+<script>
+    function ResetForm() {
+        document.getElementById('Wa_Id').value = "";
+        document.getElementById('Wa_name').value = "";
+        document.getElementById('Wa_address').value = "";
+        document.getElementById('Wa_princiopal').value = "";
+        document.getElementById('Wa_contact').value = "";
+        document.getElementById('Wa_capacity').value = "";
+        document.getElementById('Wa_able_capacity').value = "";
+        document.getElementById('Wa_note').value = "";
+    }
+</script>
+
+
+<div>
+    <form action="/Home/SaveWarehouse" method="post" id="WarehouseForm">
+        <table class="table-borderless">
+            <tr>
+                <td>
+                    仓库编号:
+                </td>
+                <td>
+                    <input type="text" id="Wa_Id" name="Wa_Id" value="@Model.warehouse.Wa_Id" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    仓库名称:
+                </td>
+                <td>
+                    <input type="text" id="Wa_name" name="Wa_name" value="@Model.warehouse.Wa_name" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    仓库地址:
+                </td>
+                <td>
+                    <input type="text" id="Wa_address" name="Wa_address" value="@Model.warehouse.Wa_address" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    负责人:
+                </td>
+                <td>
+                    <input type="text" id="Wa_princiopal" name="Wa_princiopal" value="@Model.warehouse.Wa_princiopal" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    联系方式:
+                </td>
+                <td>
+                    <input type="text" id="Wa_contact" name="Wa_contact" value="@Model.warehouse.Wa_contact" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    仓库容量:
+                </td>
+                <td>
+                    <input type="text" id="Wa_capacity" name="Wa_capacity" value="@Model.warehouse.Wa_capacity" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    可用容量:
+                </td>
+                <td>
+                    <input type="text" id="Wa_able_capacity" name="Wa_able_capacity" value="@Model.warehouse.Wa_able_capacity" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    备注:
+                </td>
+                <td>
+                    <input type="text" id="Wa_note" name="Wa_note" value="@Model.warehouse.Wa_note" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+
+                    <input type="submit" name="BtnSubmit" value="保存" onclick="SaveEmployee();" />
+                    <input type="submit" name="BtnSubmit" value="取消" onclick="CancelSave()" />
+                    <input type="button" name="BtnReset" value="清空" onclick="ResetForm();" />
+                </td>
+            </tr>
+        </table>
+
+    </form>
+</div>

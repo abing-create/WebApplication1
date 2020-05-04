@@ -1,0 +1,51 @@
+﻿@using 仓储系统.ViewModels
+@using 仓储系统.Models
+@model WarehouseViewModel
+@{
+    ViewBag.Title = "Warehouse";
+}
+
+
+    <div class="container dropdown">
+        <h2>Warehouse</h2>
+        <input class="col-lg-2" type="submit" value="添加" id="IntoWarehouse" name="IntoWarehouse" />
+
+        <table border="1" class="table table-bordered">
+            <tr>
+                <th scope="col">仓库编号</th>
+                <th scope="col">仓库名称</th>
+                <th scope="col">仓库地址</th>
+                <th scope="col">负责人</th>
+                <th scope="col">联系方式</th>
+                <th scope="col">仓库容量</th>
+                <th scope="col">可用容量</th>
+                <th scope="col">备注</th>
+                <th scope="col">操作</th>
+            </tr>
+            @foreach (Warehouse item in Model.warehouses)
+            {
+                <tr>
+                    <td>@item.Wa_Id</td>
+                    <td>@item.Wa_name</td>
+                    <td>@item.Wa_address</td>
+                    <td>@item.Wa_princiopal</td>
+                    <td>@item.Wa_contact</td>
+                    <td>@item.Wa_capacity</td>
+                    <td>@item.Wa_able_capacity</td>
+                    <td>...</td>
+                    <td>
+                        <a href="#">查看</a>
+                        <a href="#">修改</a>
+                        <a href="#">删除</a>
+                    </td>
+                </tr>
+            }
+        </table>
+        <div class=" col">
+            @{
+                Html.RenderAction("CreateWarehouse");
+            }
+        </div>
+    </div>
+
+

@@ -1,0 +1,132 @@
+﻿@using 仓储系统.ViewModels
+@using 仓储系统.Models
+@model AttributesViewModel
+@{
+    ViewBag.Title = "Attributes";
+}
+
+    <div class="container dropdown">
+        <h2>Attributes</h2>
+        <input class="col-lg-2" type="submit" value="添加" id="IntoWarehouse" name="IntoWarehouse" />
+
+        <table border="1" class="table table-bordered">
+            <tr>
+                <th scope="col">商品编号</th>
+                <th scope="col">商品名称</th>
+                <th scope="col">条码编号</th>
+                <th scope="col">商品分类</th>
+                <th scope="col">商品规格</th>
+                <th scope="col">商品单价</th>
+                <th scope="col">计量单位</th>
+                <th scope="col">商品重量</th>
+                <th scope="col">备注</th>
+                <th scope="col">操作</th>
+            </tr>
+            @foreach (Commodity item in Model.commodities)
+            {
+                <tr>
+                    <td>@item.Co_Id</td>
+                    <td>@item.Co_name</td>
+                    <td>@item.Co_bar_code</td>
+                    <td>@item.Co_type</td>
+                    <td>@item.Co_specification</td>
+                    <td>@item.Co_price</td>
+                    <td>@item.Co_unit</td>
+                    <td>@item.Co_weight</td>
+                    <td>...</td>
+                    <td>
+                        <a href="#">查看</a>
+                        <a href="#">修改</a>
+                        <a href="#">删除</a>
+                    </td>
+                </tr>
+            }
+        </table>
+
+        <hr />
+
+        <table class="table-borderless">
+            <tr>
+                <td class="col-lg-1">
+                    商品编号
+                </td>
+                <td>
+                    <input type="text" class=" col-lg-3" id="U_name" name="U_name" value="@Model.commoditie.Co_Id" />
+                </td>
+            </tr>
+            <tr>
+                <td class="col-lg-1">
+                    商品名称
+                </td>
+                <td>
+                    <input type="text" class=" col-lg-3" id="U_name" name="U_name" value="@Model.commoditie.Co_name" />
+                </td>
+            </tr>
+            <tr>
+                <td class="col-lg-1">
+                    条码编号
+                </td>
+                <td>
+                    <input type="text" class=" col-lg-3" id="U_name" name="U_name" value="@Model.commoditie.Co_bar_code" />
+                </td>
+            </tr>
+            <tr>
+                <td class="col-lg-1">
+                    物品类别
+                </td>
+                <td>
+                    <input type="text" class=" col-lg-3" id="U_name" name="U_name" value="@Model.commoditie.Co_type" />
+                </td>
+            </tr>
+            <tr>
+                <td class="col-lg-1">
+                    物品规格
+                </td>
+                <td>
+                    <input type="text" class=" col-lg-3" id="U_name" name="U_name" value="@Model.commoditie.Co_specification" />
+                </td>
+            </tr>
+            <tr>
+                <td class="col-lg-1">
+                    单价
+                </td>
+                <td>
+                    <input type="text" class=" col-lg-3" id="U_name" name="U_name" value="@Model.commoditie.Co_unit" />
+                </td>
+            </tr>
+            <tr>
+                <td class="col-lg-1">
+                    计量单位
+                </td>
+                <td>
+                    <input type="text" class=" col-lg-3" id="U_name" name="U_name" value="@Model.commoditie.Co_price" />
+                </td>
+            </tr>
+            <tr>
+                <td class="col-lg-1">
+                    重量
+                </td>
+                <td>
+                    <input type="text" class=" col-lg-3" id="U_name" name="U_name" value="@Model.commoditie.Co_weight" />
+                </td>
+            </tr>
+            <tr>
+                <td class="col-lg-1">
+                    备注
+                </td>
+                <td>
+                    <input type="text" class=" col-lg-3" id="U_name" name="U_name" value="@Model.commoditie.Co_note" />
+                </td>
+            </tr>
+            <tr>
+            <td colspan="2">
+                <input type="submit" name="BtnSubmit" value="保存" onclick="SaveEmployee();" />
+                <input type="submit" name="BtnSubmit" value="取消" onclick="CancelSave()" />
+                <input type="button" name="BtnReset" value="清空" onclick="ResetForm();" />
+            </td>
+            </tr>
+        </table>
+
+
+    </div>
+
