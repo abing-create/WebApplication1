@@ -17,14 +17,16 @@
         </div>
         <div class="modal-body">
             <div>
-                <form action="/Home/UpdataUser" method="post" id="UserForm">
+                @using (Html.BeginForm("UpdataUser", "Home", FormMethod.Post, new { @id = "UserForm", role = "form" }))
+                {
+                    @*<form action="/Home/UpdataUser" method="post" id="UserForm">*@
                     <table class="table-borderless">
                         <tr>
                             <td>
                                 员工编号:
                             </td>
                             <td>
-                                <input type="text" id="U_Id" name="U_Id" value="@Model.user.U_Id" />
+                                <input type="text" id="U_Id" name="U_Id" value="@Model.user.U_Id" readonly="readonly" />
                             </td>
                         </tr>
                         <tr>
@@ -48,7 +50,7 @@
                                 员工职务:
                             </td>
                             <td>
-                                <input type="text" id="U_post" name="U_post" value="@Model.user.U_post" />
+                                <input type="text" id="U_post" name="U_post" value="@Model.user.U_post" readonly="readonly" />
                             </td>
                         </tr>
                         <tr>
@@ -56,7 +58,7 @@
                                 员工部门:
                             </td>
                             <td>
-                                <input type="text" id="U_department" name="U_department" value="@Model.user.U_department" />
+                                <input type="text" id="U_department" name="U_department" value="@Model.user.U_department" readonly="readonly" />
                             </td>
                         </tr>
                         <tr>
@@ -80,7 +82,7 @@
                                 员工等级:
                             </td>
                             <td>
-                                <input type="text" id="U_level" name="U_level" value="@Model.user.U_level" />
+                                <input type="text" id="U_level" name="U_level" value="@Model.user.U_level" readonly="readonly" />
                             </td>
                         </tr>
                         <tr>
@@ -102,14 +104,14 @@
                         <tr>
                             <td colspan="2">
 
-                                <input type="submit" name="BtnSubmit" value="保存"/>
-                                <input type="submit" name="BtnSubmit" value="取消"/>
+                                <input type="submit" name="BtnSubmit" value="修改" />
+                                <input type="submit" name="BtnSubmit" value="取消" />
                                 <input type="button" name="BtnReset" value="清空" onclick="ResetForm();" />
                             </td>
                         </tr>
                     </table>
-
-                </form>
+                }
+                @*</form>*@
             </div>
         </div>
         <div class="modal-footer">

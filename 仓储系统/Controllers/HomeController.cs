@@ -131,6 +131,17 @@ namespace 仓储系统.Controllers
             return new EmptyResult();
         }
 
+        //[HttpGet]
+        public ActionResult InformationAdminButton()
+        {
+            if (level.Admin == (level)Session["level"])
+            {
+                Session["UserButton"] = false;
+                return PartialView("InformationAdminButton");
+            }
+            return new EmptyResult();
+        }
+
         [HttpPost]
         public ActionResult InformationAdmin(string select)
         {
@@ -141,6 +152,7 @@ namespace 仓储系统.Controllers
             if (select == "查看用户")
             {
                 Session["UserTable"] = !Convert.ToBoolean(Session["UserTable"]);
+                Session["UserButton"] = !Convert.ToBoolean(Session["UserButton"]);
             }
             return PartialView("InformationAdmin");
         }
@@ -165,13 +177,20 @@ namespace 仓储系统.Controllers
         }
 
         [HttpPost]
-        public void UpdataUser(User user, string BtnSubmit)
+        public ActionResult UpdataUser(User user, string BtnSubmit)
         {
-            if (BtnSubmit == "保存")
+            UserBusinessLayer userBusinessLayer = new UserBusinessLayer();
+            if (BtnSubmit == "修改")
             {
-                UserBusinessLayer userBusinessLayer = new UserBusinessLayer();
+                //userBusinessLayer.InsertUser(user);
                 userBusinessLayer.UpdataUsers(Session["User"].ToString(), user);
             }
+            else if (BtnSubmit == "取消")
+            {
+
+            }
+
+            return RedirectToAction("Information");
         }
 
         public ActionResult LoginRecord()
@@ -245,6 +264,26 @@ namespace 仓储系统.Controllers
 
             //v.user = userBusinessLayer.GetUser(Session["User"].ToString());
             //return PartialView("CreateUser", v);
+            return RedirectToAction("Information");
+        }
+
+        [HttpPost]
+        public ActionResult AddUser(User user, string BtnSubmit)
+        {
+            //CreateUserViewModel v = new CreateUserViewModel();
+            UserBusinessLayer userBusinessLayer = new UserBusinessLayer();
+            if (BtnSubmit == "保存")
+            {
+                userBusinessLayer.InsertUser(user);
+                //userBusinessLayer.UpdataUsers(Session["User"].ToString(), user);
+                //userBusinessLayer.InsertUser(user);
+            }
+            else if (BtnSubmit == "取消")
+            {
+
+            }
+
+
             return RedirectToAction("Information");
         }
 
