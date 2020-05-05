@@ -134,6 +134,7 @@
     <Compile Include="DataAccessLayer\CommodityBusinessLayer.cs" />
     <Compile Include="DataAccessLayer\OutIntoWareBusinessLayer.cs" />
     <Compile Include="DataAccessLayer\RecordBusinessLayer.cs" />
+    <Compile Include="DataAccessLayer\StorageBusinessLayer.cs" />
     <Compile Include="DataAccessLayer\UserBusinessLayer.cs" />
     <Compile Include="DataAccessLayer\WarehouseBusinessLayer.cs" />
     <Compile Include="DataAccessLayer\WarehouseERPDAL.cs" />

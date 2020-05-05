@@ -6,6 +6,11 @@ using 仓储系统.Models;
 
 namespace 仓储系统.DataAccessLayer
 {
+    public enum CommodityMember
+    {
+        Co_Id, Co_name, Co_bar_code, Co_type, Co_specification, Co_price, Co_unit, Co_weight
+    }
+
     public class CommodityBusinessLayer
     {
         /// <summary>
@@ -18,6 +23,38 @@ namespace 仓储系统.DataAccessLayer
             return dB.commoditys.ToList();
         }
 
+        /// <summary>
+        /// 返回表中第一个符合条件的值
+        /// </summary>
+        /// <param name="Co_Id">商品号</param>
+        /// <param name="Co_name">商品名称</param>
+        /// <param name="Co_bar_code">条码编号</param>
+        /// <returns></returns>
+        public Commodity GetCommodity(int Co_Id, string Co_name, string Co_bar_code)
+        {
+            WarehouseERPDAL dB = new WarehouseERPDAL();
+            List<Commodity> commodities = dB.commoditys.ToList();
+            if(Co_Id != 0)
+            {
+                commodities = commodities.Where(c => c.Co_Id == Co_Id).ToList();
+            }
+            if(Co_name != "")
+            {
+                commodities = commodities.Where(c => c.Co_name == Co_name).ToList();
+            }
+            if(Co_bar_code != "")
+            {
+                commodities = commodities.Where(c => c.Co_bar_code == Co_bar_code).ToList();
+            }
+            return commodities.FirstOrDefault();
+        }
+
+        /// <summary>
+        /// 查找和commodity的sid属性相同的第一个Commodity
+        /// </summary>
+        /// <param name="sid"></param>
+        /// <param name="commodity"></param>
+        /// <returns></returns>
         public Commodity GetCommodity(string sid, Commodity commodity)
         {
             WarehouseERPDAL dB = new WarehouseERPDAL();

@@ -21,6 +21,7 @@ namespace 仓储系统.Models
         /// <summary>
         /// 出入库单号
         /// </summary>
+        [StringLength(50)]
         public string Table_Id { get; set; }
 
         /// <summary>

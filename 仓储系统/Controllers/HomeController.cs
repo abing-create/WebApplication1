@@ -14,7 +14,7 @@ namespace 仓储系统.Controllers
     [Login]
     public class HomeController : Controller
     {
-        private IO_Type IO_Type;
+        private IO_Type IO_Type;    //出库还是入库!
         public static level level;  //等级!
         private string Table_Id;    //出入库表单号
         private int userId = 0;     //登录者编号!
@@ -23,6 +23,7 @@ namespace 仓储系统.Controllers
         [HttpGet]
         public ActionResult InOutWarehouse()
         {
+            Session["Table_Id"] = null;
             InOutWarehouseViewModel inOutWarehouseViewModel = new InOutWarehouseViewModel();
             inOutWarehouseViewModel.UserName = Session["User"].ToString();
             inOutWarehouseViewModel.commodity = new Commodity();
@@ -34,6 +35,7 @@ namespace 仓储系统.Controllers
         //[MultiButton("入库")]
         public ActionResult MakeTableSubmit(string Sumbit)
         {
+            Session["Table_Id"] = null;
             //string Sumbit = "入库";
             Out_Into_ware out_Into_Ware = new Out_Into_ware();
             out_Into_Ware.Make_date = DateTime.Now;//时间
@@ -46,11 +48,12 @@ namespace 仓储系统.Controllers
                 out_Into_Ware.type = IO_Type.INTO;
                 out_Into_Ware.Table_Id = "INTO" + Table_Id;
             }
-            else if(Sumbit == "出库")
+            else if (Sumbit == "出库")
             {
                 out_Into_Ware.type = IO_Type.OUT;
                 out_Into_Ware.Table_Id = "OUT" + Table_Id;
             }
+            Session["Table_Id"] = out_Into_Ware.Table_Id;
             //存入数据库
             OutIntoWareBusinessLayer outIntoWareBusinessLayer = new OutIntoWareBusinessLayer();
             outIntoWareBusinessLayer.InsertOut_Into_ware(out_Into_Ware);
@@ -63,23 +66,60 @@ namespace 仓储系统.Controllers
         }
 
         [HttpPost]
-        public ActionResult InOutWarehouse(Commodity commodity, string sid)
+        public ActionResult InOutWarehouse(Commodity commodity, string sid, int Count)
         {
             InOutWarehouseViewModel inOutWarehouseViewModel = new InOutWarehouseViewModel();
             inOutWarehouseViewModel.UserName = Session["User"].ToString();
-            //inOutWarehouseViewModel.commodity = new Commodity();
+            if (Session["SelectIntoOut"] != null && Convert.ToBoolean(Session["SelectIntoOut"]))
+            {
+                //存储数据到Storage表(出入库单号、物品号、物品数量)
+                StorageBusinessLayer storageBusinessLayer = new StorageBusinessLayer();
+                Storage storage = new Storage();
+                storage.Co_id = commodity.Co_Id;
+                storage.IO_Id = Session["Table_Id"].ToString();
+                storage.Count = Count;
+                storage.IntoDate = DateTime.Now;
+                storageBusinessLayer.InsertStorage(storage);
 
-            CommodityBusinessLayer commodityBusinessLayer = new CommodityBusinessLayer();
-            inOutWarehouseViewModel.commodity = commodityBusinessLayer.GetCommodity(sid, commodity);
+                Session["SelectIntoOut"] = false;
+                inOutWarehouseViewModel.commodity = commodity;
+            }
+            else
+            {
+                //显示数据
+                CommodityBusinessLayer commodityBusinessLayer = new CommodityBusinessLayer();
+                inOutWarehouseViewModel.commodity = commodityBusinessLayer.GetCommodity(sid, commodity);
+                if (inOutWarehouseViewModel.commodity != null)
+                {
+                    Session["SelectIntoOut"] = true;
+                }
+            }
 
             return View("inOutWarehouse", inOutWarehouseViewModel);
         }
 
         public ActionResult InOutTable()
         {
-            if (false)
+            if (Session["Table_Id"] != null)
             {
+                //获取信息
                 InOutTableViewModel inOutTableViewModel = new InOutTableViewModel();
+                inOutTableViewModel.type = IO_Type == IO_Type.INTO ? "入库" : "出库";
+                inOutTableViewModel.commodityViewModels = new List<CommodityViewModel>();
+
+                //通过表号查询storate表的数据(物品编号，数量，时间)，
+                //通过编号查询commodity表
+                //将数据(commodity表、时间、数量)存入CommodityViewModel
+                CommodityBusinessLayer commodityBusinessLayer = new CommodityBusinessLayer();
+                Commodity commodity;
+                StorageBusinessLayer storageBusinessLayer = new StorageBusinessLayer();
+                List<Storage> storages = storageBusinessLayer.GetStorage("IO_Id", Session["Table_Id"].ToString());
+                foreach (Storage storage in storages)
+                {
+                    commodity = commodityBusinessLayer.GetCommodity(storage.Co_id, "", "");
+                    inOutTableViewModel.commodityViewModels.Add(new CommodityViewModel() { commodity = commodity, Count = storage.Count, Out_into_date = DateTime.Now });
+                }
+
                 return PartialView("InOutTable", inOutTableViewModel);
             }
             return new EmptyResult();
@@ -164,7 +204,7 @@ namespace 仓储系统.Controllers
             UserBusinessLayer userBusinessLayer = new UserBusinessLayer();
             createUserViewModel.user = userBusinessLayer.GetUser(Session["User"].ToString());
             return PartialView("Test", createUserViewModel);
-            
+
         }
 
         public ActionResult UpdataUser()
@@ -184,13 +224,17 @@ namespace 仓储系统.Controllers
             {
                 //userBusinessLayer.InsertUser(user);
                 userBusinessLayer.UpdataUsers(Session["User"].ToString(), user);
+                return RedirectToAction("Information");
             }
             else if (BtnSubmit == "取消")
             {
 
+                return RedirectToAction("Information");
             }
+            CreateUserViewModel createUserViewModel = new CreateUserViewModel();
+            createUserViewModel.user = userBusinessLayer.GetUser(Session["User"].ToString());
+            return PartialView("UpdataUser", createUserViewModel);
 
-            return RedirectToAction("Information");
         }
 
         public ActionResult LoginRecord()
@@ -222,7 +266,7 @@ namespace 仓储系统.Controllers
                 UserBusinessLayer userBusinessLayer = new UserBusinessLayer();
                 userListViewModel.users = new List<UserViewModel>();
                 List<User> users = userBusinessLayer.GetUser();
-                foreach(User Iuser in users)
+                foreach (User Iuser in users)
                 {
                     userListViewModel.users.Add(new UserViewModel() { user = Iuser });
                 }
@@ -249,22 +293,20 @@ namespace 仓储系统.Controllers
         [HttpPost]
         public ActionResult SaveUser(User user, string BtnSubmit)
         {
-            //CreateUserViewModel v = new CreateUserViewModel();
             UserBusinessLayer userBusinessLayer = new UserBusinessLayer();
-            //if (BtnSubmit == "保存")
-            //{
-            //    userBusinessLayer.InsertUser(user);
-            //}
-            //else if (BtnSubmit == "取消")
-            //{
-            //}
-            //userBusinessLayer.InsertUser(user);
+            if (BtnSubmit == "保存")
+            {
+                userBusinessLayer.UpdataUsers(Session["User"].ToString(), user);
+                return RedirectToAction("Information");
+            }
+            else if (BtnSubmit == "取消")
+            {
+                return RedirectToAction("Information");
+            }
 
-            userBusinessLayer.UpdataUsers(Session["User"].ToString(), user);
-
-            //v.user = userBusinessLayer.GetUser(Session["User"].ToString());
-            //return PartialView("CreateUser", v);
-            return RedirectToAction("Information");
+            CreateUserViewModel v = new CreateUserViewModel();
+            v.user = userBusinessLayer.GetUser(Session["User"].ToString());
+            return PartialView("CreateUser", v);
         }
 
         [HttpPost]
