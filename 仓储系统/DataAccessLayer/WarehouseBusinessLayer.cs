@@ -67,5 +67,12 @@ namespace 仓储系统.DataAccessLayer
             dB.SaveChanges();
             return warehouse;
         }
+
+        public void DeleteWarehouse(string name)
+        {
+            WarehouseERPDAL dB = new WarehouseERPDAL();
+            dB.warehouses.Remove(dB.warehouses.Where(c => c.Wa_name == name).FirstOrDefault());
+            dB.SaveChanges();
+        }
     }
 }

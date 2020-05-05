@@ -8,7 +8,8 @@
 
     <div class="container dropdown">
         <h2>Warehouse</h2>
-        <input class="col-lg-2" type="submit" value="添加" id="IntoWarehouse" name="IntoWarehouse" />
+        <!--添加的仓库按钮只能由等级为Admin的用户才能进行操作-->
+        <input class="btn btn-primary" type="submit" value="添加" id="AddWarehouse" name="AddWarehouse" onclick="$('#addWarehouse').modal('show')" />
 
         <table border="1" class="table table-bordered">
             <tr>
@@ -19,7 +20,6 @@
                 <th scope="col">联系方式</th>
                 <th scope="col">仓库容量</th>
                 <th scope="col">可用容量</th>
-                <th scope="col">备注</th>
                 <th scope="col">操作</th>
             </tr>
             @foreach (Warehouse item in Model.warehouses)
@@ -32,19 +32,30 @@
                     <td>@item.Wa_contact</td>
                     <td>@item.Wa_capacity</td>
                     <td>@item.Wa_able_capacity</td>
-                    <td>...</td>
                     <td>
-                        <a href="#">查看</a>
+                        <a href="#@item.Wa_Id" data-toggle="modal" name="">查看</a>
                         <a href="#">修改</a>
-                        <a href="#">删除</a>
+                        <a href="#@item.Wa_name" data-toggle="modal" name="">删除</a>
+                        <div class="modal fade" id="@item.Wa_Id" tabindex="-1" role="dialog" aria-hidden="true">
+                            @{
+                                Html.RenderPartial("UpdataWarehouse", item);
+                            }
+                        </div>
+                        <div class="modal fade" id="@item.Wa_name" tabindex="-1" role="dialog" aria-hidden="true">
+                            @{
+                                Html.RenderPartial("DeleteWarehouse", item);
+                            }
+                        </div>
                     </td>
                 </tr>
             }
         </table>
         <div class=" col">
-            @{
-                Html.RenderAction("CreateWarehouse");
-            }
+            <div class="modal fade" id="addWarehouse" tabindex="-1" role="dialog" aria-hidden="true">
+                @{
+                    Html.RenderAction("CreateWarehouse");
+                }
+            </div>
         </div>
     </div>
 

@@ -270,6 +270,8 @@
     <Content Include="Views\Shared\InOutTable.cshtml" />
     <Content Include="Views\Home\MakeInOutTable.cshtml" />
     <Content Include="Views\Home\InformationAdminButton.cshtml" />
+    <Content Include="Views\Shared\UpdataWarehouse.cshtml" />
+    <Content Include="Views\Shared\DeleteWarehouse.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

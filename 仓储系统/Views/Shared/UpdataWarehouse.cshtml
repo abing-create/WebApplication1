@@ -1,5 +1,5 @@
-﻿@using 仓储系统.ViewModels
-@model CreateWarehouseViewModel
+﻿@using 仓储系统.Models
+@model Warehouse
 
 
 <script>
@@ -31,7 +31,7 @@
                                 仓库编号:
                             </td>
                             <td>
-                                <input type="text" id="Wa_Id" name="Wa_Id" value="@Model.warehouse.Wa_Id" />
+                                <input type="text" id="Wa_Id" name="Wa_Id" value="@Model.Wa_Id" />
                             </td>
                         </tr>
                         <tr>
@@ -39,7 +39,7 @@
                                 仓库名称:
                             </td>
                             <td>
-                                <input type="text" id="Wa_name" name="Wa_name" value="@Model.warehouse.Wa_name" />
+                                <input type="text" id="Wa_name" name="Wa_name" value="@Model.Wa_name" />
                             </td>
                         </tr>
                         <tr>
@@ -47,7 +47,7 @@
                                 仓库地址:
                             </td>
                             <td>
-                                <input type="text" id="Wa_address" name="Wa_address" value="@Model.warehouse.Wa_address" />
+                                <input type="text" id="Wa_address" name="Wa_address" value="@Model.Wa_address" />
                             </td>
                         </tr>
                         <tr>
@@ -55,7 +55,7 @@
                                 负责人:
                             </td>
                             <td>
-                                <input type="text" id="Wa_princiopal" name="Wa_princiopal" value="@Model.warehouse.Wa_princiopal" />
+                                <input type="text" id="Wa_princiopal" name="Wa_princiopal" value="@Model.Wa_princiopal" />
                             </td>
                         </tr>
                         <tr>
@@ -63,7 +63,7 @@
                                 联系方式:
                             </td>
                             <td>
-                                <input type="text" id="Wa_contact" name="Wa_contact" value="@Model.warehouse.Wa_contact" />
+                                <input type="text" id="Wa_contact" name="Wa_contact" value="@Model.Wa_contact" />
                             </td>
                         </tr>
                         <tr>
@@ -71,7 +71,7 @@
                                 仓库容量:
                             </td>
                             <td>
-                                <input type="text" id="Wa_capacity" name="Wa_capacity" value="@Model.warehouse.Wa_capacity" />
+                                <input type="text" id="Wa_capacity" name="Wa_capacity" value="@Model.Wa_capacity" />
                             </td>
                         </tr>
                         <tr>
@@ -79,7 +79,7 @@
                                 可用容量:
                             </td>
                             <td>
-                                <input type="text" id="Wa_able_capacity" name="Wa_able_capacity" value="@Model.warehouse.Wa_able_capacity" />
+                                <input type="text" id="Wa_able_capacity" name="Wa_able_capacity" value="@Model.Wa_able_capacity" />
                             </td>
                         </tr>
                         <tr>
@@ -87,7 +87,7 @@
                                 备注:
                             </td>
                             <td>
-                                <input type="text" id="Wa_note" name="Wa_note" value="@Model.warehouse.Wa_note" />
+                                <input type="text" id="Wa_note" name="Wa_note" value="@Model.Wa_note" />
                             </td>
                         </tr>
                         <tr>
@@ -108,3 +108,4 @@
         </div>
     </div>
 </div>
+

@@ -16,14 +16,15 @@ namespace 仓储系统.Controllers
     {
         private IO_Type IO_Type;    //出库还是入库!
         public static level level;  //等级!
-        private string Table_Id;    //出入库表单号
+        private static string Table_Id;    //出入库表单号
         private int userId = 0;     //登录者编号!
         private int wareId = 0;     //仓库编号!
 
         [HttpGet]
         public ActionResult InOutWarehouse()
         {
-            Session["Table_Id"] = null;
+            //Session["Table_Id"] = null;
+            Table_Id = "";
             InOutWarehouseViewModel inOutWarehouseViewModel = new InOutWarehouseViewModel();
             inOutWarehouseViewModel.UserName = Session["User"].ToString();
             inOutWarehouseViewModel.commodity = new Commodity();
@@ -53,7 +54,8 @@ namespace 仓储系统.Controllers
                 out_Into_Ware.type = IO_Type.OUT;
                 out_Into_Ware.Table_Id = "OUT" + Table_Id;
             }
-            Session["Table_Id"] = out_Into_Ware.Table_Id;
+            //Session["Table_Id"] = out_Into_Ware.Table_Id;
+            Table_Id = out_Into_Ware.Table_Id;
             //存入数据库
             OutIntoWareBusinessLayer outIntoWareBusinessLayer = new OutIntoWareBusinessLayer();
             outIntoWareBusinessLayer.InsertOut_Into_ware(out_Into_Ware);
@@ -76,7 +78,8 @@ namespace 仓储系统.Controllers
                 StorageBusinessLayer storageBusinessLayer = new StorageBusinessLayer();
                 Storage storage = new Storage();
                 storage.Co_id = commodity.Co_Id;
-                storage.IO_Id = Session["Table_Id"].ToString();
+                //storage.IO_Id = Session["Table_Id"].ToString();
+                storage.IO_Id = Table_Id;
                 storage.Count = Count;
                 storage.IntoDate = DateTime.Now;
                 storageBusinessLayer.InsertStorage(storage);
@@ -100,29 +103,32 @@ namespace 仓储系统.Controllers
 
         public ActionResult InOutTable()
         {
-            if (Session["Table_Id"] != null)
+            //if (Session["Table_Id"] == null)
+            if(Table_Id == "")
             {
-                //获取信息
-                InOutTableViewModel inOutTableViewModel = new InOutTableViewModel();
-                inOutTableViewModel.type = IO_Type == IO_Type.INTO ? "入库" : "出库";
-                inOutTableViewModel.commodityViewModels = new List<CommodityViewModel>();
+                //没有创建表单号
+                return new EmptyResult();
+            } 
+            //获取信息
+            InOutTableViewModel inOutTableViewModel = new InOutTableViewModel();
+            inOutTableViewModel.type = IO_Type == IO_Type.INTO ? "入库" : "出库";
+            inOutTableViewModel.commodityViewModels = new List<CommodityViewModel>();
 
-                //通过表号查询storate表的数据(物品编号，数量，时间)，
-                //通过编号查询commodity表
-                //将数据(commodity表、时间、数量)存入CommodityViewModel
-                CommodityBusinessLayer commodityBusinessLayer = new CommodityBusinessLayer();
-                Commodity commodity;
-                StorageBusinessLayer storageBusinessLayer = new StorageBusinessLayer();
-                List<Storage> storages = storageBusinessLayer.GetStorage("IO_Id", Session["Table_Id"].ToString());
-                foreach (Storage storage in storages)
-                {
-                    commodity = commodityBusinessLayer.GetCommodity(storage.Co_id, "", "");
-                    inOutTableViewModel.commodityViewModels.Add(new CommodityViewModel() { commodity = commodity, Count = storage.Count, Out_into_date = DateTime.Now });
-                }
-
-                return PartialView("InOutTable", inOutTableViewModel);
+            //通过表号查询storate表的数据(物品编号，数量，时间)，
+            //通过编号查询commodity表
+            //将数据(commodity表、时间、数量)存入CommodityViewModel
+            CommodityBusinessLayer commodityBusinessLayer = new CommodityBusinessLayer();
+            Commodity commodity;
+            StorageBusinessLayer storageBusinessLayer = new StorageBusinessLayer();
+            //List<Storage> storages = storageBusinessLayer.GetStorage("IO_Id", Session["Table_Id"].ToString());
+            List<Storage> storages = storageBusinessLayer.GetStorage("IO_Id", Table_Id);
+            foreach (Storage storage in storages)
+            {
+                commodity = commodityBusinessLayer.GetCommodity(storage.Co_id, "", "");
+                inOutTableViewModel.commodityViewModels.Add(new CommodityViewModel() { commodity = commodity, Count = storage.Count, Out_into_date = DateTime.Now });
             }
-            return new EmptyResult();
+
+            return PartialView("InOutTable", inOutTableViewModel);
         }
 
         public ActionResult Information()
@@ -376,21 +382,43 @@ namespace 仓储系统.Controllers
         }
 
         [HttpPost]
-        public ActionResult SaveWarehouse(CreateWarehouseViewModel model, string BtnSubmit)
+        public ActionResult SaveWarehouse(Warehouse model, string BtnSubmit)
         {
-            CreateWarehouseViewModel createWarehouseViewModel = new CreateWarehouseViewModel();
-            createWarehouseViewModel.warehouse = new Warehouse();
-
+            //如果是按键操作，返回重定向
             if (BtnSubmit == "保存")
             {
                 WarehouseBusinessLayer warehouseBusinessLayer = new WarehouseBusinessLayer();
-                warehouseBusinessLayer.InsertWarehouse(model.warehouse);
+                warehouseBusinessLayer.InsertWarehouse(model);
+                return RedirectToAction("Warehouse");
             }
             else if (BtnSubmit == "取消")
             {
-
+                return RedirectToAction("Warehouse");
             }
 
+            //如果不是按键操作，刷新本页面
+            CreateWarehouseViewModel createWarehouseViewModel = new CreateWarehouseViewModel();
+            createWarehouseViewModel.warehouse = new Warehouse();
+            return PartialView("CreateWarehouse", createWarehouseViewModel); ;
+        }
+
+        [HttpPost]
+        public ActionResult DeleteWarehouse(string Wa_name, string BtnSubmit)
+        {
+            if (BtnSubmit == "确定")
+            {
+                WarehouseBusinessLayer warehouseBusinessLayer = new WarehouseBusinessLayer();
+                warehouseBusinessLayer.DeleteWarehouse(Wa_name);
+                return RedirectToAction("Warehouse");
+            }
+            else if (BtnSubmit == "取消")
+            {
+                return RedirectToAction("Warehouse");
+            }
+
+            //如果不是按键操作，刷新本页面
+            CreateWarehouseViewModel createWarehouseViewModel = new CreateWarehouseViewModel();
+            createWarehouseViewModel.warehouse = new Warehouse();
             return PartialView("CreateWarehouse", createWarehouseViewModel); ;
         }
     }
