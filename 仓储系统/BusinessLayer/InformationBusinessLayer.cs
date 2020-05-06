@@ -10,7 +10,7 @@ namespace 仓储系统.BusinessLayer
 {
     public class InformationBusinessLayer
     {
-        public InformationViewModel getInformationViewModel(string name, string passwrd)
+        public InformationViewModel getInformationViewModel(string name, string passwrd, string select = "", string uname = "")
         {
             //个人信息页面视图模型
             InformationViewModel informationViewModel = new InformationViewModel();
@@ -22,7 +22,9 @@ namespace 仓储系统.BusinessLayer
             informationViewModel.createUserViewModel.user = userBusinessLayer.GetUser(name);//得到当前登录者的用户信息        
 
             //用户是管理者的时候，可以得到所有的用户信息
-            if (informationViewModel.createUserViewModel.user.U_level == level.Admin)
+            if(select != "")
+                informationViewModel.users = userBusinessLayer.GetUsers(select, uname);//得到指定条件的人
+            else if (informationViewModel.createUserViewModel.user.U_level == level.Admin)
                 informationViewModel.users = userBusinessLayer.GetUser();
             else
                 informationViewModel.users = new List<User>();

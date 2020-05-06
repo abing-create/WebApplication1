@@ -1,54 +1,80 @@
-﻿@using 仓储系统.ViewModels
-@model 仓储系统.ViewModels.UserListViewModel
+﻿@using 仓储系统.Models
+@using 仓储系统.ViewModels
+@model UserListViewModel
 
 
 <h3 class="text-center">员工信息</h3>
+<hr />
+<!--搜索功能-->
+@using (Html.BeginForm("searchUser", "Home", FormMethod.Post, new { @id = "WarehouseForm", role = "form" }))
+{
+    <div class="row">
+        <div class="col-lg-4">
+            <input type="button" class="btn btn-primary" onclick="$('#addUser').modal('show')" value="添加用户">
+        </div>
+        <div class="col-lg-8">
+            <input type="submit" class="btn btn-primary pull-right" name="BtnSubmit" value="搜索">
+            <input type="text" class="form-control pull-right" placeholder="name" aria-label="name" name="uname" value="">
+            <select class="selectpicker show-tick form-control pull-right" data-live-search="true" name="Select">
+                <option>员工编号</option>
+                <option>员工等级</option>
+                <option>员工职务</option>
+                <option>员工部门</option>
+                <option>员工姓名</option>
+                <option>联系电话</option>
+                <option>员工性别</option>
+            </select>
+        </div>
+    </div>
+}
+<br/>
+
 <div class="container">
     <div class="row">
         <table border="1" class="table table-bordered">
             <tr>
                 <th scope="col">员工编号</th>
-                <th scope="col">员工姓名</th>
-                <th scope="col">员工密码</th>
+                <th scope="col">员工等级</th>
                 <th scope="col">员工职务</th>
                 <th scope="col">员工部门</th>
+                <th scope="col">员工姓名</th>
+                <th scope="col">员工密码</th>
                 <th scope="col">出生日期</th>
                 <th scope="col">联系电话</th>
-                <th scope="col">员工等级</th>
                 <th scope="col">密码提示</th>
                 <th scope="col">员工性别</th>
                 <th scope="col" colspan="2">操作</th>
             </tr>
-            @foreach (UserViewModel item in Model.users)
+            @foreach (User item in Model.users)
             {
                 <tr>
-                    <td>@item.user.U_Id</td>
-                    <td>@item.user.U_name</td>
-                    <td>@item.user.U_password</td>
-                    <td>@item.user.U_post</td>
-                    <td>@item.user.U_department</td>
-                    <td>@item.user.U_birthday.ToString("yyyy-MM-dd")</td>
-                    <td>@item.user.U_phone</td>
-                    <td>@item.user.U_level</td>
-                    <td>@item.user.U_point</td>
-                    <td>@item.user.U_sex</td>
+                    <td>@item.U_Id</td>
+                    <td>@item.U_level</td>
+                    <td>@item.U_post</td>
+                    <td>@item.U_department</td>
+                    <td>@item.U_name</td>
+                    <td>@item.U_password</td>
+                    <td>@item.U_birthday.ToString("yyyy-MM-dd")</td>
+                    <td>@item.U_phone</td>
+                    <td>@item.U_point</td>
+                    <td>@item.U_sex</td>
                     <td>
-                        <a href="#s_@item.user.Id" data-toggle="modal" name="">查看</a>
-                        <a href="#u_@item.user.Id" data-toggle="modal" name="">修改</a>
-                        <a href="#d_@item.user.Id" data-toggle="modal" name="">删除</a>
-                        <div class="modal fade" id="s_@item.user.Id" tabindex="-1" role="dialog" aria-hidden="true">
+                        <a href="#s_@item.Id" data-toggle="modal" name="">查看</a>
+                        <a href="#u_@item.Id" data-toggle="modal" name="">修改</a>
+                        <a href="#d_@item.Id" data-toggle="modal" name="">删除</a>
+                        <div class="modal fade" id="s_@item.Id" tabindex="-1" role="dialog" aria-hidden="true">
                             @{
-                                Html.RenderPartial("DisplayUser", item.user);
+                                Html.RenderPartial("DisplayUser", item);
                             }
                         </div>
-                        <div class="modal fade" id="u_@item.user.Id" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal fade" id="u_@item.Id" tabindex="-1" role="dialog" aria-hidden="true">
                             @{
-                                Html.RenderPartial("UpdataStaff", new CreateUserViewModel() { user = item.user });
+                                Html.RenderPartial("UpdataStaff", new CreateUserViewModel() { user = item });
                             }
                         </div>
-                        <div class="modal fade" id="d_@item.user.Id" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal fade" id="d_@item.Id" tabindex="-1" role="dialog" aria-hidden="true">
                             @{
-                                Html.RenderPartial("DeleteItem", new DeleteViewModel() { D_id = item.user.U_Id.ToString(), D_name = item.user.U_name, T_name = "用户" });
+                                Html.RenderPartial("DeleteItem", new DeleteViewModel() { D_id = item.U_Id.ToString(), D_name = item.U_name, T_name = "用户" });
                             }
                         </div>
                     </td>

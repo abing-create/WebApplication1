@@ -19,6 +19,11 @@ namespace 仓储系统.Controllers
         private static string Table_Id;    //出入库表单号
         private int userId = 0;     //登录者编号!
         private int wareId = 0;     //仓库编号!
+        //private static List<User> S_users;
+        private static string S_select = "";
+        private static string S_name = "";
+        private static bool IsSearchPeople = false;
+        //private static UserListViewModel S_userListViewModel;
 
         [HttpGet]
         public ActionResult InOutWarehouse()
@@ -140,6 +145,8 @@ namespace 仓储系统.Controllers
             string name = Session["User"].ToString();
             string password = Session["Password"].ToString();
             InformationViewModel informationViewModel = informationBusinessLayer.getInformationViewModel(name, password);
+            //全局变量用户组
+            //S_users = informationViewModel.users;
 
             return View("Information", informationViewModel);
         }
@@ -200,6 +207,7 @@ namespace 仓储系统.Controllers
             }
             if (select == "查看用户")
             {
+                IsSearchPeople = false;
                 Session["UserTable"] = !Convert.ToBoolean(Session["UserTable"]);
                 Session["UserButton"] = !Convert.ToBoolean(Session["UserButton"]);
             }
@@ -214,7 +222,29 @@ namespace 仓储系统.Controllers
         //    createUserViewModel.user = userBusinessLayer.GetUser(Session["User"].ToString());
         //    return PartialView("Test", createUserViewModel);
 
-        //}
+        //}searchUser
+
+        [HttpPost]
+        public ActionResult searchUser(string Select, string uname, string BtnSubmit)
+        {
+            //如果BtnSubmit是触发的搜索按键
+            AttributesViewModel attributesViewModel = new AttributesViewModel();
+            attributesViewModel.UserName = Session["User"].ToString();//继承的，显示右边的用户名
+
+            //个人信息页面视图模型
+            InformationBusinessLayer informationBusinessLayer = new InformationBusinessLayer();
+            string name = Session["User"].ToString();
+            string password = Session["Password"].ToString();
+            InformationViewModel informationViewModel = informationBusinessLayer.getInformationViewModel(name, password, Select, uname);
+
+            S_select = Select;
+            S_name = uname;
+            IsSearchPeople = true;
+
+            //S_users = informationViewModel.users;
+
+            return View("Information", informationViewModel);
+        }
 
         public ActionResult UpdataUser()
         {
@@ -279,14 +309,16 @@ namespace 仓储系统.Controllers
             //如果Session["UserTable"]为true,则显示usertable,每次都触发information都给改变Session["UserTable"]取反
             if (Session["UserTable"] != null && Convert.ToBoolean(Session["UserTable"]))
             {
+                //UserListViewModel userListViewModel = new UserListViewModel();
+                //UserBusinessLayer userBusinessLayer = new UserBusinessLayer();
+                //userListViewModel.users = userBusinessLayer.GetUser();
+
                 UserListViewModel userListViewModel = new UserListViewModel();
                 UserBusinessLayer userBusinessLayer = new UserBusinessLayer();
-                userListViewModel.users = new List<UserViewModel>();
-                List<User> users = userBusinessLayer.GetUser();
-                foreach (User Iuser in users)
-                {
-                    userListViewModel.users.Add(new UserViewModel() { user = Iuser });
-                }
+                if(IsSearchPeople)
+                    userListViewModel.users = userBusinessLayer.GetUsers(S_select, S_name);//得到指定条件的人;
+                else
+                    userListViewModel.users = userBusinessLayer.GetUser();
 
                 return PartialView("UserTable", userListViewModel);
             }

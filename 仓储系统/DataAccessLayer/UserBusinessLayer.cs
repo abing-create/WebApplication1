@@ -18,6 +18,46 @@ namespace 仓储系统.DataAccessLayer
             return dB.users.ToList();
         }
 
+        /// <summary>
+        /// 获取符合select属性为uname的用户
+        /// </summary>
+        /// <param name="select"></param>
+        /// <param name="uname"></param>
+        /// <returns></returns>
+        public List<User> GetUsers(string select, string uname)
+        {
+            WarehouseERPDAL dB = new WarehouseERPDAL();
+            List<User> users;
+            switch(select)
+            {
+                case "员工编号":
+                    users = dB.users.Where(c => c.U_Id.ToString() == uname).ToList();
+                    break;
+                case "员工等级":
+                    users = dB.users.Where(c => c.U_level.ToString() == uname).ToList();
+                    break;
+                case "员工职务":
+                    users = dB.users.Where(c => c.U_post == uname).ToList();
+                    break;
+                case "员工部门":
+                    users = dB.users.Where(c => c.U_department == uname).ToList();
+                    break;
+                case "员工姓名":
+                    users = dB.users.Where(c => c.U_name == uname).ToList();
+                    break;
+                case "联系电话":
+                    users = dB.users.Where(c => c.U_phone == uname).ToList();
+                    break;
+                case "员工性别":
+                    users = dB.users.Where(c => c.U_sex == uname).ToList();
+                    break;
+                default:
+                    users = new List<User>();
+                    break;
+            }
+            return users;
+        }
+
         public User GetUser(string name)
         {
             WarehouseERPDAL dB = new WarehouseERPDAL();
