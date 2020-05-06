@@ -344,6 +344,7 @@ namespace 仓储系统.Controllers
             return PartialView("CreateUser", v);
         }
 
+        [HttpGet]
         public ActionResult Attributes()
         {
             AttributesViewModel attributesViewModel = new AttributesViewModel();
@@ -356,6 +357,27 @@ namespace 仓储系统.Controllers
 
             return View("Attributes", attributesViewModel);
         }
+
+        /// <summary>
+        /// 搜索物品功能
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult searchAttrbutetes(string Select, string name, string BtnSubmit)
+        {
+            //如果BtnSubmit是触发的搜索按键
+            AttributesViewModel attributesViewModel = new AttributesViewModel();
+            attributesViewModel.UserName = Session["User"].ToString();//继承的，显示右边的用户名
+
+            CommodityBusinessLayer commodityBusinessLayer = new CommodityBusinessLayer();
+            attributesViewModel.commodities = commodityBusinessLayer.GetCommodity(Select, name);
+
+            attributesViewModel.commoditie = new Commodity();
+
+            return View("Attributes", attributesViewModel);
+        }
+
+
         public ActionResult Storage()
         {
             StorageViewModel storageViewModel = new StorageViewModel();

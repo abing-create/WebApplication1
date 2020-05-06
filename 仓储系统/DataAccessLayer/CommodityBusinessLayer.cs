@@ -24,6 +24,46 @@ namespace 仓储系统.DataAccessLayer
         }
 
         /// <summary>
+        /// 返回Select属性为name的物品的集合
+        /// </summary>
+        /// <param name="Select"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public List<Commodity> GetCommodity(string Select, string name)
+        {
+            WarehouseERPDAL dB = new WarehouseERPDAL();
+            List<Commodity> commodities;
+            switch(Select)
+            {
+                case "商品编号":
+                    commodities = dB.commoditys.Where(c => c.Co_Id.ToString() == name).ToList();
+                    break;
+                case "商品名称":
+                    commodities = dB.commoditys.Where(c => c.Co_name == name).ToList();
+                    break;
+                case "条码编号":
+                    commodities = dB.commoditys.Where(c => c.Co_bar_code == name).ToList();
+                    break;
+                case "商品分类":
+                    commodities = dB.commoditys.Where(c => c.Co_type == name).ToList();
+                    break;
+                case "商品规格":
+                    commodities = dB.commoditys.Where(c => c.Co_specification == name).ToList();
+                    break;
+                case "商品单价":
+                    commodities = dB.commoditys.Where(c => c.Co_price == Convert.ToDouble(name)).ToList();
+                    break;
+                case "商品重量":
+                    commodities = dB.commoditys.Where(c => c.Co_weight == Convert.ToDouble(name)).ToList();
+                    break;
+                default:
+                    commodities = new List<Commodity>();
+                    break;
+            }
+            return commodities;
+        }
+
+        /// <summary>
         /// 返回表中第一个符合条件的值
         /// </summary>
         /// <param name="Co_Id">商品号</param>
