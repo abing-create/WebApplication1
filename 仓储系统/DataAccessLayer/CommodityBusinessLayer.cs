@@ -51,10 +51,10 @@ namespace 仓储系统.DataAccessLayer
                     commodities = dB.commoditys.Where(c => c.Co_specification == name).ToList();
                     break;
                 case "商品单价":
-                    commodities = dB.commoditys.Where(c => c.Co_price == Convert.ToDouble(name)).ToList();
+                    commodities = dB.commoditys.Where(c => c.Co_price.ToString() ==name).ToList();
                     break;
                 case "商品重量":
-                    commodities = dB.commoditys.Where(c => c.Co_weight == Convert.ToDouble(name)).ToList();
+                    commodities = dB.commoditys.Where(c => c.Co_weight.ToString() == name).ToList();
                     break;
                 default:
                     commodities = new List<Commodity>();

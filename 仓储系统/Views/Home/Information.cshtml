@@ -6,45 +6,37 @@
 }
 
 
-    <div class="container dropdown">
-        <h2>Information</h2>
-        @using (Html.BeginForm("Information", "Home", FormMethod.Post))
-        {
-            <input type="submit" class="btn btn-primary" name="select" value="查询记录">
-            <input type="button" class="btn btn-primary" onclick="$('#updataUser').modal('show')" value="修改信息">
-            <input type="button" class="btn btn-primary" onclick="$('#addUser').modal('show')" value="添加用户">
-            Html.RenderAction("InformationAdminButton");
-        }
+<div class="container dropdown">
+    <h2>Information</h2>
+    @using (Html.BeginForm("Information", "Home", FormMethod.Post))
+    {
+        <input type="submit" class="btn btn-primary" name="select" value="查询记录">
+        <input type="button" class="btn btn-primary" onclick="$('#updataUser').modal('show')" value="修改信息">
+        <!--修改是否打开查看用户的列表的标志位，并重新打开此页面-->
+        Html.RenderAction("InformationAdminButton");
+    }
 
+    @{
+        <!--用户数据的查看删除加修改，最终转到UserTable-->
+        Html.RenderAction("InformationAdmin");
+    }
+
+    @{
+        Html.RenderAction("LoginRecord");
+    }
+
+    <!--修改用户的弹窗-->
+    <div class="modal fade" id="updataUser" tabindex="-1" role="dialog" aria-hidden="true">
         @{
-            Html.RenderAction("InformationAdmin");
+            //Html.RenderAction("UpdataUser");
+            Html.RenderPartial("UpdataUser", Model.createUserViewModel);
         }
-
-        @{
-            Html.RenderAction("LoginRecord");
-        }
-        <div class="modal fade" id="updataUser" tabindex="-1" role="dialog" aria-hidden="true">
-            @{
-                Html.RenderAction("UpdataUser");
-            }
-        </div>
-
-        @*<a href="#" data-toggle="modal" data-target="#deleteConfirmationModal">Delete</a>*@
-        <div class="modal fade" id="addUser" tabindex="-1" role="dialog" aria-hidden="true">
-            @{
-                Html.RenderAction("Test");
-            }
-        </div>
-
     </div>
-
-<div class="container">
-    <div class="row">
-        <div class=" col">
-            @{
-                Html.RenderAction("AddNew");
-            }
-        </div>
+    <!--添加用户的弹窗-->
+    <div class="modal fade" id="addUser" tabindex="-1" role="dialog" aria-hidden="true">
+        @{
+            Html.RenderPartial("CreateUser");
+        }
     </div>
 </div>
 

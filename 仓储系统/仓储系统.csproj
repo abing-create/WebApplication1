@@ -279,6 +279,8 @@
     <Content Include="Views\Shared\DeleteItem.cshtml" />
     <Content Include="Views\Shared\DisplayCommodity.cshtml" />
     <Content Include="Views\Shared\UpdataCommodity.cshtml" />
+    <Content Include="Views\Shared\UpdataStaff.cshtml" />
+    <Content Include="Views\Shared\DisplayUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

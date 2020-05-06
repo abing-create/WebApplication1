@@ -72,7 +72,7 @@
                                 出生日期:
                             </td>
                             <td>
-                                <input type="text" id="U_birthday" name="U_birthday" value="@Model.user.U_birthday" />
+                                <input type="text" id="U_birthday" name="U_birthday" value="@Model.user.U_birthday.ToString("yyyy年MM月dd日")" />
                             </td>
                         </tr>
                         <tr>
@@ -107,21 +107,13 @@
                                 <input type="text" id="U_sex" name="U_sex" value="@Model.user.U_sex" />
                             </td>
                         </tr>
-                        <tr>
-                            <td colspan="2">
-
-                                <input type="submit" name="BtnSubmit" value="保存" />
-                                <input type="submit" name="BtnSubmit" value="取消" onclick="CancelSave()" />
-                                <input type="button" name="BtnReset" value="清空" onclick="ResetForm();" />
-                            </td>
-                        </tr>
                     </table>
                 }
             </div>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-            <button type="button" class="btn btn-primary" onclick="$('#delete-form').submit();">提交更改</button>
+            <input type="submit" class="btn btn-primary" value="添加" name="BtnSubmit">
         </div>
     </div>
 </div>

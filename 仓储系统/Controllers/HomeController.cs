@@ -133,7 +133,7 @@ namespace 仓储系统.Controllers
 
         public ActionResult Information()
         {
-            Session["LoginRecord"] = false;
+            //Session["LoginRecord"] = false;
 
             //个人信息页面视图模型
             InformationBusinessLayer informationBusinessLayer = new InformationBusinessLayer();
@@ -171,7 +171,10 @@ namespace 仓储系统.Controllers
         {
             if (level.Admin == (level)Session["level"])
             {
-                Session["UserTable"] = false;
+                //if (Session["UserTable"] != null)
+                //    Session["UserTable"] = !Convert.ToBoolean(Session["UserTable"]);
+                //else
+                //    Session["UserTable"] = false;
                 return PartialView("InformationAdmin");
             }
             return new EmptyResult();
@@ -203,15 +206,15 @@ namespace 仓储系统.Controllers
             return PartialView("InformationAdmin");
         }
 
-        public ActionResult Test()
-        {
-            //return PartialView(); 
-            CreateUserViewModel createUserViewModel = new CreateUserViewModel();
-            UserBusinessLayer userBusinessLayer = new UserBusinessLayer();
-            createUserViewModel.user = userBusinessLayer.GetUser(Session["User"].ToString());
-            return PartialView("Test", createUserViewModel);
+        //public ActionResult Test()
+        //{
+        //    //return PartialView(); 
+        //    CreateUserViewModel createUserViewModel = new CreateUserViewModel();
+        //    UserBusinessLayer userBusinessLayer = new UserBusinessLayer();
+        //    createUserViewModel.user = userBusinessLayer.GetUser(Session["User"].ToString());
+        //    return PartialView("Test", createUserViewModel);
 
-        }
+        //}
 
         public ActionResult UpdataUser()
         {
@@ -225,8 +228,11 @@ namespace 仓储系统.Controllers
         [HttpPost]
         public ActionResult UpdataUser(User user, string BtnSubmit)
         {
+            //给Session["UserTable"]取反，使重定向后依然能够显示usertable
+            //Session["UserTable"] = !Convert.ToBoolean(Session["UserTable"]);
+            //Session["LoginRecord"] = !Convert.ToBoolean(Session["LoginRecord"]);
             UserBusinessLayer userBusinessLayer = new UserBusinessLayer();
-            if (BtnSubmit == "修改")
+            if (BtnSubmit == "提交更改")
             {
                 //userBusinessLayer.InsertUser(user);
                 userBusinessLayer.UpdataUsers(Session["User"].ToString(), user);
@@ -237,6 +243,8 @@ namespace 仓储系统.Controllers
 
                 return RedirectToAction("Information");
             }
+
+            //UpdataUser不需要控制器来决定，这段代码没用
             CreateUserViewModel createUserViewModel = new CreateUserViewModel();
             createUserViewModel.user = userBusinessLayer.GetUser(Session["User"].ToString());
             return PartialView("UpdataUser", createUserViewModel);
@@ -245,7 +253,8 @@ namespace 仓储系统.Controllers
 
         public ActionResult LoginRecord()
         {
-            if (Convert.ToBoolean(Session["LoginRecord"]))
+            //如果Session["LoginRecord"]为true,则显示usertable,每次都触发information都给改变Session["LoginRecord"]取反
+            if (Session["LoginRecord"] != null && Convert.ToBoolean(Session["LoginRecord"]))
             {
                 RecordListViewModel recordListViewModel = new RecordListViewModel();
                 RecordBusinessLayer recordBusinessLayer = new RecordBusinessLayer();
@@ -261,12 +270,14 @@ namespace 仓储系统.Controllers
                 }
                 return PartialView("LoginRecord", recordListViewModel);
             }
+            Session["LoginRecord"] = false;
             return new EmptyResult();
         }
 
         public ActionResult UserTable()
         {
-            if (Convert.ToBoolean(Session["UserTable"]))
+            //如果Session["UserTable"]为true,则显示usertable,每次都触发information都给改变Session["UserTable"]取反
+            if (Session["UserTable"] != null && Convert.ToBoolean(Session["UserTable"]))
             {
                 UserListViewModel userListViewModel = new UserListViewModel();
                 UserBusinessLayer userBusinessLayer = new UserBusinessLayer();
@@ -279,6 +290,7 @@ namespace 仓储系统.Controllers
 
                 return PartialView("UserTable", userListViewModel);
             }
+            Session["UserTable"] = false;
             return new EmptyResult();
         }
 
@@ -296,23 +308,31 @@ namespace 仓储系统.Controllers
             }
         }
 
+        /// <summary>
+        /// 管理员添加用户或则修改用户
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="BtnSubmit"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult SaveUser(User user, string BtnSubmit)
         {
+            
             UserBusinessLayer userBusinessLayer = new UserBusinessLayer();
-            if (BtnSubmit == "保存")
+            if (BtnSubmit == "提交更改")
             {
-                userBusinessLayer.UpdataUsers(Session["User"].ToString(), user);
-                return RedirectToAction("Information");
+                userBusinessLayer.UpdataUsers(user.U_name, user);
             }
-            else if (BtnSubmit == "取消")
+            else if (BtnSubmit == "添加")
             {
-                return RedirectToAction("Information");
+                userBusinessLayer.InsertUser(user);
             }
+                
+            return RedirectToAction("Information");
 
-            CreateUserViewModel v = new CreateUserViewModel();
-            v.user = userBusinessLayer.GetUser(Session["User"].ToString());
-            return PartialView("CreateUser", v);
+            //CreateUserViewModel v = new CreateUserViewModel();
+            //v.user = userBusinessLayer.GetUser(Session["User"].ToString());
+            //return PartialView("CreateUser", v);
         }
 
         [HttpPost]
@@ -320,7 +340,7 @@ namespace 仓储系统.Controllers
         {
             //CreateUserViewModel v = new CreateUserViewModel();
             UserBusinessLayer userBusinessLayer = new UserBusinessLayer();
-            if (BtnSubmit == "保存")
+            if (BtnSubmit == "添加")
             {
                 userBusinessLayer.InsertUser(user);
                 //userBusinessLayer.UpdataUsers(Session["User"].ToString(), user);
@@ -526,6 +546,10 @@ namespace 仓储系统.Controllers
                         CommodityBusinessLayer commodityBusinessLayer = new CommodityBusinessLayer();
                         commodityBusinessLayer.DeleteCommodity(D_id);
                         return RedirectToAction("Attributes");
+                    case "用户":
+                        UserBusinessLayer userBusinessLayer = new UserBusinessLayer();
+                        userBusinessLayer.DeleteUser(D_id);
+                        return RedirectToAction("Information");
                     default:
                         return RedirectToAction("Warehouse");
                 }

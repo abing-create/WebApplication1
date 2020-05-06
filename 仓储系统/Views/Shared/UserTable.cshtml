@@ -27,14 +27,30 @@
                     <td>@item.user.U_password</td>
                     <td>@item.user.U_post</td>
                     <td>@item.user.U_department</td>
-                    <td>@item.user.U_birthday</td>
+                    <td>@item.user.U_birthday.ToString("yyyy-MM-dd")</td>
                     <td>@item.user.U_phone</td>
                     <td>@item.user.U_level</td>
                     <td>@item.user.U_point</td>
                     <td>@item.user.U_sex</td>
                     <td>
-                        <a href="#"> 修改</a>
-                        <a href="#">删除</a>
+                        <a href="#s_@item.user.Id" data-toggle="modal" name="">查看</a>
+                        <a href="#u_@item.user.Id" data-toggle="modal" name="">修改</a>
+                        <a href="#d_@item.user.Id" data-toggle="modal" name="">删除</a>
+                        <div class="modal fade" id="s_@item.user.Id" tabindex="-1" role="dialog" aria-hidden="true">
+                            @{
+                                Html.RenderPartial("DisplayUser", item.user);
+                            }
+                        </div>
+                        <div class="modal fade" id="u_@item.user.Id" tabindex="-1" role="dialog" aria-hidden="true">
+                            @{
+                                Html.RenderPartial("UpdataStaff", new CreateUserViewModel() { user = item.user });
+                            }
+                        </div>
+                        <div class="modal fade" id="d_@item.user.Id" tabindex="-1" role="dialog" aria-hidden="true">
+                            @{
+                                Html.RenderPartial("DeleteItem", new DeleteViewModel() { D_id = item.user.U_Id.ToString(), D_name = item.user.U_name, T_name = "用户" });
+                            }
+                        </div>
                     </td>
                 </tr>
             }
