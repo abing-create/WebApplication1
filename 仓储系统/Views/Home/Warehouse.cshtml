@@ -33,9 +33,14 @@
                     <td>@item.Wa_capacity</td>
                     <td>@item.Wa_able_capacity</td>
                     <td>
-                        <a href="#@item.Wa_Id" data-toggle="modal" name="">查看</a>
-                        <a href="#">修改</a>
+                        <a href="#d_@item.Wa_Id" data-toggle="modal" name="">查看</a>
+                        <a href="#@item.Wa_Id" data-toggle="modal" name="">修改</a>
                         <a href="#@item.Wa_name" data-toggle="modal" name="">删除</a>
+                        <div class="modal fade" id="d_@item.Wa_Id" tabindex="-1" role="dialog" aria-hidden="true">
+                            @{
+                                Html.RenderPartial("DisplayWarehouse", item);
+                            }
+                        </div>
                         <div class="modal fade" id="@item.Wa_Id" tabindex="-1" role="dialog" aria-hidden="true">
                             @{
                                 Html.RenderPartial("UpdataWarehouse", item);
@@ -53,7 +58,7 @@
         <div class=" col">
             <div class="modal fade" id="addWarehouse" tabindex="-1" role="dialog" aria-hidden="true">
                 @{
-                    Html.RenderAction("CreateWarehouse");
+                    Html.RenderPartial("CreateWarehouse");
                 }
             </div>
         </div>

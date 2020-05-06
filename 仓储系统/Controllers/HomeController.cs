@@ -362,6 +362,8 @@ namespace 仓储系统.Controllers
             storageViewModel.UserName = Session["User"].ToString();
             return View("Storage", storageViewModel);
         }
+
+        [AdminFilter]
         public ActionResult Warehouse()
         {
             WarehouseViewModel warehouseViewModel = new WarehouseViewModel();
@@ -373,26 +375,38 @@ namespace 仓储系统.Controllers
             return View("Warehouse", warehouseViewModel);
         }
 
-        public ActionResult CreateWarehouse()
-        {
-            CreateWarehouseViewModel createWarehouseViewModel = new CreateWarehouseViewModel();
-            createWarehouseViewModel.warehouse = new Warehouse();
+        /// <summary>
+        /// 添加仓库的页面
+        /// </summary>
+        /// <returns></returns>
+        //public ActionResult CreateWarehouse()
+        //{
+        //    CreateWarehouseViewModel createWarehouseViewModel = new CreateWarehouseViewModel();
+        //    createWarehouseViewModel.warehouse = new Warehouse();
 
-            return PartialView("CreateWarehouse", createWarehouseViewModel);
-        }
+        //    return PartialView("CreateWarehouse", createWarehouseViewModel);
+        //}
 
+        /// <summary>
+        /// 添加仓库页面的操作
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="BtnSubmit"></param>
+        /// <returns></returns>
         [HttpPost]
+        [AdminFilter]
         public ActionResult SaveWarehouse(Warehouse model, string BtnSubmit)
         {
             //如果是按键操作，返回重定向
-            if (BtnSubmit == "保存")
+            WarehouseBusinessLayer warehouseBusinessLayer = new WarehouseBusinessLayer();
+            if (BtnSubmit == "添加")
             {
-                WarehouseBusinessLayer warehouseBusinessLayer = new WarehouseBusinessLayer();
                 warehouseBusinessLayer.InsertWarehouse(model);
                 return RedirectToAction("Warehouse");
             }
-            else if (BtnSubmit == "取消")
+            else if (BtnSubmit == "提交更改")
             {
+                warehouseBusinessLayer.InputWarehouse(model.Wa_name, model);
                 return RedirectToAction("Warehouse");
             }
 
@@ -403,6 +417,7 @@ namespace 仓储系统.Controllers
         }
 
         [HttpPost]
+        [AdminFilter]
         public ActionResult DeleteWarehouse(string Wa_name, string BtnSubmit)
         {
             if (BtnSubmit == "确定")

@@ -138,6 +138,7 @@
     <Compile Include="DataAccessLayer\UserBusinessLayer.cs" />
     <Compile Include="DataAccessLayer\WarehouseBusinessLayer.cs" />
     <Compile Include="DataAccessLayer\WarehouseERPDAL.cs" />
+    <Compile Include="Filters\AdminFilter.cs" />
     <Compile Include="Filters\LoginAttribute.cs" />
     <Compile Include="Filters\MultiButtonAttribute.cs" />
     <Compile Include="Global.asax.cs">
@@ -272,6 +273,7 @@
     <Content Include="Views\Home\InformationAdminButton.cshtml" />
     <Content Include="Views\Shared\UpdataWarehouse.cshtml" />
     <Content Include="Views\Shared\DeleteWarehouse.cshtml" />
+    <Content Include="Views\Shared\DisplayWarehouse.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

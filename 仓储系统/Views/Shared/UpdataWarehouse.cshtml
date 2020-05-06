@@ -1,37 +1,36 @@
 ﻿@using 仓储系统.Models
 @model Warehouse
 
-
-<script>
-    function ResetForm() {
-        document.getElementById('Wa_Id').value = "";
-        document.getElementById('Wa_name').value = "";
-        document.getElementById('Wa_address').value = "";
-        document.getElementById('Wa_princiopal').value = "";
-        document.getElementById('Wa_contact').value = "";
-        document.getElementById('Wa_capacity').value = "";
-        document.getElementById('Wa_able_capacity').value = "";
-        document.getElementById('Wa_note').value = "";
+    <script>
+    function ResetUpdataForm() {
+        document.getElementById('UWa_Id').value = "@Model.Wa_Id";
+        document.getElementById('UWa_name').value = "@Model.Wa_name";
+        document.getElementById('UWa_address').value = "@Model.Wa_address";
+        document.getElementById('UWa_princiopal').value = "@Model.Wa_princiopal";
+        document.getElementById('UWa_contact').value = "@Model.Wa_contact";
+        document.getElementById('UWa_capacity').value = "@Model.Wa_capacity";
+        document.getElementById('UWa_able_capacity').value = "@Model.Wa_able_capacity";
+        document.getElementById('UWa_note').value = "@Model.Wa_note";
     }
-</script>
+    </script>
 
 <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title" id="myModalLabel">添加用户</h4>
-        </div>
-        <div class="modal-body">
-            <div>
-                @using (Html.BeginForm("SaveWarehouse", "Home", FormMethod.Post, new { @id = "WarehouseForm", role = "form" }))
-                {
+        @using (Html.BeginForm("SaveWarehouse", "Home", FormMethod.Post, new { @id = "WarehouseForm", role = "form" }))
+        {
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">修改</h4>
+            </div>
+            <div class="modal-body">
+                <div>
                     <table class="table-borderless">
                         <tr>
                             <td>
                                 仓库编号:
                             </td>
                             <td>
-                                <input type="text" id="Wa_Id" name="Wa_Id" value="@Model.Wa_Id" />
+                                <input type="text" id="UWa_Id" name="Wa_Id" value="@Model.Wa_Id" />
                             </td>
                         </tr>
                         <tr>
@@ -39,7 +38,7 @@
                                 仓库名称:
                             </td>
                             <td>
-                                <input type="text" id="Wa_name" name="Wa_name" value="@Model.Wa_name" />
+                                <input type="text" id="UWa_name" name="Wa_name" value="@Model.Wa_name" />
                             </td>
                         </tr>
                         <tr>
@@ -47,7 +46,7 @@
                                 仓库地址:
                             </td>
                             <td>
-                                <input type="text" id="Wa_address" name="Wa_address" value="@Model.Wa_address" />
+                                <input type="text" id="UWa_address" name="Wa_address" value="@Model.Wa_address" />
                             </td>
                         </tr>
                         <tr>
@@ -55,7 +54,7 @@
                                 负责人:
                             </td>
                             <td>
-                                <input type="text" id="Wa_princiopal" name="Wa_princiopal" value="@Model.Wa_princiopal" />
+                                <input type="text" id="UWa_princiopal" name="Wa_princiopal" value="@Model.Wa_princiopal" />
                             </td>
                         </tr>
                         <tr>
@@ -63,7 +62,7 @@
                                 联系方式:
                             </td>
                             <td>
-                                <input type="text" id="Wa_contact" name="Wa_contact" value="@Model.Wa_contact" />
+                                <input type="text" id="UWa_contact" name="Wa_contact" value="@Model.Wa_contact" />
                             </td>
                         </tr>
                         <tr>
@@ -71,7 +70,7 @@
                                 仓库容量:
                             </td>
                             <td>
-                                <input type="text" id="Wa_capacity" name="Wa_capacity" value="@Model.Wa_capacity" />
+                                <input type="text" id="UWa_capacity" name="Wa_capacity" value="@Model.Wa_capacity" />
                             </td>
                         </tr>
                         <tr>
@@ -79,7 +78,7 @@
                                 可用容量:
                             </td>
                             <td>
-                                <input type="text" id="Wa_able_capacity" name="Wa_able_capacity" value="@Model.Wa_able_capacity" />
+                                <input type="text" id="UWa_able_capacity" name="Wa_able_capacity" value="@Model.Wa_able_capacity" />
                             </td>
                         </tr>
                         <tr>
@@ -87,25 +86,17 @@
                                 备注:
                             </td>
                             <td>
-                                <input type="text" id="Wa_note" name="Wa_note" value="@Model.Wa_note" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-
-                                <input type="submit" name="BtnSubmit" value="保存" onclick="SaveEmployee();" />
-                                <input type="submit" name="BtnSubmit" value="取消" onclick="CancelSave()" />
-                                <input type="button" name="BtnReset" value="清空" onclick="ResetForm();" />
+                                <input type="text" id="UWa_note" name="Wa_note" value="@Model.Wa_note" />
                             </td>
                         </tr>
                     </table>
-                }
+                </div>
             </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-            <button type="button" class="btn btn-primary" onclick="$('#delete-form').submit();">提交更改</button>
-        </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="ResetUpdataForm();">取消</button>
+                <input type="submit" class="btn btn-primary" value="提交更改" name="BtnSubmit">
+            </div>
+        }
     </div>
 </div>
 
