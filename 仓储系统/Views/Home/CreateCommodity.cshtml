@@ -1,0 +1,108 @@
+﻿@using 仓储系统.ViewModels
+
+<script>
+    function ResetCreateForm() {
+        document.getElementById('CWa_Id').value = "";
+        document.getElementById('CWa_name').value = "";
+        document.getElementById('CWa_address').value = "";
+        document.getElementById('CWa_princiopal').value = "";
+        document.getElementById('CWa_contact').value = "";
+        document.getElementById('CWa_capacity').value = "";
+        document.getElementById('CWa_able_capacity').value = "";
+        document.getElementById('CWa_note').value = "";
+    }
+</script>
+
+<div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        @using (Html.BeginForm("CreateCommodity", "Home", FormMethod.Post, new { @id = "CommodityForm", role = "form" }))
+        {
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">添加商品</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <table class="table-borderless">
+                        <tr>
+                            <td>
+                                商品编号:
+                            </td>
+                            <td>
+                                <input type="text" id="CCo_Id" name="Co_Id" value="" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                商品名称:
+                            </td>
+                            <td>
+                                <input type="text" id="Co_name" name="Co_name" value="" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                条码编号:
+                            </td>
+                            <td>
+                                <input type="text" id="CCo_bar_code" name="Co_bar_code" value="" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                商品分类:
+                            </td>
+                            <td>
+                                <input type="text" id="CCo_type" name="Co_type" value="" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                商品规格:
+                            </td>
+                            <td>
+                                <input type="text" id="CCo_specification" name="Co_specification" value="" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                商品单价:
+                            </td>
+                            <td>
+                                <input type="text" id="CCo_price" name="Co_price" value="" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                计量单位:
+                            </td>
+                            <td>
+                                <input type="text" id="CCo_unit" name="Co_unit" value="" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                商品重量:
+                            </td>
+                            <td>
+                                <input type="text" id="CCo_weight" name="Co_weight" value="" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                备注:
+                            </td>
+                            <td>
+                                <input type="text" id="CCo_note" name="Co_note" value="" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="ResetCreateForm();">取消</button>
+                <input type="submit" class="btn btn-primary" value="添加" name="BtnSubmit">
+            </div>
+        }
+    </div>
+</div>

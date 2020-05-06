@@ -377,6 +377,29 @@ namespace 仓储系统.Controllers
             return View("Attributes", attributesViewModel);
         }
 
+        /// <summary>
+        /// 添加物品的功能
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult CreateCommodity(Commodity model, string BtnSubmit)
+        {
+            //如果是按键操作，返回重定向
+            CommodityBusinessLayer commodityBusinessLayer = new CommodityBusinessLayer();
+            if (BtnSubmit == "添加")
+            {
+                commodityBusinessLayer.InsertCommodity(model);
+                return RedirectToAction("Attributes");
+            }
+            else if (BtnSubmit == "提交更改")
+            {
+                
+            }
+
+            //如果不是按键操作，刷新本页面
+            return PartialView("CreateCommodity"); 
+        }
+
 
         public ActionResult Storage()
         {

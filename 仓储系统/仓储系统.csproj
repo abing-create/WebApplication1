@@ -274,6 +274,7 @@
     <Content Include="Views\Shared\UpdataWarehouse.cshtml" />
     <Content Include="Views\Shared\DeleteWarehouse.cshtml" />
     <Content Include="Views\Shared\DisplayWarehouse.cshtml" />
+    <Content Include="Views\Home\CreateCommodity.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
