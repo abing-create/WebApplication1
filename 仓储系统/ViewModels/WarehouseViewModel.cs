@@ -9,5 +9,7 @@ namespace 仓储系统.ViewModels
     public class WarehouseViewModel : LayoutViewModel
     {
         public List<Warehouse> warehouses { get; set; }
+
+        public string display { get; set; }
     }
 }

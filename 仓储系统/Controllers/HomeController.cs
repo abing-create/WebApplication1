@@ -363,14 +363,38 @@ namespace 仓储系统.Controllers
             return View("Storage", storageViewModel);
         }
 
-        [AdminFilter]
+        //[AdminFilter]
         public ActionResult Warehouse()
         {
             WarehouseViewModel warehouseViewModel = new WarehouseViewModel();
+            //判断是否是管理人员，是则有权限进行修改
+            if(Convert.ToInt32(Session["level"]) == Convert.ToInt32(level.Admin))
+                warehouseViewModel.display = "";
+            else
+                warehouseViewModel.display = "display:none";
+
             warehouseViewModel.UserName = Session["User"].ToString();
 
             WarehouseBusinessLayer warehouseBusinessLayer = new WarehouseBusinessLayer();
             warehouseViewModel.warehouses = warehouseBusinessLayer.GetWarehouse();
+
+            return View("Warehouse", warehouseViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult searchWarehouse(string wareName)
+        {
+            WarehouseViewModel warehouseViewModel = new WarehouseViewModel();
+            //判断是否是管理人员，是则有权限进行修改
+            if (Convert.ToInt32(Session["level"]) == Convert.ToInt32(level.Admin))
+                warehouseViewModel.display = "";
+            else
+                warehouseViewModel.display = "display:none";
+
+            warehouseViewModel.UserName = Session["User"].ToString();
+
+            WarehouseBusinessLayer warehouseBusinessLayer = new WarehouseBusinessLayer();
+            warehouseViewModel.warehouses = warehouseBusinessLayer.GetWarehouse(wareName);
 
             return View("Warehouse", warehouseViewModel);
         }

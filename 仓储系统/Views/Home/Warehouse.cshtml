@@ -6,62 +6,73 @@
 }
 
 
-    <div class="container dropdown">
-        <h2>Warehouse</h2>
-        <!--添加的仓库按钮只能由等级为Admin的用户才能进行操作-->
-        <input class="btn btn-primary" type="submit" value="添加" id="AddWarehouse" name="AddWarehouse" onclick="$('#addWarehouse').modal('show')" />
-
-        <table border="1" class="table table-bordered">
-            <tr>
-                <th scope="col">仓库编号</th>
-                <th scope="col">仓库名称</th>
-                <th scope="col">仓库地址</th>
-                <th scope="col">负责人</th>
-                <th scope="col">联系方式</th>
-                <th scope="col">仓库容量</th>
-                <th scope="col">可用容量</th>
-                <th scope="col">操作</th>
-            </tr>
-            @foreach (Warehouse item in Model.warehouses)
-            {
-                <tr>
-                    <td>@item.Wa_Id</td>
-                    <td>@item.Wa_name</td>
-                    <td>@item.Wa_address</td>
-                    <td>@item.Wa_princiopal</td>
-                    <td>@item.Wa_contact</td>
-                    <td>@item.Wa_capacity</td>
-                    <td>@item.Wa_able_capacity</td>
-                    <td>
-                        <a href="#d_@item.Wa_Id" data-toggle="modal" name="">查看</a>
-                        <a href="#@item.Wa_Id" data-toggle="modal" name="">修改</a>
-                        <a href="#@item.Wa_name" data-toggle="modal" name="">删除</a>
-                        <div class="modal fade" id="d_@item.Wa_Id" tabindex="-1" role="dialog" aria-hidden="true">
-                            @{
-                                Html.RenderPartial("DisplayWarehouse", item);
-                            }
-                        </div>
-                        <div class="modal fade" id="@item.Wa_Id" tabindex="-1" role="dialog" aria-hidden="true">
-                            @{
-                                Html.RenderPartial("UpdataWarehouse", item);
-                            }
-                        </div>
-                        <div class="modal fade" id="@item.Wa_name" tabindex="-1" role="dialog" aria-hidden="true">
-                            @{
-                                Html.RenderPartial("DeleteWarehouse", item);
-                            }
-                        </div>
-                    </td>
-                </tr>
-            }
-        </table>
-        <div class=" col">
-            <div class="modal fade" id="addWarehouse" tabindex="-1" role="dialog" aria-hidden="true">
-                @{
-                    Html.RenderPartial("CreateWarehouse");
-                }
+<div class="container dropdown">
+    <h2>Warehouse</h2>
+    <!--添加的仓库按钮只能由等级为Admin的用户才能进行操作-->
+    @using (Html.BeginForm("searchWarehouse", "Home", FormMethod.Post, new { @id = "WarehouseForm", role = "form" }))
+    {
+        <div class="row">
+            <div class="col-lg-8">
+                <input class="btn btn-primary" type="button" value="添加" id="AddWarehouse" name="AddWarehouse" style="@Model.display" onclick="$('#addWarehouse').modal('show')" />
+            </div>
+            <div class="col-lg-4">
+                <input type="submit" class="btn btn-primary pull-right" name="BtnSubmit" value="搜索">
+                <input type="text" class="form-control pull-right" placeholder="name" aria-label="name" name="wareName">
             </div>
         </div>
+    }
+    <hr />
+    <table border="1" class="table table-bordered">
+        <tr>
+            <th scope="col">仓库编号</th>
+            <th scope="col">仓库名称</th>
+            <th scope="col">仓库地址</th>
+            <th scope="col">负责人</th>
+            <th scope="col">联系方式</th>
+            <th scope="col">仓库容量</th>
+            <th scope="col">可用容量</th>
+            <th scope="col">操作</th>
+        </tr>
+        @foreach (Warehouse item in Model.warehouses)
+        {
+            <tr>
+                <td>@item.Wa_Id</td>
+                <td>@item.Wa_name</td>
+                <td>@item.Wa_address</td>
+                <td>@item.Wa_princiopal</td>
+                <td>@item.Wa_contact</td>
+                <td>@item.Wa_capacity</td>
+                <td>@item.Wa_able_capacity</td>
+                <td>
+                    <a href="#d_@item.Wa_Id" data-toggle="modal" name="">查看</a>
+                    <a href="#@item.Wa_Id" data-toggle="modal" style="@Model.display" name="">修改</a>
+                    <a href="#@item.Wa_name" data-toggle="modal" style="@Model.display" name="">删除</a>
+                    <div class="modal fade" id="d_@item.Wa_Id" tabindex="-1" role="dialog" aria-hidden="true">
+                        @{
+                            Html.RenderPartial("DisplayWarehouse", item);
+                        }
+                    </div>
+                    <div class="modal fade" id="@item.Wa_Id" tabindex="-1" role="dialog" aria-hidden="true">
+                        @{
+                            Html.RenderPartial("UpdataWarehouse", item);
+                        }
+                    </div>
+                    <div class="modal fade" id="@item.Wa_name" tabindex="-1" role="dialog" aria-hidden="true">
+                        @{
+                            Html.RenderPartial("DeleteWarehouse", item);
+                        }
+                    </div>
+                </td>
+            </tr>
+        }
+    </table>
+    <div class=" col">
+        <div class="modal fade" id="addWarehouse" tabindex="-1" role="dialog" aria-hidden="true">
+            @{
+                Html.RenderPartial("CreateWarehouse");
+            }
+        </div>
     </div>
+</div>
 
 
