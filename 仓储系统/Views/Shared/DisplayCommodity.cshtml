@@ -1,26 +1,11 @@
-﻿@using 仓储系统.ViewModels
-
-<script>
-    function ResetCreateForm() {
-        document.getElementById('CCo_Id').value = "";
-        document.getElementById('Co_name').value = "";
-        document.getElementById('CCo_bar_code').value = "";
-        document.getElementById('CCo_type').value = "";
-        document.getElementById('CCo_specification').value = "";
-        document.getElementById('CCo_price').value = "";
-        document.getElementById('CCo_unit').value = "";
-        document.getElementById('CCo_weight').value = "";
-        document.getElementById('CCo_note').value = "";
-    }
-</script>
+﻿@using 仓储系统.Models
+@model Commodity
 
 <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
-        @using (Html.BeginForm("SaveCommodity", "Home", FormMethod.Post, new { @id = "CommodityForm", role = "form" }))
-        {
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">添加商品</h4>
+                <h4 class="modal-title" id="myModalLabel">查看</h4>
             </div>
             <div class="modal-body">
                 <div>
@@ -30,7 +15,7 @@
                                 商品编号:
                             </td>
                             <td>
-                                <input type="text" id="CCo_Id" name="Co_Id" value="" />
+                                <input type="text" id="CCo_Id" name="Co_Id" readonly="readonly" value="@Model.Co_Id" />
                             </td>
                         </tr>
                         <tr>
@@ -38,7 +23,7 @@
                                 商品名称:
                             </td>
                             <td>
-                                <input type="text" id="Co_name" name="Co_name" value="" />
+                                <input type="text" id="Co_name" name="Co_name" readonly="readonly" value="@Model.Co_name" />
                             </td>
                         </tr>
                         <tr>
@@ -46,7 +31,7 @@
                                 条码编号:
                             </td>
                             <td>
-                                <input type="text" id="CCo_bar_code" name="Co_bar_code" value="" />
+                                <input type="text" id="CCo_bar_code" name="Co_bar_code" readonly="readonly" value="@Model.Co_bar_code" />
                             </td>
                         </tr>
                         <tr>
@@ -54,7 +39,7 @@
                                 商品分类:
                             </td>
                             <td>
-                                <input type="text" id="CCo_type" name="Co_type" value="" />
+                                <input type="text" id="CCo_type" name="Co_type" readonly="readonly" value="@Model.Co_type" />
                             </td>
                         </tr>
                         <tr>
@@ -62,7 +47,7 @@
                                 商品规格:
                             </td>
                             <td>
-                                <input type="text" id="CCo_specification" name="Co_specification" value="" />
+                                <input type="text" id="CCo_specification" name="Co_specification" readonly="readonly" value="@Model.Co_specification" />
                             </td>
                         </tr>
                         <tr>
@@ -70,7 +55,7 @@
                                 商品单价:
                             </td>
                             <td>
-                                <input type="text" id="CCo_price" name="Co_price" value="" />
+                                <input type="text" id="CCo_price" name="Co_price" readonly="readonly" value="@Model.Co_price" />
                             </td>
                         </tr>
                         <tr>
@@ -78,7 +63,7 @@
                                 计量单位:
                             </td>
                             <td>
-                                <input type="text" id="CCo_unit" name="Co_unit" value="" />
+                                <input type="text" id="CCo_unit" name="Co_unit" readonly="readonly" value="@Model.Co_unit" />
                             </td>
                         </tr>
                         <tr>
@@ -86,7 +71,7 @@
                                 商品重量:
                             </td>
                             <td>
-                                <input type="text" id="CCo_weight" name="Co_weight" value="" />
+                                <input type="text" id="CCo_weight" name="Co_weight" readonly="readonly" value="@Model.Co_weight" />
                             </td>
                         </tr>
                         <tr>
@@ -94,16 +79,14 @@
                                 备注:
                             </td>
                             <td>
-                                <input type="text" id="CCo_note" name="Co_note" value="" />
+                                <input type="text" id="CCo_note" name="Co_note" readonly="readonly" value="@Model.Co_note" />
                             </td>
                         </tr>
                     </table>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="ResetCreateForm();">取消</button>
-                <input type="submit" class="btn btn-primary" value="添加" name="BtnSubmit">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
             </div>
-        }
     </div>
 </div>

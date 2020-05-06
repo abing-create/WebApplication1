@@ -60,9 +60,27 @@
                     <td>@item.Co_weight</td>
                     <td>...</td>
                     <td>
-                        <a href="#">查看</a>
-                        <a href="#">修改</a>
-                        <a href="#">删除</a>
+                        <a href="#s_@item.Co_Id" data-toggle="modal" name="">查看</a>
+                        <a href="#u_@item.Co_Id" data-toggle="modal" name="">修改</a>
+                        <a href="#d_@item.Co_Id" data-toggle="modal" name="">删除</a>
+                        <!--查看-->
+                        <div class="modal fade" id="s_@item.Co_Id" tabindex="-1" role="dialog" aria-hidden="true">
+                            @{
+                                Html.RenderPartial("DisplayCommodity", item);
+                            }
+                        </div>
+                        <!--修改-->
+                        <div class="modal fade" id="u_@item.Co_Id" tabindex="-1" role="dialog" aria-hidden="true">
+                            @{
+                                Html.RenderPartial("UpdataCommodity", item);
+                            }
+                        </div>
+                        <!--删除-->
+                        <div class="modal fade" id="d_@item.Co_Id" tabindex="-1" role="dialog" aria-hidden="true">
+                            @{
+                                Html.RenderPartial("DeleteItem", new DeleteViewModel() { D_id = item.Co_Id.ToString(), D_name = item.Co_name, T_name = "物品"});
+                            }
+                        </div>
                     </td>
                 </tr>
             }
@@ -75,87 +93,7 @@
         </div>
 
         <hr />
-
-        <table class="table-borderless">
-            <tr>
-                <td class="col-lg-1">
-                    商品编号
-                </td>
-                <td>
-                    <input type="text" class=" col-lg-3" id="U_name" name="U_name" value="@Model.commoditie.Co_Id" />
-                </td>
-            </tr>
-            <tr>
-                <td class="col-lg-1">
-                    商品名称
-                </td>
-                <td>
-                    <input type="text" class=" col-lg-3" id="U_name" name="U_name" value="@Model.commoditie.Co_name" />
-                </td>
-            </tr>
-            <tr>
-                <td class="col-lg-1">
-                    条码编号
-                </td>
-                <td>
-                    <input type="text" class=" col-lg-3" id="U_name" name="U_name" value="@Model.commoditie.Co_bar_code" />
-                </td>
-            </tr>
-            <tr>
-                <td class="col-lg-1">
-                    物品类别
-                </td>
-                <td>
-                    <input type="text" class=" col-lg-3" id="U_name" name="U_name" value="@Model.commoditie.Co_type" />
-                </td>
-            </tr>
-            <tr>
-                <td class="col-lg-1">
-                    物品规格
-                </td>
-                <td>
-                    <input type="text" class=" col-lg-3" id="U_name" name="U_name" value="@Model.commoditie.Co_specification" />
-                </td>
-            </tr>
-            <tr>
-                <td class="col-lg-1">
-                    单价
-                </td>
-                <td>
-                    <input type="text" class=" col-lg-3" id="U_name" name="U_name" value="@Model.commoditie.Co_unit" />
-                </td>
-            </tr>
-            <tr>
-                <td class="col-lg-1">
-                    计量单位
-                </td>
-                <td>
-                    <input type="text" class=" col-lg-3" id="U_name" name="U_name" value="@Model.commoditie.Co_price" />
-                </td>
-            </tr>
-            <tr>
-                <td class="col-lg-1">
-                    重量
-                </td>
-                <td>
-                    <input type="text" class=" col-lg-3" id="U_name" name="U_name" value="@Model.commoditie.Co_weight" />
-                </td>
-            </tr>
-            <tr>
-                <td class="col-lg-1">
-                    备注
-                </td>
-                <td>
-                    <input type="text" class=" col-lg-3" id="U_name" name="U_name" value="@Model.commoditie.Co_note" />
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <input type="submit" name="BtnSubmit" value="保存" onclick="SaveEmployee();" />
-                    <input type="submit" name="BtnSubmit" value="取消" onclick="CancelSave()" />
-                    <input type="button" name="BtnReset" value="清空" onclick="ResetForm();" />
-                </td>
-            </tr>
-        </table>
+        <!--没用的东西-->
+        
     </div>
 

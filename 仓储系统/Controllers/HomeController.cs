@@ -382,7 +382,7 @@ namespace 仓储系统.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult CreateCommodity(Commodity model, string BtnSubmit)
+        public ActionResult SaveCommodity(Commodity model, string BtnSubmit)
         {
             //如果是按键操作，返回重定向
             CommodityBusinessLayer commodityBusinessLayer = new CommodityBusinessLayer();
@@ -393,7 +393,8 @@ namespace 仓储系统.Controllers
             }
             else if (BtnSubmit == "提交更改")
             {
-                
+                commodityBusinessLayer.UpdataCommoditys(model.Co_Id.ToString(), model);
+                return RedirectToAction("Attributes");
             }
 
             //如果不是按键操作，刷新本页面
@@ -503,7 +504,41 @@ namespace 仓储系统.Controllers
             //如果不是按键操作，刷新本页面
             CreateWarehouseViewModel createWarehouseViewModel = new CreateWarehouseViewModel();
             createWarehouseViewModel.warehouse = new Warehouse();
-            return PartialView("CreateWarehouse", createWarehouseViewModel); ;
+            return PartialView("CreateWarehouse", createWarehouseViewModel); 
+        }
+
+        /// <summary>
+        /// 删除表称谓为T_name中id为ViewBag["D_id"]的数据
+        /// </summary>
+        /// <param name="T_name">要操作的表</param>
+        /// <param name="D_name">要删除的名称</param>
+        /// <param name="BtnSubmit">按下的按键名</param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult DeleteItem(string T_name, string D_name, string D_id, string BtnSubmit)
+        {
+            if (BtnSubmit == "确定")
+            {
+                switch(T_name)
+                {
+                    case "物品":
+                        //Commodity表的删除操作
+                        CommodityBusinessLayer commodityBusinessLayer = new CommodityBusinessLayer();
+                        commodityBusinessLayer.DeleteCommodity(D_id);
+                        return RedirectToAction("Attributes");
+                    default:
+                        return RedirectToAction("Warehouse");
+                }
+            }
+            else if (BtnSubmit == "取消")
+            {
+                return RedirectToAction("Warehouse");
+            }
+
+            //如果不是按键操作，刷新本页面
+            CreateWarehouseViewModel createWarehouseViewModel = new CreateWarehouseViewModel();
+            createWarehouseViewModel.warehouse = new Warehouse();
+            return PartialView("CreateWarehouse", createWarehouseViewModel); 
         }
     }
 }

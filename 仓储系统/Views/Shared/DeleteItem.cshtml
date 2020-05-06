@@ -1,0 +1,30 @@
+﻿@using 仓储系统.ViewModels
+@model DeleteViewModel
+
+
+<div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        @using (Html.BeginForm("DeleteItem", "Home", FormMethod.Post, new { @id = "WarehouseForm", role = "form" }))
+        {
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">提示</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <label>确定要永久删除此</label>
+                    <input type="text" id="T_name" style="border: 0 none; outline:none; width:100%" name="T_name" value="@Model.T_name" />
+                    <br />
+                    <input type="text" id="D_name" style="border: 0 none; outline:none; width:100%" name="D_name" value="@Model.D_name" />
+                    <!--存储要删除的D_id-->
+                    <input type="text" name="D_id" style="display:none" value="@Model.D_id">
+                    @*@ViewData["D_id"] = @Model.D_id;*@
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <input type="submit" class="btn btn-primary" name="BtnSubmit" value="确定">
+            </div>
+        }
+    </div>
+</div>

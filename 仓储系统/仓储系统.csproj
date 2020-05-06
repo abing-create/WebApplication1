@@ -155,6 +155,7 @@
     <Compile Include="ViewModels\CommodityViewModel.cs" />
     <Compile Include="ViewModels\CreateUserViewModel.cs" />
     <Compile Include="ViewModels\CreateWarehouseViewModel.cs" />
+    <Compile Include="ViewModels\DeleteViewModel.cs" />
     <Compile Include="ViewModels\InformationViewModel.cs" />
     <Compile Include="ViewModels\InOutTableViewModel.cs" />
     <Compile Include="ViewModels\InOutWarehouseViewModel.cs" />
@@ -275,6 +276,9 @@
     <Content Include="Views\Shared\DeleteWarehouse.cshtml" />
     <Content Include="Views\Shared\DisplayWarehouse.cshtml" />
     <Content Include="Views\Home\CreateCommodity.cshtml" />
+    <Content Include="Views\Shared\DeleteItem.cshtml" />
+    <Content Include="Views\Shared\DisplayCommodity.cshtml" />
+    <Content Include="Views\Shared\UpdataCommodity.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

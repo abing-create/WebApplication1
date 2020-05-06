@@ -1,0 +1,125 @@
+﻿@using 仓储系统.Models
+@model Commodity
+
+    <script>
+    @*$(document).ready(function(){
+	$("#bt_@Model.Id").bind("click",function(){
+		document.getElementById('CCo_Id').value = "@Model.Co_Id";
+            document.getElementById('Co_name').value = "@Model.Co_name";
+            document.getElementById('CCo_bar_code').value = "@Model.Co_bar_code";
+            document.getElementById('CCo_type').value = "@Model.Co_type";
+            document.getElementById('CCo_specification').value = "@Model.Co_specification";
+            document.getElementById('CCo_price').value = "@Model.Co_price";
+            document.getElementById('CCo_unit').value = "@Model.Co_unit";
+            document.getElementById('CCo_weight').value = "@Model.Co_weight";
+            document.getElementById('CCo_note').value = "@Model.Co_note";
+	});
+    });*@
+    function ResetUpdataForm() {
+        document.getElementById('CCo_Id').value = "@Model.Co_Id";
+            document.getElementById('Co_name').value = "@Model.Co_name";
+            document.getElementById('CCo_bar_code').value = "@Model.Co_bar_code";
+            document.getElementById('CCo_type').value = "@Model.Co_type";
+            document.getElementById('CCo_specification').value = "@Model.Co_specification";
+            document.getElementById('CCo_price').value = "@Model.Co_price";
+            document.getElementById('CCo_unit').value = "@Model.Co_unit";
+            document.getElementById('CCo_weight').value = "@Model.Co_weight";
+            document.getElementById('CCo_note').value = "@Model.Co_note";
+    }
+    </script>
+
+<div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        @using (Html.BeginForm("SaveCommodity", "Home", FormMethod.Post, new { @id = "WarehouseForm", role = "form" }))
+        {
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">修改</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <table class="table-borderless">
+                        <tr>
+                            <td>
+                                商品编号:
+                            </td>
+                            <td>
+                                <input type="text" id="CCo_Id" name="Co_Id" value="@Model.Co_Id" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                商品名称:
+                            </td>
+                            <td>
+                                <input type="text" id="Co_name" name="Co_name" value="@Model.Co_name" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                条码编号:
+                            </td>
+                            <td>
+                                <input type="text" id="CCo_bar_code" name="Co_bar_code" value="@Model.Co_bar_code" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                商品分类:
+                            </td>
+                            <td>
+                                <input type="text" id="CCo_type" name="Co_type" value="@Model.Co_type" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                商品规格:
+                            </td>
+                            <td>
+                                <input type="text" id="CCo_specification" name="Co_specification" value="@Model.Co_specification" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                商品单价:
+                            </td>
+                            <td>
+                                <input type="text" id="CCo_price" name="Co_price" value="@Model.Co_price" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                计量单位:
+                            </td>
+                            <td>
+                                <input type="text" id="CCo_unit" name="Co_unit" value="@Model.Co_unit" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                商品重量:
+                            </td>
+                            <td>
+                                <input type="text" id="CCo_weight" name="Co_weight" value="@Model.Co_weight" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                备注:
+                            </td>
+                            <td>
+                                <input type="text" id="CCo_note" name="Co_note" value="@Model.Co_note" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="bt_@Model.Id" onclick="ResetUpdataForm();">取消</button>
+                <input type="submit" class="btn btn-primary" value="提交更改" name="BtnSubmit">
+            </div>
+        }
+    </div>
+</div>
+
+

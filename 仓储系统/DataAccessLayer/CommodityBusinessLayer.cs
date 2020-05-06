@@ -149,14 +149,15 @@ namespace 仓储系统.DataAccessLayer
         /// </summary>
         /// <param name="name" Commodity的U_nam名字</param>
         /// <param name="commodity">更新成的表</param>
-        public void UpdataCommoditys(string name,  Commodity commodity)
+        public void UpdataCommoditys(string id,  Commodity commodity)
         {
             WarehouseERPDAL dB = new WarehouseERPDAL();
-            var model = dB.commoditys.Where(c => c.Co_name == name).FirstOrDefault();
+            var model = dB.commoditys.Where(c => c.Co_Id.ToString() == id).FirstOrDefault();
             if (model != null)
             {
                 Change(ref model, commodity);
             }
+            dB.SaveChanges();
         }
 
         /// <summary>
@@ -167,6 +168,20 @@ namespace 仓储系统.DataAccessLayer
         {
             WarehouseERPDAL dB = new WarehouseERPDAL();
             dB.commoditys.AddRange(commoditys);
+            dB.SaveChanges();
+        }
+
+        /// <summary>
+        /// 移除名称为编号为id的物品
+        /// </summary>
+        /// <param name="id"></param>
+        public void DeleteCommodity(string id)
+        {
+            //int my_id = Convert.ToInt32(id);
+            WarehouseERPDAL dB = new WarehouseERPDAL();
+            var model = dB.commoditys.Where(c => c.Co_Id.ToString() == id).FirstOrDefault();
+            if(model != null)
+                dB.commoditys.Remove(model);
             dB.SaveChanges();
         }
     }
