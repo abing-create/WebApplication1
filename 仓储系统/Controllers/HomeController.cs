@@ -453,13 +453,20 @@ namespace 仓储系统.Controllers
             return PartialView("CreateCommodity"); 
         }
 
-
+        [HttpGet]
         public ActionResult Storage()
         {
-            StorageViewModel storageViewModel = new StorageViewModel();
-            storageViewModel.UserName = Session["User"].ToString();
-            return View("Storage", storageViewModel);
+            //StorageViewModel storageViewModel = new StorageViewModel();
+            //storageViewModel.existTableListViewModel = new ExistTableListViewModel();
+            //storageViewModel.existTableListViewModel.existTableViewModels = new List<ExistTableViewModel>();
+            //storageViewModel.UserName = Session["User"].ToString();
+            MyStorageBusinessLayer storageBusinessLayer = new MyStorageBusinessLayer();
+            StorageViewModel storageViewMode1 = storageBusinessLayer.GetStorageViewModel(Session["User"].ToString());
+
+            return View("Storage", storageViewMode1);
         }
+
+
 
         //[AdminFilter]
         public ActionResult Warehouse()

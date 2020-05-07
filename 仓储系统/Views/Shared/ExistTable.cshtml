@@ -1,0 +1,58 @@
+﻿@using 仓储系统.ViewModels
+@model ExistTableListViewModel
+
+<div class="container">
+    <div class="row">
+        <table border="1" class="table table-bordered">
+            <tr>
+                <th scope="col">商品编号</th>
+                <th scope="col">商品名称</th>
+                <th scope="col">条码编号</th>
+                <th scope="col">存储仓库</th>
+                <th scope="col">商品数量</th>
+                <th scope="col">入库单号</th>
+                <th scope="col">入库人</th>
+                <th scope="col">入库时间</th>
+                <th scope="col">商品分类</th>
+                <th scope="col">商品单价</th>
+                <th scope="col" colspan="2">操作</th>
+            </tr>
+            @foreach (ExistTableViewModel item in Model.existTableViewModels)
+            {
+        <tr>
+            <td>@item.commodity.Co_Id</td>
+            <td>@item.commodity.Co_name</td>
+            <td>@item.commodity.Co_bar_code</td>
+            <td>@item.W_name</td>
+            <td>@item.exist.Count</td>
+            <td>@item.exist.IO_Id</td>
+            <td>@item.U_name</td>
+            <td>@item.exist.IntoDate.ToString("yyyy-MM-dd")</td>
+            <td>@item.commodity.Co_type</td>
+            <td>@item.commodity.Co_price</td>
+            <td>
+                <a href="#s_@item.commodity.Co_Id" data-toggle="modal" name="">查看</a>
+                <a href="#u_@item.commodity.Co_Id" data-toggle="modal" name="">修改</a>
+                <a href="#d_@item.commodity.Co_Id" data-toggle="modal" name="">删除</a>
+                @*<div class="modal fade" id="s_@item.commodity.Co_Id" tabindex="-1" role="dialog" aria-hidden="true">
+                    @{
+                        //Html.RenderPartial("DisplayUser", item);
+                    }
+                </div>
+                <div class="modal fade" id="u_@item.commodity.Co_Id" tabindex="-1" role="dialog" aria-hidden="true">
+                    @{
+                        //Html.RenderPartial("UpdataStaff", new CreateUserViewModel() { user = item });
+                    }
+                </div>
+                <div class="modal fade" id="d_@item.Id" tabindex="-1" role="dialog" aria-hidden="true">
+                    @{
+                        //Html.RenderPartial("DeleteItem", new DeleteViewModel() { D_id = item.U_Id.ToString(), D_name = item.U_name, T_name = "用户" });
+                    }
+                </div>*@
+            </td>
+        </tr>
+            }
+        </table>
+    </div>
+</div>
+

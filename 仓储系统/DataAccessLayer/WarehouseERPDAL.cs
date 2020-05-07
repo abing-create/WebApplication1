@@ -16,6 +16,7 @@ namespace 仓储系统.DataAccessLayer
         //public DbSet<Out_ware> out_wares { get; set; }
         public DbSet<Storage> storages { get; set; }
         public DbSet<Warehouse> warehouses { get; set; }
+        public DbSet<Exist> exists { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().ToTable("TblUser");//TblUser代表表名
@@ -25,6 +26,7 @@ namespace 仓储系统.DataAccessLayer
             //modelBuilder.Entity<Record>().ToTable("TblOut_ware");
             modelBuilder.Entity<Record>().ToTable("TblStorage");
             modelBuilder.Entity<Record>().ToTable("TblWarehouse");
+            modelBuilder.Entity<Record>().ToTable("TblExist");
             base.OnModelCreating(modelBuilder);
         }
     }

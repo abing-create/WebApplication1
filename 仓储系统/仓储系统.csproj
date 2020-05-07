@@ -129,9 +129,11 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="BusinessLayer\InformationBusinessLayer.cs" />
     <Compile Include="BusinessLayer\LoginBusinessLayer.cs" />
+    <Compile Include="BusinessLayer\MyStorageBusinessLayer.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="DataAccessLayer\CommodityBusinessLayer.cs" />
+    <Compile Include="DataAccessLayer\ExistBusinessLayer.cs" />
     <Compile Include="DataAccessLayer\OutIntoWareBusinessLayer.cs" />
     <Compile Include="DataAccessLayer\RecordBusinessLayer.cs" />
     <Compile Include="DataAccessLayer\StorageBusinessLayer.cs" />
@@ -145,6 +147,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Commodity.cs" />
+    <Compile Include="Models\Exist.cs" />
     <Compile Include="Models\Out_Into_ware.cs" />
     <Compile Include="Models\Record.cs" />
     <Compile Include="Models\Storage.cs" />
@@ -156,6 +159,8 @@
     <Compile Include="ViewModels\CreateUserViewModel.cs" />
     <Compile Include="ViewModels\CreateWarehouseViewModel.cs" />
     <Compile Include="ViewModels\DeleteViewModel.cs" />
+    <Compile Include="ViewModels\ExistTableListViewModel.cs" />
+    <Compile Include="ViewModels\ExistTableViewModel.cs" />
     <Compile Include="ViewModels\InformationViewModel.cs" />
     <Compile Include="ViewModels\InOutTableViewModel.cs" />
     <Compile Include="ViewModels\InOutWarehouseViewModel.cs" />
@@ -281,6 +286,8 @@
     <Content Include="Views\Shared\UpdataCommodity.cshtml" />
     <Content Include="Views\Shared\UpdataStaff.cshtml" />
     <Content Include="Views\Shared\DisplayUser.cshtml" />
+    <Content Include="Views\Shared\StorageTable.cshtml" />
+    <Content Include="Views\Shared\ExistTable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -18,6 +18,11 @@ namespace 仓储系统.DataAccessLayer
             return dB.out_into_wares.ToList();
         }
 
+        /// <summary>
+        /// 根据入库表单号得到数据
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public Out_Into_ware GetOut_Into_ware(string id)
         {
             WarehouseERPDAL dB = new WarehouseERPDAL();

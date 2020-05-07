@@ -33,8 +33,26 @@ namespace 仓储系统.DataAccessLayer
         public List<Warehouse> GetWarehouse(string name)
         {
             WarehouseERPDAL dB = new WarehouseERPDAL();
-            List<Warehouse> newWarehouses = new List<Warehouse>();
             var models = dB.warehouses.Where(c => c.Wa_name == name);
+            return models.ToList();
+        }
+
+        public List<Warehouse> GetWarehouse(string type, string name)
+        {
+            WarehouseERPDAL dB = new WarehouseERPDAL();
+            List<Warehouse> models;
+            switch (type)
+            {
+                case "仓库名称":
+                    models = dB.warehouses.Where(c => c.Wa_name == name).ToList();
+                    break;
+                case "仓库编号":
+                    models = dB.warehouses.Where(c => c.Wa_Id.ToString() == name).ToList();
+                    break;
+                default:
+                    models = new List<Warehouse>();
+                    break;
+            }
             return models.ToList();
         }
 
