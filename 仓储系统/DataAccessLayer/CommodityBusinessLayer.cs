@@ -6,10 +6,10 @@ using 仓储系统.Models;
 
 namespace 仓储系统.DataAccessLayer
 {
-    public enum CommodityMember
-    {
-        Co_Id, Co_name, Co_bar_code, Co_type, Co_specification, Co_price, Co_unit, Co_weight
-    }
+    //public enum CommodityMember
+    //{
+    //    Co_Id, Co_name, Co_bar_code, Co_type, Co_specification, Co_price, Co_unit, Co_weight
+    //}
 
     public class CommodityBusinessLayer
     {
@@ -21,6 +21,23 @@ namespace 仓储系统.DataAccessLayer
         {
             WarehouseERPDAL dB = new WarehouseERPDAL();
             return dB.commoditys.ToList();
+        }
+
+        public List<Commodity> GetCommodities(CommodityMember commodityMember)
+        {
+            WarehouseERPDAL dB = new WarehouseERPDAL();
+            List<Commodity> commodities;
+            commodities = dB.commoditys.Where(c => (commodityMember.Co_bar_code == null || c.Co_bar_code == commodityMember.Co_bar_code) &&
+            (commodityMember.Co_Id == null || c.Co_Id.ToString() == commodityMember.Co_Id) &&
+            (commodityMember.Co_name == null || c.Co_name == commodityMember.Co_name) &&
+            (commodityMember.Co_note == null || c.Co_note == commodityMember.Co_note) &&
+            (commodityMember.Co_price == null || c.Co_price.ToString() == commodityMember.Co_price) &&
+            (commodityMember.Co_specification == null || c.Co_specification == commodityMember.Co_specification) &&
+            (commodityMember.Co_type == null || c.Co_type == commodityMember.Co_type) &&
+            (commodityMember.Co_unit == null || c.Co_unit == commodityMember.Co_unit) &&
+            (commodityMember.Co_weight == null || c.Co_weight.ToString() == commodityMember.Co_weight)).ToList();
+
+            return commodities == null ? new List<Commodity>() : commodities;
         }
 
         /// <summary>

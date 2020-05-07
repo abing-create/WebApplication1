@@ -18,6 +18,16 @@ namespace 仓储系统.Models
         public string IO_Id { get; set; }
 
         /// <summary>
+        /// 入库人编号
+        /// </summary>
+        public int U_id { get; set; }
+
+        /// <summary>
+        /// 入库仓库编号
+        /// </summary>
+        public int W_id { get; set; }
+
+        /// <summary>
         /// 物品编号
         /// </summary>
         public int Co_id { get; set; }

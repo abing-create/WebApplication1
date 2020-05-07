@@ -6,12 +6,27 @@ using System.Web;
 
 namespace 仓储系统.Models
 {
-        public enum level
-        {
-            Admin,//管理员
-            Staff,//普通员工
-            Director//仓库看管
-        }
+
+    public struct UserMember
+    {
+        public string U_Id;
+        public string U_name;
+        public string U_password;
+        public string U_post;
+        public string U_department;
+        public string U_birthday;
+        public string U_phone;
+        public string U_level;
+        public string U_point;
+        public string U_sex;
+    }
+
+    public enum level
+    {
+        Admin,//管理员
+        Staff,//普通员工
+        Director//仓库看管
+    }
     /// <summary>
     /// 用户表
     /// </summary>

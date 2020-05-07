@@ -6,6 +6,7 @@ using 仓储系统.Models;
 
 namespace 仓储系统.DataAccessLayer
 {
+
     public class UserBusinessLayer
     {
         /// <summary>
@@ -56,6 +57,29 @@ namespace 仓储系统.DataAccessLayer
                     break;
             }
             return users;
+        }
+
+        /// <summary>
+        /// 符合条件集合的
+        /// </summary>
+        /// <param name="userMember"></param>
+        /// <returns></returns>
+        public List<User> GetUsers(UserMember userMember)
+        {
+            WarehouseERPDAL dB = new WarehouseERPDAL();
+            List<User> users;
+            users = dB.users.Where(c => (userMember.U_birthday == null || c.U_birthday.ToString() == userMember.U_birthday) &&
+            (userMember.U_department == null || c.U_department == userMember.U_department) &&
+            (userMember.U_Id == null || c.U_Id.ToString() == userMember.U_Id) &&
+            (userMember.U_level == null || c.U_level.ToString() == userMember.U_level) &&
+            (userMember.U_name == null || c.U_name == userMember.U_name) &&
+            (userMember.U_password == null || c.U_password == userMember.U_password) &&
+            (userMember.U_phone == null || c.U_department == userMember.U_phone) &&
+            (userMember.U_point == null || c.U_department == userMember.U_point) &&
+            (userMember.U_post == null || c.U_department == userMember.U_post) &&
+            (userMember.U_sex == null || c.U_sex == userMember.U_sex)).ToList();
+
+            return users == null ? new List<User>() : users;
         }
 
         public User GetUser(string name)

@@ -19,12 +19,13 @@ namespace 仓储系统.Controllers
         private static string Table_Id;    //出入库表单号
         private int userId = 0;     //登录者编号!
         private int wareId = 0;     //仓库编号!
-        //private static List<User> S_users;
+
+        //三个变量用来保存用户是否搜索用户的信息
         private static string S_select = "";
         private static string S_name = "";
         private static bool IsSearchPeople = false;
-        //private static UserListViewModel S_userListViewModel;
 
+        #region 入库界面
         [HttpGet]
         public ActionResult InOutWarehouse()
         {
@@ -135,7 +136,9 @@ namespace 仓储系统.Controllers
 
             return PartialView("InOutTable", inOutTableViewModel);
         }
+#endregion
 
+        #region 用户信息
         public ActionResult Information()
         {
             //Session["LoginRecord"] = false;
@@ -383,7 +386,6 @@ namespace 仓储系统.Controllers
 
             }
 
-
             return RedirectToAction("Information");
         }
 
@@ -395,7 +397,9 @@ namespace 仓储系统.Controllers
 
             return PartialView("CreateUser", v);
         }
+        #endregion
 
+        #region 物品界面
         [HttpGet]
         public ActionResult Attributes()
         {
@@ -452,7 +456,9 @@ namespace 仓储系统.Controllers
             //如果不是按键操作，刷新本页面
             return PartialView("CreateCommodity"); 
         }
+#endregion
 
+        #region 存储界面
         [HttpGet]
         public ActionResult Storage()
         {
@@ -466,8 +472,17 @@ namespace 仓储系统.Controllers
             return View("Storage", storageViewMode1);
         }
 
+        [HttpPost]
+        public ActionResult searchStorage(string Select, string uname, string BtnSubmit)
+        {
+            MyStorageBusinessLayer storageBusinessLayer = new MyStorageBusinessLayer();
+            StorageViewModel storageViewMode1 = storageBusinessLayer.GetStorageViewModel(Session["User"].ToString(), Select, uname);
 
+            return View("Storage", storageViewMode1);
+        }
+        #endregion
 
+        #region 仓库界面
         //[AdminFilter]
         public ActionResult Warehouse()
         {
@@ -603,5 +618,6 @@ namespace 仓储系统.Controllers
             createWarehouseViewModel.warehouse = new Warehouse();
             return PartialView("CreateWarehouse", createWarehouseViewModel); 
         }
+        #endregion
     }
 }

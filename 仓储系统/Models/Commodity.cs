@@ -64,4 +64,17 @@ namespace 仓储系统.Models
         /// </summary>
         public string Co_note { get; set; }
     }
+
+    public struct CommodityMember
+    {
+        public string Co_Id;
+        public string Co_name;
+        public string Co_bar_code;
+        public string Co_type;
+        public string Co_specification;
+        public string Co_price;
+        public string Co_unit;
+        public string Co_weight;
+        public string Co_note;
+    }
 }
