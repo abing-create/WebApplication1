@@ -480,9 +480,42 @@ namespace 仓储系统.Controllers
         }
         #endregion
 
+        #region 重定向专用 
+        [HttpGet]
+        public ActionResult RedirectStorage()
+        {
+            //StorageViewModel storageViewModel = new StorageViewModel();
+            //storageViewModel.existTableListViewModel = new ExistTableListViewModel();
+            //storageViewModel.existTableListViewModel.existTableViewModels = new List<ExistTableViewModel>();
+            //storageViewModel.UserName = Session["User"].ToString();
+            MyStorageBusinessLayer storageBusinessLayer = new MyStorageBusinessLayer();
+            //判断是否为管理员，是管理员则为空，不是则为none，对应修改按钮是否显示
+            bool Display = (level.Admin == (level)Session["level"]);
+            //获取显示的数据
+            StorageViewModel storageViewMode1 = storageBusinessLayer.GetStorageViewModel(Display, Session["User"].ToString());
+
+            return View("Storage", storageViewMode1);
+        }
+
+        #endregion
+
         #region 单项搜索
         [HttpPost]
         public ActionResult searchStorage(string Select, string uname, string BtnSubmit)
+        {
+            MyStorageBusinessLayer storageBusinessLayer = new MyStorageBusinessLayer();
+            //判断是否为管理员，是管理员则为空，不是则为none，对应修改按钮是否显示
+            bool Display = (level.Admin == (level)Session["level"]);
+            //获取显示的数据
+            StorageViewModel storageViewMode1 = storageBusinessLayer.GetStorageViewModel(Display, Session["User"].ToString(), Select, uname);
+
+            return View("Storage", storageViewMode1);
+        }
+        #endregion
+
+        #region 多项搜索
+        [HttpPost]
+        public ActionResult moreSearchStorage(string Select, string uname, string BtnSubmit)
         {
             MyStorageBusinessLayer storageBusinessLayer = new MyStorageBusinessLayer();
             //判断是否为管理员，是管理员则为空，不是则为none，对应修改按钮是否显示
@@ -506,7 +539,7 @@ namespace 仓储系统.Controllers
             if(Convert.ToInt32(Count) > 0)
                 existBusinessLayer.InputExist(IO_Id, Co_Id, Convert.ToInt32(Count));            
 
-            return RedirectToAction("Storage");
+            return RedirectToAction("RedirectStorage");
         }
         #endregion
 
@@ -518,16 +551,16 @@ namespace 仓储系统.Controllers
             //整合信息
             UserBusinessLayer userBusinessLayer = new UserBusinessLayer();
             if((exist.U_id = userBusinessLayer.GetId(U_name)) == -1)
-                return RedirectToAction("Storage");
+                return RedirectToAction("RedirectStorage");
             WarehouseBusinessLayer warehouseBusinessLayer = new WarehouseBusinessLayer();
             if ((exist.W_id = warehouseBusinessLayer.GetId(W_name)) == -1)
-                return RedirectToAction("Storage");
+                return RedirectToAction("RedirectStorage");
             //修改信息
             ExistBusinessLayer existBusinessLayer = new ExistBusinessLayer();
             existBusinessLayer.InputExist(exist.IO_Id, exist);
 
             //重定向
-            return RedirectToAction("Storage");
+            return RedirectToAction("RedirectStorage");
         }
         #endregion
 

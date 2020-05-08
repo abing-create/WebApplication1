@@ -168,6 +168,7 @@
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\RecordListViewModel.cs" />
     <Compile Include="ViewModels\RecordViewModel.cs" />
+    <Compile Include="ViewModels\searchStorageViewModel.cs" />
     <Compile Include="ViewModels\StorageViewModel.cs" />
     <Compile Include="ViewModels\UserListViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
@@ -291,6 +292,7 @@
     <Content Include="Views\Shared\DisplayExist.cshtml" />
     <Content Include="Views\Shared\UpdataExist.cshtml" />
     <Content Include="Views\Shared\LossExist.cshtml" />
+    <Content Include="Views\Shared\moreSearchStorage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
