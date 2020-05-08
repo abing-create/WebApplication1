@@ -20,7 +20,12 @@ namespace 仓储系统.DataAccessLayer
 
         private void Change(ref Exist model, Exist exists)
         {
-
+            model.Count = exists.Count;
+            model.Co_id = exists.Co_id;
+            model.IntoDate = exists.IntoDate;
+            model.IO_Id = exists.IO_Id;
+            model.U_id = exists.U_id;
+            model.W_id = exists.W_id;
         }
 
         /// <summary>
@@ -69,6 +74,55 @@ namespace 仓储系统.DataAccessLayer
                 Change(ref model, exists);
             }
             dB.SaveChanges();
+        }
+
+        /// <summary>
+        /// 修改Exist数据
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="exists"></param>
+        public void InputExist(string IO_Id, Exist exists)
+        {
+            WarehouseERPDAL dB = new WarehouseERPDAL();
+            var model = dB.exists.Where(c => c.IO_Id == IO_Id).FirstOrDefault();
+            if (model != null)
+            {
+                //model.U_password = user.U_password;
+                Change(ref model, exists);
+            }
+            dB.SaveChanges();
+        }
+
+        /// <summary>
+        /// 修改Exist数据
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="exists"></param>
+        public void InputExist(string IO_Id, string Co_id, int Count)
+        {
+            using (WarehouseERPDAL dB = new WarehouseERPDAL())
+            {
+                try
+                {
+                    var model = dB.exists.Where(c => c.IO_Id == IO_Id && c.Co_id.ToString() == Co_id).FirstOrDefault();
+                    if (model != null)
+                    {
+                        if (Count == model.Count)
+                        {
+                            dB.exists.Remove(model);
+                        }
+                        else if (model.Count > Count)
+                        {
+                            model.Count -= Count;
+                        }
+                    }
+                    dB.SaveChanges();
+                }
+                catch
+                {
+
+                }
+            }
         }
 
         /// <summary>

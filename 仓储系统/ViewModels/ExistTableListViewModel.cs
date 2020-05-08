@@ -8,5 +8,11 @@ namespace 仓储系统.ViewModels
     public class ExistTableListViewModel
     {
         public List<ExistTableViewModel> existTableViewModels { get; set; }
+
+
+        /// <summary>
+        /// 是否显示，用户等级为admin就为空，不是就是none
+        /// </summary>
+        public string Display { get; set; }
     }
 }

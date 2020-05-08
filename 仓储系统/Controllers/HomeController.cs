@@ -14,6 +14,7 @@ namespace 仓储系统.Controllers
     [Login]
     public class HomeController : Controller
     {
+        #region 全局变量
         private IO_Type IO_Type;    //出库还是入库!
         public static level level;  //等级!
         private static string Table_Id;    //出入库表单号
@@ -24,6 +25,7 @@ namespace 仓储系统.Controllers
         private static string S_select = "";
         private static string S_name = "";
         private static bool IsSearchPeople = false;
+        #endregion
 
         #region 入库界面
         [HttpGet]
@@ -456,9 +458,11 @@ namespace 仓储系统.Controllers
             //如果不是按键操作，刷新本页面
             return PartialView("CreateCommodity"); 
         }
-#endregion
+        #endregion
 
         #region 存储界面
+
+        #region 存储界面显示
         [HttpGet]
         public ActionResult Storage()
         {
@@ -467,19 +471,66 @@ namespace 仓储系统.Controllers
             //storageViewModel.existTableListViewModel.existTableViewModels = new List<ExistTableViewModel>();
             //storageViewModel.UserName = Session["User"].ToString();
             MyStorageBusinessLayer storageBusinessLayer = new MyStorageBusinessLayer();
-            StorageViewModel storageViewMode1 = storageBusinessLayer.GetStorageViewModel(Session["User"].ToString());
+            //判断是否为管理员，是管理员则为空，不是则为none，对应修改按钮是否显示
+            bool Display = (level.Admin == (level)Session["level"]);
+            //获取显示的数据
+            StorageViewModel storageViewMode1 = storageBusinessLayer.GetStorageViewModel(Display, Session["User"].ToString());
 
             return View("Storage", storageViewMode1);
         }
+        #endregion
 
+        #region 单项搜索
         [HttpPost]
         public ActionResult searchStorage(string Select, string uname, string BtnSubmit)
         {
             MyStorageBusinessLayer storageBusinessLayer = new MyStorageBusinessLayer();
-            StorageViewModel storageViewMode1 = storageBusinessLayer.GetStorageViewModel(Session["User"].ToString(), Select, uname);
+            //判断是否为管理员，是管理员则为空，不是则为none，对应修改按钮是否显示
+            bool Display = (level.Admin == (level)Session["level"]);
+            //获取显示的数据
+            StorageViewModel storageViewMode1 = storageBusinessLayer.GetStorageViewModel(Display, Session["User"].ToString(), Select, uname);
+
 
             return View("Storage", storageViewMode1);
         }
+        #endregion
+
+        #region 报损处理
+        [HttpPost]
+        public ActionResult LossExist(string Count, string Co_Id, string IO_Id)
+        {
+            //MyStorageBusinessLayer storageBusinessLayer = new MyStorageBusinessLayer();
+            //减去要报损的数据
+            //通过IO_Id和Co_Id查询到符合条件的Exist
+            ExistBusinessLayer existBusinessLayer = new ExistBusinessLayer();
+            if(Convert.ToInt32(Count) > 0)
+                existBusinessLayer.InputExist(IO_Id, Co_Id, Convert.ToInt32(Count));            
+
+            return RedirectToAction("Storage");
+        }
+        #endregion
+
+        #region 修改信息
+        public ActionResult SaveExist(Exist exist, string W_name, string U_name)
+        {
+            //通过key查询到要改变的exit
+            //通过W_name和U_name分别获得仓库编号和用户编号
+            //整合信息
+            UserBusinessLayer userBusinessLayer = new UserBusinessLayer();
+            if((exist.U_id = userBusinessLayer.GetId(U_name)) == -1)
+                return RedirectToAction("Storage");
+            WarehouseBusinessLayer warehouseBusinessLayer = new WarehouseBusinessLayer();
+            if ((exist.W_id = warehouseBusinessLayer.GetId(W_name)) == -1)
+                return RedirectToAction("Storage");
+            //修改信息
+            ExistBusinessLayer existBusinessLayer = new ExistBusinessLayer();
+            existBusinessLayer.InputExist(exist.IO_Id, exist);
+
+            //重定向
+            return RedirectToAction("Storage");
+        }
+        #endregion
+
         #endregion
 
         #region 仓库界面

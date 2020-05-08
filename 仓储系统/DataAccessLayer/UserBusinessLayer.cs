@@ -93,6 +93,13 @@ namespace 仓储系统.DataAccessLayer
             return (new User());
         }
 
+        public int GetId(string U_name)
+        {
+            WarehouseERPDAL dB = new WarehouseERPDAL();
+            var user = dB.users.Where(c => c.U_name == U_name).FirstOrDefault();
+            return user != null ? user.U_Id : -1;
+        }
+
         /// <summary>
         /// 插入数据到表TblUser
         /// </summary>

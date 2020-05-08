@@ -15,11 +15,12 @@ namespace 仓储系统.BusinessLayer
         /// </summary>
         /// <param name="U_name"></param>
         /// <returns></returns>
-        public StorageViewModel GetStorageViewModel(string U_name)
+        public StorageViewModel GetStorageViewModel(bool Display, string U_name)
         {
             StorageViewModel storageViewModel = new StorageViewModel();
             storageViewModel.UserName = U_name;
             storageViewModel.existTableListViewModel = new ExistTableListViewModel();
+            storageViewModel.existTableListViewModel.Display = Display ? "" : "none";
             storageViewModel.existTableListViewModel.existTableViewModels = new List<ExistTableViewModel>();
                         
             ExistBusinessLayer existBusinessLayer = new ExistBusinessLayer();
@@ -57,11 +58,12 @@ namespace 仓储系统.BusinessLayer
         /// <param name="Select">属性</param>
         /// <param name="name">属性值</param>
         /// <returns></returns>
-        public StorageViewModel GetStorageViewModel(string U_name, string Select, string name)
+        public StorageViewModel GetStorageViewModel(bool Display, string U_name, string Select, string name)
         {
             StorageViewModel storageViewModel = new StorageViewModel();
             storageViewModel.UserName = U_name;
             storageViewModel.existTableListViewModel = new ExistTableListViewModel();
+            storageViewModel.existTableListViewModel.Display = Display ? "" : "none";
             storageViewModel.existTableListViewModel.existTableViewModels = new List<ExistTableViewModel>();
 
             ExistBusinessLayer existBusinessLayer = new ExistBusinessLayer();

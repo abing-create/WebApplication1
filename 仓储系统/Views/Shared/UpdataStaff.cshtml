@@ -1,8 +1,8 @@
 ﻿@using 仓储系统.ViewModels
 @model CreateUserViewModel
 
-<script>
-    function ResetUpdataForm() {
+    <script>
+    function ResetUpdataForm_@Model.user.Id$() {
         document.getElementById('U_Id').value = "@Model.user.U_Id";
         document.getElementById('U_name').value = "@Model.user.U_name";
         document.getElementById('U_password').value = "@Model.user.U_password";
@@ -14,7 +14,7 @@
         document.getElementById('U_point').value = "@Model.user.U_point";
         document.getElementById('U_sex').value = "@Model.user.U_sex";
     }
-</script>
+    </script>
 
 <div class="modal-dialog">
     <div class="modal-content">
@@ -111,7 +111,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="ResetUpdataForm();">关闭</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="ResetUpdataForm_@Model.user.Id$();">关闭</button>
                 <input type="submit" class="btn btn-primary" name="BtnSubmit" value="提交更改" />
             </div>
         }

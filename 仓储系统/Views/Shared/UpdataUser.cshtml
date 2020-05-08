@@ -2,7 +2,7 @@
 @model CreateUserViewModel
 
 <script>
-        function ResetMyUpdataForm() {
+        function ResetUpdataForm_@Model.user.Id$() {
             document.getElementById('UU_name').value = "@Model.user.U_name";
             document.getElementById('UU_password').value = "@Model.user.U_password";
             document.getElementById('UU_birthday').value = "@Model.user.U_birthday.ToString("yyyy-MM-dd")";
@@ -108,7 +108,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="ResetMyUpdataForm();">关闭</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="ResetUpdataForm_@Model.user.Id$();">关闭</button>
                 <input type="submit" class="btn btn-primary" name="BtnSubmit" value="提交更改" />
             </div>
         }

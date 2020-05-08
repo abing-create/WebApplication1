@@ -56,6 +56,13 @@ namespace 仓储系统.DataAccessLayer
             return models.ToList();
         }
 
+        public int GetId(string W_name)
+        {
+            WarehouseERPDAL dB = new WarehouseERPDAL();
+            var model = dB.warehouses.Where(c => c.Wa_name == W_name).FirstOrDefault();
+            return model != null ? model.Wa_Id : -1;
+        }
+
         /// <summary>
         /// 修改Warehouse数据
         /// </summary>

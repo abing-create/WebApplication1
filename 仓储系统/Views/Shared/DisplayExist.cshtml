@@ -1,0 +1,102 @@
+﻿@using 仓储系统.ViewModels
+@model ExistTableViewModel
+
+<div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">查看</h4>
+        </div>
+        <div class="modal-body">
+            <div>
+                <table class="table-borderless">
+                    <tr>
+                        <td>
+                            商品编号:
+                        </td>
+                        <td>
+                            <input type="text" id="Co_Id" class="form-control pull-right" name="Co_Id" readonly="readonly" value="@Model.commodity.Co_Id" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            商品名称:
+                        </td>
+                        <td>
+                            <input type="text" id="Co_name" class="form-control pull-right" name="Co_name" readonly="readonly" value="@Model.commodity.Co_name" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            条码编号:
+                        </td>
+                        <td>
+                            <input type="text" id="Co_bar_code" class="form-control pull-right" name="Co_bar_code" readonly="readonly" value="@Model.commodity.Co_bar_code" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            存储仓库:
+                        </td>
+                        <td>
+                            <input type="text" id="W_name" class="form-control pull-right" name="W_name" readonly="readonly" value="@Model.W_name" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            商品数量:
+                        </td>
+                        <td>
+                            <input type="text" id="Count" class="form-control pull-right" name="Count" readonly="readonly" value="@Model.exist.Count" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            入库单号:
+                        </td>
+                        <td>
+                            <input type="text" id="IO_Id" class="form-control pull-right" name="IO_Id" readonly="readonly" value="@Model.exist.IO_Id" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            入库员工:
+                        </td>
+                        <td>
+                            <input type="text" id="U_name" class="form-control pull-right" name="U_name" readonly="readonly" value="@Model.U_name" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            入库时间:
+                        </td>
+                        <td>
+                            <input type="text" id="IntoDate" class="form-control pull-right" name="IntoDate" readonly="readonly" value="@Model.exist.IntoDate.ToString("yyyy-MM-dd")" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            商品分类:
+                        </td>
+                        <td>
+                            <input type="text" id="Co_type" class="form-control pull-right" name="Co_type" readonly="readonly" value="@Model.commodity.Co_type" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            商品单价:
+                        </td>
+                        <td>
+                            <input type="text" id="Co_price" class="form-control pull-right" name="Co_price" readonly="readonly" value="@Model.commodity.Co_price" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        </div>
+    </div>
+</div>
+
+

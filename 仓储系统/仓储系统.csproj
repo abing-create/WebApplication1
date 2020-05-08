@@ -288,6 +288,9 @@
     <Content Include="Views\Shared\DisplayUser.cshtml" />
     <Content Include="Views\Shared\StorageTable.cshtml" />
     <Content Include="Views\Shared\ExistTable.cshtml" />
+    <Content Include="Views\Shared\DisplayExist.cshtml" />
+    <Content Include="Views\Shared\UpdataExist.cshtml" />
+    <Content Include="Views\Shared\LossExist.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
