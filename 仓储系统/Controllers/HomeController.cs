@@ -531,14 +531,16 @@ namespace 仓储系统.Controllers
                     warehouses = warehouseBusinessLayer.GetWarehouse(S_warehouseMember);
                 }
 
-                bool[] k = new bool[3];
+                bool[] k = new bool[4];
                 ExistTableViewModel existTableViewModel;
                 for(int i = storageViewMode1.existTableListViewModel.existTableViewModels.Count() - 1; i >= 0; i--) 
                 {
-                    k[0] = k[1] = k[2] = true;
+                    k[0] = k[1] = k[2] = k[3] = true;
                     existTableViewModel = storageViewMode1.existTableListViewModel.existTableViewModels[i];
+                    //是否符合物品条件
                     if (U_id == null || existTableViewModel.exist.U_id.ToString() == U_id)
                         k[0] = false;
+                    //是否符合物品条件
                     if (commodities != null && commodities.Count() > 0)
                         foreach (Commodity commodity in commodities)
                         {
@@ -550,6 +552,7 @@ namespace 仓储系统.Controllers
                         }
                     else
                         k[1] = false;
+                    //是否符合仓库条件
                     if (warehouses != null && warehouses.Count() > 0)
                         foreach (Warehouse warehouse in warehouses)
                         {
@@ -561,7 +564,13 @@ namespace 仓储系统.Controllers
                         }
                     else
                         k[2] = false;
-                    if(k[0] || k[1] || k[2])
+                    //是否符合时间区间
+                    DateTime dateTime = new DateTime();
+                    if ((S_existMember.Star_date.Equals(dateTime.ToString()) || DateTime.Compare(Convert.ToDateTime(S_existMember.Star_date), existTableViewModel.exist.IntoDate) != 1) &&
+                        (S_existMember.End_date.Equals(dateTime.ToString()) || DateTime.Compare(Convert.ToDateTime(S_existMember.End_date), existTableViewModel.exist.IntoDate) != -1))
+                        k[3] = false;
+                    //整合条件
+                    if(k[0] || k[1] || k[2] || k[3])
                     {
                         storageViewMode1.existTableListViewModel.existTableViewModels.Remove(existTableViewModel);
                     }
