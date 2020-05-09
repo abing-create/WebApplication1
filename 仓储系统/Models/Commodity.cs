@@ -6,6 +6,32 @@ using System.Web;
 
 namespace 仓储系统.Models
 {
+    public struct CommodityMember
+    {
+        public string Co_Id;
+        public string Co_name;
+        public string Co_bar_code;
+        public string Co_type;
+        public string Co_specification;
+        public string Co_price;
+        public string Co_unit;
+        public string Co_weight;
+        public string Co_note;
+
+        public void Clear()
+        {
+            Co_Id = null;
+            Co_name = null;
+            Co_bar_code = null;
+            Co_type = null;
+            Co_specification = null;
+            Co_price = null;
+            Co_unit = null;
+            Co_weight = null;
+            Co_note = null;
+        }
+    }
+
     /// <summary>
     /// 商品类，用来存储商品信息
     /// </summary>
@@ -65,16 +91,4 @@ namespace 仓储系统.Models
         public string Co_note { get; set; }
     }
 
-    public struct CommodityMember
-    {
-        public string Co_Id;
-        public string Co_name;
-        public string Co_bar_code;
-        public string Co_type;
-        public string Co_specification;
-        public string Co_price;
-        public string Co_unit;
-        public string Co_weight;
-        public string Co_note;
-    }
 }

@@ -19,6 +19,20 @@ namespace 仓储系统.Models
         public string U_level;
         public string U_point;
         public string U_sex;
+
+        public void Clear()
+        {
+            U_Id = null;
+            U_name = null;
+            U_password = null;
+            U_post = null;
+            U_department = null;
+            U_birthday = null;
+            U_phone = null;
+            U_level = null;
+            U_point = null;
+            U_sex = null;
+        }
     }
 
     public enum level

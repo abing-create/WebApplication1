@@ -168,7 +168,7 @@
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\RecordListViewModel.cs" />
     <Compile Include="ViewModels\RecordViewModel.cs" />
-    <Compile Include="ViewModels\searchStorageViewModel.cs" />
+    <Compile Include="ViewModels\SearchStorageViewModel.cs" />
     <Compile Include="ViewModels\StorageViewModel.cs" />
     <Compile Include="ViewModels\UserListViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />

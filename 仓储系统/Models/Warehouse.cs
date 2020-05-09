@@ -6,6 +6,29 @@ using System.Web;
 
 namespace 仓储系统.Models
 {
+
+    public struct WarehouseMember
+    {
+        public string Wa_Id;
+        public string Wa_name;
+        public string Wa_address;
+        public string Wa_princiopal;
+        public string Wa_contact;
+        public string Wa_capacity;
+        public string Wa_able_capacity;
+
+        public void Clear()
+        {
+            Wa_Id = null;
+            Wa_name = null;
+            Wa_address = null;
+            Wa_princiopal = null;
+            Wa_contact = null;
+            Wa_capacity = null;
+            Wa_able_capacity = null;
+        }
+    }
+
     /// <summary>
     /// 仓库表
     /// </summary>

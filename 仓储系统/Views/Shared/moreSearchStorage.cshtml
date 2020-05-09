@@ -1,5 +1,5 @@
 ﻿
-@using (Html.BeginForm("SaveExist", "Home", FormMethod.Post, new { @id = "delete-form", role = "form" }))
+@using (Html.BeginForm("moreSearchStorage", "Home", FormMethod.Post, new { @id = "delete-form", role = "form" }))
 {
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -122,8 +122,6 @@
                             <td>
                                 <input type="text" id="Co_weight" name="Co_weight" value="" />
                             </td>
-                        </tr>
-                        <tr>
                             <td>
                                 入库单号:
                             </td>
@@ -137,7 +135,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal" onclick="ResetUpdataForm();">取消</button>
-                <input type="submit" class="btn btn-primary" name="BtnSubmit" value="提交更改" />
+                <input type="submit" class="btn btn-primary" name="BtnSubmit" value="查询" />
             </div>
         </div>
     </div>

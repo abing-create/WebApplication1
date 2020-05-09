@@ -18,13 +18,21 @@ namespace 仓储系统.Controllers
         private IO_Type IO_Type;    //出库还是入库!
         public static level level;  //等级!
         private static string Table_Id;    //出入库表单号
-        private int userId = 0;     //登录者编号!
-        private int wareId = 0;     //仓库编号!
+        private static int userId = 0;     //登录者编号!
+        private static int wareId = 0;     //仓库编号!
 
         //三个变量用来保存用户是否搜索用户的信息
         private static string S_select = "";
         private static string S_name = "";
         private static bool IsSearchPeople = false;
+
+        //存储界面搜索的信息
+        private static UserMember S_userMember;               //用户表
+        private static WarehouseMember S_warehouseMember;     //仓库表
+        private static ExistMember S_existMember;             //在存表
+        private static CommodityMember S_commodityMember;     //商品表
+        private static bool IsSearchExist = false;
+
         #endregion
 
         #region 入库界面
@@ -470,6 +478,7 @@ namespace 仓储系统.Controllers
             //storageViewModel.existTableListViewModel = new ExistTableListViewModel();
             //storageViewModel.existTableListViewModel.existTableViewModels = new List<ExistTableViewModel>();
             //storageViewModel.UserName = Session["User"].ToString();
+            IsSearchExist = false;
             MyStorageBusinessLayer storageBusinessLayer = new MyStorageBusinessLayer();
             //判断是否为管理员，是管理员则为空，不是则为none，对应修改按钮是否显示
             bool Display = (level.Admin == (level)Session["level"]);
@@ -484,16 +493,85 @@ namespace 仓储系统.Controllers
         [HttpGet]
         public ActionResult RedirectStorage()
         {
-            //StorageViewModel storageViewModel = new StorageViewModel();
-            //storageViewModel.existTableListViewModel = new ExistTableListViewModel();
-            //storageViewModel.existTableListViewModel.existTableViewModels = new List<ExistTableViewModel>();
-            //storageViewModel.UserName = Session["User"].ToString();
             MyStorageBusinessLayer storageBusinessLayer = new MyStorageBusinessLayer();
             //判断是否为管理员，是管理员则为空，不是则为none，对应修改按钮是否显示
             bool Display = (level.Admin == (level)Session["level"]);
             //获取显示的数据
-            StorageViewModel storageViewMode1 = storageBusinessLayer.GetStorageViewModel(Display, Session["User"].ToString());
+            StorageViewModel storageViewMode1;
+            while(IsSearchExist)
+            {
+                //获取user id
+                string U_id = null;
+                if(!S_userMember.Equals(new UserMember()))
+                    if (S_userMember.U_Id != "" || S_userMember.U_name != "")
+                    {
+                        UserBusinessLayer userBusinessLayer = new UserBusinessLayer();
+                        List<User> users = userBusinessLayer.GetUsers(S_userMember);
+                        if (users == null)
+                            break;
+                        U_id = users.FirstOrDefault().U_Id.ToString();
+                    }
 
+                //获取全部exist的数据
+                storageViewMode1 = storageBusinessLayer.GetStorageViewModel(Display, Session["User"].ToString());
+
+                //获取comm id集合
+                List<Commodity> commodities = new List<Commodity>();
+                if (!S_commodityMember.Equals(new CommodityMember()))
+                {
+                    CommodityBusinessLayer commodityBusinessLayer = new CommodityBusinessLayer();
+                    commodities = commodityBusinessLayer.GetCommodities(S_commodityMember);
+                }
+
+                //获取ware id集合
+                List<Warehouse> warehouses = new List<Warehouse>();
+                if (!S_warehouseMember.Equals(new WarehouseMember()))
+                {
+                    WarehouseBusinessLayer warehouseBusinessLayer = new WarehouseBusinessLayer();
+                    warehouses = warehouseBusinessLayer.GetWarehouse(S_warehouseMember);
+                }
+
+                bool[] k = new bool[3];
+                ExistTableViewModel existTableViewModel;
+                for(int i = storageViewMode1.existTableListViewModel.existTableViewModels.Count() - 1; i >= 0; i--) 
+                {
+                    k[0] = k[1] = k[2] = true;
+                    existTableViewModel = storageViewMode1.existTableListViewModel.existTableViewModels[i];
+                    if (U_id == null || existTableViewModel.exist.U_id.ToString() == U_id)
+                        k[0] = false;
+                    if (commodities != null && commodities.Count() > 0)
+                        foreach (Commodity commodity in commodities)
+                        {
+                            if (commodity.Co_Id == existTableViewModel.exist.Co_id)
+                            {
+                                k[1] = false;
+                                break;
+                            }
+                        }
+                    else
+                        k[1] = false;
+                    if (warehouses != null && warehouses.Count() > 0)
+                        foreach (Warehouse warehouse in warehouses)
+                        {
+                            if (warehouse.Wa_Id == existTableViewModel.exist.W_id)
+                            {
+                                k[2] = false;
+                                break;
+                            }
+                        }
+                    else
+                        k[2] = false;
+                    if(k[0] || k[1] || k[2])
+                    {
+                        storageViewMode1.existTableListViewModel.existTableViewModels.Remove(existTableViewModel);
+                    }
+                }
+
+               // storageViewMode1 = storageBusinessLayer.GetStorageViewModel(Display, Session["User"].ToString());
+                return View("Storage", storageViewMode1);
+            }
+
+            storageViewMode1 = storageBusinessLayer.GetStorageViewModel(Display, Session["User"].ToString());
             return View("Storage", storageViewMode1);
         }
 
@@ -515,16 +593,33 @@ namespace 仓储系统.Controllers
 
         #region 多项搜索
         [HttpPost]
-        public ActionResult moreSearchStorage(string Select, string uname, string BtnSubmit)
+        public ActionResult moreSearchStorage(SearchStorageViewModel searchStorageViewModel, string BtnSubmit)
         {
-            MyStorageBusinessLayer storageBusinessLayer = new MyStorageBusinessLayer();
-            //判断是否为管理员，是管理员则为空，不是则为none，对应修改按钮是否显示
-            bool Display = (level.Admin == (level)Session["level"]);
-            //获取显示的数据
-            StorageViewModel storageViewMode1 = storageBusinessLayer.GetStorageViewModel(Display, Session["User"].ToString(), Select, uname);
+            IsSearchExist = true;
+            S_userMember.Clear();
+            S_commodityMember.Clear();
+            S_existMember.Clear();
+            S_warehouseMember.Clear();
+            //改变全局变量的值，使重定向显示搜索到的表
+            S_userMember.U_Id = searchStorageViewModel.U_Id;
+            S_userMember.U_name = searchStorageViewModel.U_name;
 
+            S_commodityMember.Co_Id = searchStorageViewModel.Co_Id;
+            S_commodityMember.Co_name = searchStorageViewModel.Co_name;
+            S_commodityMember.Co_bar_code = searchStorageViewModel.Co_bar_code;
+            S_commodityMember.Co_price = searchStorageViewModel.Co_price;
+            S_commodityMember.Co_specification = searchStorageViewModel.Co_specification;
+            S_commodityMember.Co_type = searchStorageViewModel.Co_type;
+            S_commodityMember.Co_unit = searchStorageViewModel.Co_unit;
+            S_commodityMember.Co_weight = searchStorageViewModel.Co_weight;
 
-            return View("Storage", storageViewMode1);
+            S_warehouseMember.Wa_name = searchStorageViewModel.W_name;
+            S_warehouseMember.Wa_Id = searchStorageViewModel.Wa_Id;
+
+            S_existMember.Star_date = searchStorageViewModel.start_date.ToString();
+            S_existMember.End_date =  searchStorageViewModel.end_date.ToString();
+            //重定向
+            return RedirectToAction("RedirectStorage");
         }
         #endregion
 

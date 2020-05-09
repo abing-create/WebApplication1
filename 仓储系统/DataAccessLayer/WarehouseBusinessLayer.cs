@@ -18,6 +18,21 @@ namespace 仓储系统.DataAccessLayer
             return dB.warehouses.ToList();
         }
 
+        public List<Warehouse> GetWarehouse(WarehouseMember warehouseMember)
+        {
+            WarehouseERPDAL dB = new WarehouseERPDAL();
+            List<Warehouse> warehouses;
+            warehouses = dB.warehouses.Where(c => 
+                (warehouseMember.Wa_able_capacity == null || warehouseMember.Wa_able_capacity == c.Wa_able_capacity) &&
+                (warehouseMember.Wa_address == null || warehouseMember.Wa_address == c.Wa_address) &&
+                (warehouseMember.Wa_capacity == null || warehouseMember.Wa_capacity == c.Wa_capacity) &&
+                (warehouseMember.Wa_contact == null || warehouseMember.Wa_contact == c.Wa_contact) &&
+                (warehouseMember.Wa_Id == null || warehouseMember.Wa_Id == c.Wa_Id.ToString()) &&
+                (warehouseMember.Wa_name == null || warehouseMember.Wa_name == c.Wa_name) &&
+                (warehouseMember.Wa_princiopal == null || warehouseMember.Wa_princiopal == c.Wa_princiopal) ).ToList();
+            return warehouses != null ? warehouses : new List<Warehouse>();
+        }
+
         private void Change(ref Warehouse model, Warehouse warehouse)
         {
             model.Wa_able_capacity = warehouse.Wa_able_capacity;

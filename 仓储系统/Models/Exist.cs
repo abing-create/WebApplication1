@@ -6,6 +6,30 @@ using System.Web;
 
 namespace 仓储系统.Models
 {
+    public struct ExistMember
+    {
+        public string IO_Id;
+        public string U_id;
+        public string W_id;
+        public string Co_id;
+        public string Count;
+        //时间区间
+        public string Star_date;
+        public string End_date;
+
+        public void Clear()
+        {
+            IO_Id = null;
+            U_id = null;
+            W_id = null;
+            Co_id = null;
+            Count = null;
+            Star_date = null;
+            End_date = null;
+        }
+    }
+
+
     public class Exist
     {
         [Key]
