@@ -101,5 +101,13 @@ namespace 仓储系统.DataAccessLayer
             dB.storages.AddRange(storages);
             dB.SaveChanges();
         }
+
+        public void Delete(string IO_Id)
+        {
+            WarehouseERPDAL dB = new WarehouseERPDAL();
+            List<Storage> model = dB.storages.Where(c => c.IO_Id == IO_Id).ToList();
+            dB.storages.RemoveRange(model);
+            dB.SaveChanges();
+        }
     }
 }

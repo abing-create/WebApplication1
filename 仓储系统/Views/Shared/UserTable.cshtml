@@ -23,11 +23,12 @@
                 <option>员工姓名</option>
                 <option>联系电话</option>
                 <option>员工性别</option>
+                <option>所属仓库</option>
             </select>
         </div>
     </div>
 }
-<br/>
+<br />
 
 <div class="container">
     <div class="row">
@@ -37,11 +38,11 @@
                 <th scope="col">员工等级</th>
                 <th scope="col">员工职务</th>
                 <th scope="col">员工部门</th>
+                <th scope="col">所属仓库</th>
                 <th scope="col">员工姓名</th>
                 <th scope="col">员工密码</th>
                 <th scope="col">出生日期</th>
                 <th scope="col">联系电话</th>
-                <th scope="col">密码提示</th>
                 <th scope="col">员工性别</th>
                 <th scope="col" colspan="2">操作</th>
             </tr>
@@ -52,11 +53,11 @@
                     <td>@item.U_level</td>
                     <td>@item.U_post</td>
                     <td>@item.U_department</td>
+                    <td>@item.U_point</td>
                     <td>@item.U_name</td>
                     <td>@item.U_password</td>
                     <td>@item.U_birthday.ToString("yyyy-MM-dd")</td>
                     <td>@item.U_phone</td>
-                    <td>@item.U_point</td>
                     <td>@item.U_sex</td>
                     <td>
                         <a href="#s_@item.Id" data-toggle="modal" name="">查看</a>

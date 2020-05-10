@@ -76,5 +76,13 @@ namespace 仓储系统.DataAccessLayer
             dB.out_into_wares.AddRange(out_into_wares);
             dB.SaveChanges();
         }
+
+        public void Delete(string Table_Id)
+        {
+            WarehouseERPDAL dB = new WarehouseERPDAL();
+            var model = dB.out_into_wares.Where(c => c.Table_Id == Table_Id).FirstOrDefault();
+            dB.out_into_wares.Remove(model);
+            dB.SaveChanges();
+        }
     }
 }

@@ -22,6 +22,19 @@ namespace 仓储系统.ViewModels
 
         public Commodity commodity { get; set; }
 
+        /// <summary>
+        /// 手动入库还是出库
+        /// </summary>
+        public string manual_type { get; set; }
 
+        /// <summary>
+        /// 完成入库还是出库
+        /// </summary>
+        public string ok_type { get; set; }
+
+        /// <summary>
+        /// 取消入库还是出库
+        /// </summary>
+        public string cannel_type { get; set; }
     }
 }

@@ -4,119 +4,19 @@
     ViewBag.Title = "InOutWarehouse";
 }
 
+@{
+    //控制器加载表格代码
+    Html.RenderAction("MakeTableSubmit");
+}
 
-<div class="container dropdown">
-    <h2>InOutWarehouse</h2>
-    @using (Html.BeginForm("MakeTableSubmit", "Home", FormMethod.Post))
-    {
-        <!--单击后自动生成一张出入库表-->
-        <input class="btn btn-primary" type="submit" value="入库" id="IntoWarehouse" name="Sumbit" />
-        <input class="btn btn-primary" type="submit" value="出库" id="OutWarehouse" name="Sumbit" />
-    }
-</div>
-
-<div class="container dropdown">
-    @using (Html.BeginForm("InOutWarehouse", "Home", FormMethod.Post))
-    {
-        <!--input class="col-lg-2" type="submit" value="制作单号" id="MakeTable" name="Sumbit" /-->
-    <table class="table-borderless">
-        <tr>
-            <td>
-                <input class="btn btn-primary" type="submit" value="手动入库" id="OutWarehouse" name="OutWarehouse" />
-            </td>
-            <td colspan="2">
-                <select class="searchSelect" id="sid" name="sid">
-                    <option>商品编号</option>
-                    <option>商品名称</option>
-                    <option>条码编号</option>
-                </select>
-            </td>
-        </tr>
-
-        <tr>
-            <td class="col-lg-1">
-                商品编号
-            </td>
-            <td>
-                <input type="text" class=" col-lg-3" id="Co_Id" name="Co_Id" value="@Model.commodity.Co_Id" />
-            </td>
-        </tr>
-        <tr>
-            <td class="col-lg-1">
-                商品名称
-            </td>
-            <td>
-                <input type="text" class=" col-lg-3" id="Co_name" name="Co_name" value="@Model.commodity.Co_name" />
-            </td>
-        </tr>
-        <tr>
-            <td class="col-lg-1">
-                条码编号
-            </td>
-            <td>
-                <input type="text" class=" col-lg-3" id="Co_bar_code" name="Co_bar_code" value="@Model.commodity.Co_bar_code" />
-            </td>
-        </tr>
-        <tr>
-            <td class="col-lg-1">
-                物品数量
-            </td>
-            <td>
-                <input type="text" class=" col-lg-3" id="Count" name="Count" value="1" />
-            </td>
-        </tr>
-        <tr>
-            <td class="col-lg-1">
-                物品分类
-            </td>
-            <td>
-                <input type="text" class=" col-lg-3" id="Co_type" name="Co_type" readonly="readonly" value="@Model.commodity.Co_type" />
-            </td>
-        </tr>
-        <tr>
-            <td class="col-lg-1">
-                物品规格
-            </td>
-            <td>
-                <input type="text" class=" col-lg-3" id="Co_specification" name="Co_specification" readonly="readonly" value="@Model.commodity.Co_specification" />
-            </td>
-        </tr>
-        <tr>
-            <td class="col-lg-1">
-                单价
-            </td>
-            <td>
-                <input type="text" class=" col-lg-3" id="Co_price" name="Co_price" readonly="readonly" value="@Model.commodity.Co_price" />
-            </td>
-        </tr>
-        <tr>
-            <td class="col-lg-1">
-                计量单位
-            </td>
-            <td>
-                <input type="text" class=" col-lg-3" id="Co_unit" name="Co_unit" readonly="readonly" value="@Model.commodity.Co_unit" />
-            </td>
-        </tr>
-        <tr>
-            <td class="col-lg-1">
-                重量
-            </td>
-            <td>
-                <input type="text" class=" col-lg-3" id="Co_weight" name="Co_weight" readonly="readonly" value="@Model.commodity.Co_weight" />
-            </td>
-        </tr>
-        <tr>
-            <td class="col-lg-1">
-                备注
-            </td>
-            <td>
-                <input type="text" class=" col-lg-3" id="Co_note" name="Co_note" readonly="readonly" value="@Model.commodity.Co_note" />
-            </td>
-        </tr>
-    </table>
-    }
-</div>
+<br />
 
 @{
+    //控制器加载表格代码
+    Html.RenderAction("SaveIntoOut");
+}
+
+@{
+    //控制器加载表格代码
     Html.RenderAction("InOutTable");
 }

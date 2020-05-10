@@ -1,7 +1,7 @@
 ﻿@using 仓储系统.ViewModels
 @model InOutTableViewModel
 
-<h3 class="text-center">@Model.type 表</h3>
+<h3 class="text-center"><label>@Model.type</label>表: @Model.IO_id</h3>
 <div class="container">
     <div class="row">
         <table border="1" class="table table-bordered">
@@ -13,7 +13,7 @@
                 <th scope="col">规格</th>
                 <th scope="col">单价</th>
                 <th scope="col">商品数量</th>
-                <th scope="col">日期</th>
+                <th scope="col">时间</th>
                 <th scope="col" colspan="2">操作</th>
             </tr>
             @foreach (CommodityViewModel item in Model.commodityViewModels)

@@ -128,6 +128,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="BusinessLayer\InformationBusinessLayer.cs" />
+    <Compile Include="BusinessLayer\InOutWarehouseBusinessLayer.cs" />
     <Compile Include="BusinessLayer\LoginBusinessLayer.cs" />
     <Compile Include="BusinessLayer\MyStorageBusinessLayer.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -293,6 +294,8 @@
     <Content Include="Views\Shared\UpdataExist.cshtml" />
     <Content Include="Views\Shared\LossExist.cshtml" />
     <Content Include="Views\Shared\moreSearchStorage.cshtml" />
+    <Content Include="Views\Home\SaveIntoOut.cshtml" />
+    <Content Include="Views\Home\MakeTableSubmit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

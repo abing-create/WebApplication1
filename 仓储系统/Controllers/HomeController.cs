@@ -15,11 +15,18 @@ namespace 仓储系统.Controllers
     public class HomeController : Controller
     {
         #region 全局变量
-        private IO_Type IO_Type;    //出库还是入库!
-        public static level level;  //等级!
-        private static string Table_Id;    //出入库表单号
-        private static int userId = 0;     //登录者编号!
-        private static int wareId = 0;     //仓库编号!
+        public static level level;          //等级!
+        private static string Table_Id;     //出入库表单号
+        private static int userId = 0;      //登录者编号!
+        private static int wareId = 0;      //仓库编号!
+
+        //出入库界面信息
+        private static bool IsIntoOutWaretor = false;   //是否按下出库或者入库的按钮
+        private static bool SelectIntoOut = false;      //得到入库的商品信息(false)还是进行入库处理(true)
+        private static string I_type;                   //出库还是入库!
+        private static Commodity I_commodity;           //存储临时的界面查询的物资的信息
+        //private static List<Exist> I_exists;          //存储临时的物资信息
+        private static List<Storage> I_storages;        //存储临时的物资信息
 
         //三个变量用来保存用户是否搜索用户的信息
         private static string S_select = "";
@@ -36,37 +43,99 @@ namespace 仓储系统.Controllers
         #endregion
 
         #region 入库界面
+
+        #region 显示界面
+
+        #region 主界面
         [HttpGet]
         public ActionResult InOutWarehouse()
         {
+            //IsIntoOutWaretor = false;
             //Session["Table_Id"] = null;
-            Table_Id = "";
+            //Table_Id = "";
             InOutWarehouseViewModel inOutWarehouseViewModel = new InOutWarehouseViewModel();
             inOutWarehouseViewModel.UserName = Session["User"].ToString();
             inOutWarehouseViewModel.commodity = new Commodity();
             //inOutWarehouseViewModel.mySelect = InOutWarehouseViewModel.MySelect.Co_Id;
             return View("inOutWarehouse", inOutWarehouseViewModel);
         }
+        #endregion
 
+        #region 重定向进出库
+        [HttpGet]
+        public ActionResult RedirectInOutWarehouse()
+        {
+            //Session["Table_Id"] = null;
+            //Table_Id = "";
+            InOutWarehouseViewModel inOutWarehouseViewModel = new InOutWarehouseViewModel();
+            inOutWarehouseViewModel.UserName = Session["User"].ToString();
+            inOutWarehouseViewModel.commodity = new Commodity();
+            //inOutWarehouseViewModel.mySelect = InOutWarehouseViewModel.MySelect.Co_Id;
+            return View("inOutWarehouse", inOutWarehouseViewModel);
+        }
+        #endregion
+
+        #region 出库入库按键界面
+        [HttpGet]
+        public ActionResult MakeTableSubmit()
+        {
+            if (IsIntoOutWaretor)
+                return new EmptyResult();
+            return PartialView("MakeTableSubmit");
+        }
+        #endregion
+
+        #region 出入库控制界面
+        [HttpGet]
+        public ActionResult SaveIntoOut()
+        {
+            if (IsIntoOutWaretor)
+            {
+                InOutWarehouseViewModel inOutWarehouseViewModel = new InOutWarehouseViewModel();
+                inOutWarehouseViewModel.UserName = Session["User"].ToString();
+                inOutWarehouseViewModel.commodity = (I_commodity == null ? new Commodity() : I_commodity);
+                inOutWarehouseViewModel.manual_type = "手动" + I_type;
+                inOutWarehouseViewModel.ok_type = "完成" + I_type;
+                inOutWarehouseViewModel.cannel_type = "取消" + I_type;
+                return PartialView("SaveIntoOut", inOutWarehouseViewModel);
+            }
+            return new EmptyResult();
+        }
+        #endregion
+
+        #endregion
+
+        #region 出库入库按钮点击事件(创建出入库表)
         [HttpPost]
         //[MultiButton("入库")]
         public ActionResult MakeTableSubmit(string Sumbit)
         {
+            if (Sumbit == null && IsIntoOutWaretor)
+                return new EmptyResult();
             Session["Table_Id"] = null;
             //string Sumbit = "入库";
             Out_Into_ware out_Into_Ware = new Out_Into_ware();
             out_Into_Ware.Make_date = DateTime.Now;//时间
-            out_Into_Ware.User_id = userId;//负责人编号
-            out_Into_Ware.Ware_id = wareId;//仓库编号
+
+            UserBusinessLayer userBusinessLayer = new UserBusinessLayer();
+            WarehouseBusinessLayer warehouseBusinessLayer = new WarehouseBusinessLayer();
+            
+            User user = userBusinessLayer.GetUser(Session["User"].ToString());
+            out_Into_Ware.User_id = user.U_Id;//负责人编号
+            out_Into_Ware.Ware_id = warehouseBusinessLayer.GetId(user.U_point);//仓库编号
             //创建表单号
-            Table_Id = "12345";
-            if (Sumbit == "入库")
+            Table_Id = "12343";
+            if (Sumbit == "商品入库")
             {
+                I_type = "入库";
+                IsIntoOutWaretor = true;
                 out_Into_Ware.type = IO_Type.INTO;
                 out_Into_Ware.Table_Id = "INTO" + Table_Id;
             }
-            else if (Sumbit == "出库")
+            else if (Sumbit == "商品出库")
             {
+                I_type = "出库";
+                IsIntoOutWaretor = true;
                 out_Into_Ware.type = IO_Type.OUT;
                 out_Into_Ware.Table_Id = "OUT" + Table_Id;
             }
@@ -76,59 +145,108 @@ namespace 仓储系统.Controllers
             OutIntoWareBusinessLayer outIntoWareBusinessLayer = new OutIntoWareBusinessLayer();
             outIntoWareBusinessLayer.InsertOut_Into_ware(out_Into_Ware);
 
-            InOutWarehouseViewModel inOutWarehouseViewModel = new InOutWarehouseViewModel();
-            inOutWarehouseViewModel.UserName = Session["User"].ToString();
-            inOutWarehouseViewModel.commodity = new Commodity();
-
-            return View("inOutWarehouse", inOutWarehouseViewModel);
+            return RedirectToAction("RedirectInOutWarehouse");
         }
+        #endregion
 
+        #region 显示或者存储出入库的
         [HttpPost]
-        public ActionResult InOutWarehouse(Commodity commodity, string sid, int Count)
+        public ActionResult InOutWarehouse(string BtnSubmit, Commodity commodity, string sid, int Count)
         {
             InOutWarehouseViewModel inOutWarehouseViewModel = new InOutWarehouseViewModel();
             inOutWarehouseViewModel.UserName = Session["User"].ToString();
-            if (Session["SelectIntoOut"] != null && Convert.ToBoolean(Session["SelectIntoOut"]))
+            if (BtnSubmit == "手动入库" || BtnSubmit == "手动出库")
             {
-                //存储数据到Storage表(出入库单号、物品号、物品数量)
-                StorageBusinessLayer storageBusinessLayer = new StorageBusinessLayer();
-                Storage storage = new Storage();
-                storage.Co_id = commodity.Co_Id;
-                //storage.IO_Id = Session["Table_Id"].ToString();
-                storage.IO_Id = Table_Id;
-                storage.Count = Count;
-                storage.IntoDate = DateTime.Now;
-                storageBusinessLayer.InsertStorage(storage);
-
-                Session["SelectIntoOut"] = false;
-                inOutWarehouseViewModel.commodity = commodity;
-            }
-            else
-            {
-                //显示数据
-                CommodityBusinessLayer commodityBusinessLayer = new CommodityBusinessLayer();
-                inOutWarehouseViewModel.commodity = commodityBusinessLayer.GetCommodity(sid, commodity);
-                if (inOutWarehouseViewModel.commodity != null)
+                if (SelectIntoOut)
                 {
-                    Session["SelectIntoOut"] = true;
+                    //存储数据到Storage表(出入库单号、物品号、物品数量)
+                    StorageBusinessLayer storageBusinessLayer = new StorageBusinessLayer();
+                    Storage storage = new Storage();
+                    storage.Co_id = commodity.Co_Id;
+                    //storage.IO_Id = Session["Table_Id"].ToString();
+                    storage.IO_Id = Table_Id;
+                    storage.Count = Count;
+                    storage.IntoDate = DateTime.Now;
+                    storageBusinessLayer.InsertStorage(storage);
+
+                    SelectIntoOut = false;
+                    inOutWarehouseViewModel.commodity = new Commodity();
+                }
+                else
+                {
+                    //显示物品的数据
+                    CommodityBusinessLayer commodityBusinessLayer = new CommodityBusinessLayer();
+                    inOutWarehouseViewModel.commodity = commodityBusinessLayer.GetCommodity(sid, commodity);
+                    if (!inOutWarehouseViewModel.commodity.Equals(commodity))
+                    {
+                        SelectIntoOut = true;
+                    }
                 }
             }
+            else
+            {               
+                StorageBusinessLayer storageBusinessLayer = new StorageBusinessLayer();
+                if (BtnSubmit == "完成入库")
+                {
+                    //将入库的数据存储到Exist表中
+                    ExistBusinessLayer existBusinessLayer = new ExistBusinessLayer();
+                    InOutWarehouseBusinessLayer inOutWarehouseBusinessLayer = new InOutWarehouseBusinessLayer();
+                    Exist exist;
+                    List<Storage> storages = storageBusinessLayer.GetStorage("IO_Id",Table_Id);
+                    foreach(Storage storage in storages)
+                    {
+                        exist = inOutWarehouseBusinessLayer.GetExist(storage);
+                        existBusinessLayer.InsertExist(exist);
+                    }
+                }
+                else if(BtnSubmit == "完成出库")
+                {
+                    //将入库的数据在exit表中删除
+                    //将入库的数据存储到Exist表中
+                    ExistBusinessLayer existBusinessLayer = new ExistBusinessLayer();
+                    InOutWarehouseBusinessLayer inOutWarehouseBusinessLayer = new InOutWarehouseBusinessLayer();
+                    Exist exist;
+                    List<Storage> storages = storageBusinessLayer.GetStorage("IO_Id", Table_Id);
+                    foreach (Storage storage in storages)
+                    {
+                        exist = inOutWarehouseBusinessLayer.GetExist(storage);
+                        existBusinessLayer.InsertExist(exist);
+                    }
+                }
+                else if (BtnSubmit == "取消入库" || BtnSubmit == "取消出库")
+                {
+                    //将入库的数据删除
+                    storageBusinessLayer.Delete(Table_Id);
+                    OutIntoWareBusinessLayer outIntoWareBusinessLayer = new OutIntoWareBusinessLayer();
+                    outIntoWareBusinessLayer.Delete(Table_Id);
+                }
+                IsIntoOutWaretor = false;//设置为不是出入库状态IsIntoOutWaretor = false;
+                SelectIntoOut = false;//设置状态为取消SelectIntoOut = false;
+                Table_Id = "";//表数据清除
+            }
 
-            return View("inOutWarehouse", inOutWarehouseViewModel);
+            I_commodity = inOutWarehouseViewModel.commodity;
+
+            return RedirectToAction("RedirectInOutWarehouse");
+            //return View("inOutWarehouse", inOutWarehouseViewModel);
         }
+        #endregion
 
+        #region 显示出入库表的数据表
+        [HttpGet]
         public ActionResult InOutTable()
         {
             //if (Session["Table_Id"] == null)
-            if(Table_Id == "")
+            if(Table_Id == "" || Table_Id == null)
             {
                 //没有创建表单号
                 return new EmptyResult();
             } 
             //获取信息
             InOutTableViewModel inOutTableViewModel = new InOutTableViewModel();
-            inOutTableViewModel.type = IO_Type == IO_Type.INTO ? "入库" : "出库";
+            inOutTableViewModel.type = I_type;
             inOutTableViewModel.commodityViewModels = new List<CommodityViewModel>();
+            inOutTableViewModel.IO_id = Table_Id;
 
             //通过表号查询storate表的数据(物品编号，数量，时间)，
             //通过编号查询commodity表
@@ -141,12 +259,14 @@ namespace 仓储系统.Controllers
             foreach (Storage storage in storages)
             {
                 commodity = commodityBusinessLayer.GetCommodity(storage.Co_id, "", "");
-                inOutTableViewModel.commodityViewModels.Add(new CommodityViewModel() { commodity = commodity, Count = storage.Count, Out_into_date = DateTime.Now });
+                inOutTableViewModel.commodityViewModels.Add(new CommodityViewModel() { commodity = commodity, Count = storage.Count, Out_into_date = storage.IntoDate });
             }
 
             return PartialView("InOutTable", inOutTableViewModel);
         }
-#endregion
+        #endregion
+
+        #endregion
 
         #region 用户信息
         public ActionResult Information()
@@ -158,6 +278,7 @@ namespace 仓储系统.Controllers
             string name = Session["User"].ToString();
             string password = Session["Password"].ToString();
             InformationViewModel informationViewModel = informationBusinessLayer.getInformationViewModel(name, password);
+            informationViewModel.UserName = name;
             //全局变量用户组
             //S_users = informationViewModel.users;
 
@@ -182,6 +303,7 @@ namespace 仓储系统.Controllers
             string name = Session["User"].ToString();
             string password = Session["Password"].ToString();
             InformationViewModel informationViewModel = informationBusinessLayer.getInformationViewModel(name, password);
+            informationViewModel.UserName = Session["User"].ToString();
 
             return View("Information", informationViewModel);
         }

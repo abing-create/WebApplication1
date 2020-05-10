@@ -52,6 +52,9 @@ namespace 仓储系统.DataAccessLayer
                 case "员工性别":
                     users = dB.users.Where(c => c.U_sex == uname).ToList();
                     break;
+                case "所属仓库":
+                    users = dB.users.Where(c => c.U_point == uname).ToList();
+                    break;
                 default:
                     users = new List<User>();
                     break;

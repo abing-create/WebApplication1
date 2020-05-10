@@ -22,5 +22,10 @@ namespace 仓储系统.ViewModels
         /// 出库还是入库
         /// </summary>
         public string type { get; set; }
+
+        /// <summary>
+        /// 单号
+        /// </summary>
+        public string IO_id { get; set; }
     }
 }

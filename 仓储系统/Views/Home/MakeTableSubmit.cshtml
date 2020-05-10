@@ -1,0 +1,11 @@
+﻿
+
+<div class="container dropdown">
+    <h2>InOutWarehouse</h2>
+    @using (Html.BeginForm("MakeTableSubmit", "Home", FormMethod.Post))
+    {
+        <!--单击后自动生成一张出入库表-->
+        <input class="btn btn-primary" type="submit" value="商品入库" id="IntoWarehouse" name="Sumbit" />
+        <input class="btn btn-primary" type="submit" value="商品出库" id="OutWarehouse" name="Sumbit" />
+    }
+</div>
