@@ -1,0 +1,28 @@
+﻿@using 仓储系统.ViewModels
+@model CommodityViewModel
+
+
+<div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        @using (Html.BeginForm("DeleteRecord", "Home", FormMethod.Post, new { @id = "WarehouseForm", role = "form" }))
+        {
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">提示</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <label>确定此信息移除？</label>
+                    <br />
+                    <input type="text" id="Wa_name" style="border: 0 none; outline:none; width:100%" name="Wa_name" value="@Model.commodity.Co_name" />
+                    <input type="text" name="Date" value="@Model.Out_into_date" style="display:none">
+                    <input type="text" name="Co_id" value="@Model.commodity.Co_Id" style="display:none">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <input type="submit" class="btn btn-primary" name="BtnSubmit" value="确定">
+            </div>
+        }
+    </div>
+</div>

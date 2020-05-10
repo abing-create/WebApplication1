@@ -133,9 +133,42 @@ namespace 仓储系统.DataAccessLayer
         public Exist InsertExist(Exist exists)
         {
             WarehouseERPDAL dB = new WarehouseERPDAL();
-            dB.exists.Add(exists);
+            List<Exist> model = dB.exists.Where(c => c.IO_Id == exists.IO_Id && exists.W_id == c.W_id).ToList();
+            if(model != null && model.Count() > 0)
+            {
+                model.FirstOrDefault().Count += exists.Count;
+            }
+            else
+            {
+                dB.exists.Add(exists);
+            }
             dB.SaveChanges();
             return exists;
+        }
+
+        public void Delete(Storage storage)
+        {
+            WarehouseERPDAL dB = new WarehouseERPDAL();
+            var model = dB.exists.Where(c => c.Co_id == storage.Co_id).ToList();
+            int count = storage.Count;
+            if(model != null)
+            {
+                while(count > 0 && model.Count() != 0)
+                {
+                    if(count >= model.FirstOrDefault().Count)
+                    {
+                        count -= model.FirstOrDefault().Count;
+                        dB.exists.Remove(model.FirstOrDefault());
+                        model.Remove(model.FirstOrDefault());
+                    }
+                    else
+                    {
+                        model.FirstOrDefault().Count -= count;
+                        count = 0;
+                    }
+                }
+            }
+            dB.SaveChanges();
         }
 
         public void DeleteExist(string name)

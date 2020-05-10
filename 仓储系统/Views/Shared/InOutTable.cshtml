@@ -16,8 +16,9 @@
                 <th scope="col">时间</th>
                 <th scope="col" colspan="2">操作</th>
             </tr>
-            @foreach (CommodityViewModel item in Model.commodityViewModels)
+            @for (int i = 0; i < Model.commodityViewModels.Count(); i++)
             {
+                CommodityViewModel item = Model.commodityViewModels[i];
                 <tr>
                     <td>@item.commodity.Co_bar_code</td>
                     <td>@item.commodity.Co_Id</td>
@@ -28,8 +29,12 @@
                     <td>@item.Count</td>
                     <td>@item.Out_into_date</td>
                     <td>
-                        <a href="#"> 修改</a>
-                        <a href="#">删除</a>
+                        <a href="#d_@i" data-toggle="modal">删除</a>
+                        <div class="modal fade" id="d_@i" tabindex="-1" role="dialog" aria-hidden="true">
+                            @{
+                                Html.RenderPartial("DeleteRecord", item);
+                            }
+                        </div>
                     </td>
                 </tr>
             }

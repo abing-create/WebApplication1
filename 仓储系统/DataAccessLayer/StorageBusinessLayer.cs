@@ -109,5 +109,15 @@ namespace 仓储系统.DataAccessLayer
             dB.storages.RemoveRange(model);
             dB.SaveChanges();
         }
+
+        public void Delete(string date, string Co_id, string IO_Id)
+        {
+            WarehouseERPDAL dB = new WarehouseERPDAL();
+            DateTime date1 = Convert.ToDateTime(date).AddSeconds(-1);
+            DateTime date2 = date1.AddSeconds(2);
+            var model = dB.storages.Where(c => c.IO_Id == IO_Id && c.IntoDate.CompareTo(date1) != -1 && c.IntoDate.CompareTo(date2) != 1 && c.Co_id.ToString() == Co_id).ToList();
+            dB.storages.Remove(model.FirstOrDefault());
+            dB.SaveChanges();
+        }
     }
 }

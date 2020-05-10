@@ -205,12 +205,11 @@ namespace 仓储系统.Controllers
                     //将入库的数据存储到Exist表中
                     ExistBusinessLayer existBusinessLayer = new ExistBusinessLayer();
                     InOutWarehouseBusinessLayer inOutWarehouseBusinessLayer = new InOutWarehouseBusinessLayer();
-                    Exist exist;
+                    //Exist exist;
                     List<Storage> storages = storageBusinessLayer.GetStorage("IO_Id", Table_Id);
                     foreach (Storage storage in storages)
                     {
-                        exist = inOutWarehouseBusinessLayer.GetExist(storage);
-                        existBusinessLayer.InsertExist(exist);
+                        existBusinessLayer.Delete(storage);
                     }
                 }
                 else if (BtnSubmit == "取消入库" || BtnSubmit == "取消出库")
@@ -229,6 +228,16 @@ namespace 仓储系统.Controllers
 
             return RedirectToAction("RedirectInOutWarehouse");
             //return View("inOutWarehouse", inOutWarehouseViewModel);
+        }
+        #endregion
+
+        #region 删除入库的某个记录
+        [HttpPost]
+        public ActionResult DeleteRecord(string BtnSubmit,string Date, string Co_id)
+        {
+            StorageBusinessLayer storageBusinessLayer = new StorageBusinessLayer();
+            storageBusinessLayer.Delete(Date, Co_id, Table_Id);
+            return RedirectToAction("RedirectInOutWarehouse");
         }
         #endregion
 

@@ -296,6 +296,7 @@
     <Content Include="Views\Shared\moreSearchStorage.cshtml" />
     <Content Include="Views\Home\SaveIntoOut.cshtml" />
     <Content Include="Views\Home\MakeTableSubmit.cshtml" />
+    <Content Include="Views\Shared\DeleteRecord.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
