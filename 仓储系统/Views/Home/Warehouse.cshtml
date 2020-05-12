@@ -2,12 +2,12 @@
 @using 仓储系统.Models
 @model WarehouseViewModel
 @{
-    ViewBag.Title = "Warehouse";
+    ViewBag.Title = "仓库管理";
 }
 
 
+<h2>@ViewBag.Title</h2>
 <div class="container dropdown">
-    <h2>Warehouse</h2>
     <!--添加的仓库按钮只能由等级为Admin的用户才能进行操作-->
     @using (Html.BeginForm("searchWarehouse", "Home", FormMethod.Post, new { @id = "WarehouseForm", role = "form" }))
     {

@@ -2,98 +2,98 @@
 @using 仓储系统.Models
 @model AttributesViewModel
 @{
-    ViewBag.Title = "Attributes";
+    ViewBag.Title = "物品设置";
 }
 
-    <div class="container dropdown">
-        <h2>Attributes</h2>
+<h2> @ViewBag.Title</h2>
+<div class="container dropdown">
 
-        <!--搜索功能-->
-        @using (Html.BeginForm("searchAttrbutetes", "Home", FormMethod.Post, new { @id = "WarehouseForm", role = "form" }))
-        {
-            <div class="row">
-                <div class="col-lg-4">
-                    <input class=" btn btn-primary" type="button" value="添加" id="IntoWarehouse" name="IntoWarehouse" onclick="$('#addCommodity').modal('show')" />
-                </div>
-                <div class="col-lg-8">
-                    <input type="submit" class="btn btn-primary pull-right" name="BtnSubmit" value="搜索">
-                    <input type="text" class="form-control pull-right" placeholder="name" aria-label="name" name="name" value="">
-                    <select class="selectpicker show-tick form-control pull-right" data-live-search="true" name="Select">
-                        <option>商品编号</option>
-                        <option>商品名称</option>
-                        <option>条码编号</option>
-                        <option>商品分类</option>
-                        <option>商品规格</option>
-                        <option>商品单价</option>
-                    </select>
-                </div>
+    <!--搜索功能-->
+    @using (Html.BeginForm("searchAttrbutetes", "Home", FormMethod.Post, new { @id = "WarehouseForm", role = "form" }))
+    {
+        <div class="row">
+            <div class="col-lg-4">
+                <input class=" btn btn-primary" type="button" value="添加" id="IntoWarehouse" name="IntoWarehouse" onclick="$('#addCommodity').modal('show')" />
             </div>
-        }
-
-
-        <hr />
-
-        <!--商品显示表-->
-        <table border="1" class="table table-bordered">
-            <tr>
-                <th scope="col">商品编号</th>
-                <th scope="col">商品名称</th>
-                <th scope="col">条码编号</th>
-                <th scope="col">商品分类</th>
-                <th scope="col">商品规格</th>
-                <th scope="col">商品单价</th>
-                <th scope="col">计量单位</th>
-                <th scope="col">商品重量</th>
-                <th scope="col">备注</th>
-                <th scope="col">操作</th>
-            </tr>
-            @foreach (Commodity item in Model.commodities)
-            {
-                <tr>
-                    <td>@item.Co_Id</td>
-                    <td>@item.Co_name</td>
-                    <td>@item.Co_bar_code</td>
-                    <td>@item.Co_type</td>
-                    <td>@item.Co_specification</td>
-                    <td>@item.Co_price</td>
-                    <td>@item.Co_unit</td>
-                    <td>@item.Co_weight</td>
-                    <td>...</td>
-                    <td>
-                        <a href="#s_@item.Co_Id" data-toggle="modal" name="">查看</a>
-                        <a href="#u_@item.Co_Id" data-toggle="modal" name="">修改</a>
-                        <a href="#d_@item.Co_Id" data-toggle="modal" name="">删除</a>
-                        <!--查看-->
-                        <div class="modal fade" id="s_@item.Co_Id" tabindex="-1" role="dialog" aria-hidden="true">
-                            @{
-                                Html.RenderPartial("DisplayCommodity", item);
-                            }
-                        </div>
-                        <!--修改-->
-                        <div class="modal fade" id="u_@item.Co_Id" tabindex="-1" role="dialog" aria-hidden="true">
-                            @{
-                                Html.RenderPartial("UpdataCommodity", item);
-                            }
-                        </div>
-                        <!--删除-->
-                        <div class="modal fade" id="d_@item.Co_Id" tabindex="-1" role="dialog" aria-hidden="true">
-                            @{
-                                Html.RenderPartial("DeleteItem", new DeleteViewModel() { D_id = item.Co_Id.ToString(), D_name = item.Co_name, T_name = "物品"});
-                            }
-                        </div>
-                    </td>
-                </tr>
-            }
-        </table>
-
-        <div class="modal fade" id="addCommodity" tabindex="-1" role="dialog" aria-hidden="true">
-            @{
-                Html.RenderPartial("CreateCommodity");
-            }
+            <div class="col-lg-8">
+                <input type="submit" class="btn btn-primary pull-right" name="BtnSubmit" value="搜索">
+                <input type="text" class="form-control pull-right" placeholder="name" aria-label="name" name="name" value="">
+                <select class="selectpicker show-tick form-control pull-right" data-live-search="true" name="Select">
+                    <option>商品编号</option>
+                    <option>商品名称</option>
+                    <option>条码编号</option>
+                    <option>商品分类</option>
+                    <option>商品规格</option>
+                    <option>商品单价</option>
+                </select>
+            </div>
         </div>
+    }
 
-        <hr />
-        <!--没用的东西-->
-        
+
+    <hr />
+
+    <!--商品显示表-->
+    <table border="1" class="table table-bordered">
+        <tr>
+            <th scope="col">商品编号</th>
+            <th scope="col">商品名称</th>
+            <th scope="col">条码编号</th>
+            <th scope="col">商品分类</th>
+            <th scope="col">商品规格</th>
+            <th scope="col">商品单价</th>
+            <th scope="col">计量单位</th>
+            <th scope="col">商品重量</th>
+            <th scope="col">备注</th>
+            <th scope="col">操作</th>
+        </tr>
+        @foreach (Commodity item in Model.commodities)
+        {
+            <tr>
+                <td>@item.Co_Id</td>
+                <td>@item.Co_name</td>
+                <td>@item.Co_bar_code</td>
+                <td>@item.Co_type</td>
+                <td>@item.Co_specification</td>
+                <td>@item.Co_price</td>
+                <td>@item.Co_unit</td>
+                <td>@item.Co_weight</td>
+                <td>...</td>
+                <td>
+                    <a href="#s_@item.Co_Id" data-toggle="modal" name="">查看</a>
+                    <a href="#u_@item.Co_Id" data-toggle="modal" name="">修改</a>
+                    <a href="#d_@item.Co_Id" data-toggle="modal" name="">删除</a>
+                    <!--查看-->
+                    <div class="modal fade" id="s_@item.Co_Id" tabindex="-1" role="dialog" aria-hidden="true">
+                        @{
+                            Html.RenderPartial("DisplayCommodity", item);
+                        }
+                    </div>
+                    <!--修改-->
+                    <div class="modal fade" id="u_@item.Co_Id" tabindex="-1" role="dialog" aria-hidden="true">
+                        @{
+                            Html.RenderPartial("UpdataCommodity", item);
+                        }
+                    </div>
+                    <!--删除-->
+                    <div class="modal fade" id="d_@item.Co_Id" tabindex="-1" role="dialog" aria-hidden="true">
+                        @{
+                            Html.RenderPartial("DeleteItem", new DeleteViewModel() { D_id = item.Co_Id.ToString(), D_name = item.Co_name, T_name = "物品" });
+                        }
+                    </div>
+                </td>
+            </tr>
+        }
+    </table>
+
+    <div class="modal fade" id="addCommodity" tabindex="-1" role="dialog" aria-hidden="true">
+        @{
+            Html.RenderPartial("CreateCommodity");
+        }
     </div>
+
+    <hr />
+    <!--没用的东西-->
+
+</div>
 

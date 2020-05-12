@@ -2,49 +2,48 @@
 @using 仓储系统.Models
 @model 仓储系统.ViewModels.StorageViewModel
 @{
-    ViewBag.Title = "Storage";
+    ViewBag.Title = "存储管理";
 }
 
-    <div class="container dropdown">
-
-        <h2>Storage</h2>
-        @using (Html.BeginForm("searchStorage", "Home", FormMethod.Post, new { @id = "WarehouseForm", role = "form" }))
-        {
-            <div class="row">
-                <div class="col-lg-4">
-                    <!--多重查询-->
-                    <input type="button" class="btn btn-primary" onclick="$('#getMoreSearchStorage').modal('show')" value="多重查询">
-                </div>
-                <div class="col-lg-8">
-                    <input type="submit" class="btn btn-primary pull-right" name="BtnSubmit" value="搜索">
-                    <input type="text" class="form-control pull-right" placeholder="name" aria-label="name" name="uname" value="">
-                    <select class="selectpicker show-tick form-control pull-right" data-live-search="true" name="Select">
-                        <option>商品编号</option>
-                        <option>商品名称</option>
-                        <option>条码编号</option>
-                        <option>商品分类</option>
-                        <option>存储仓库</option>
-                        <option>入库单号</option>
-                        <option>入库员工</option>
-                    </select>
-                </div>
+<h2>@ViewBag.Title</h2>
+<div class="container dropdown">
+    @using (Html.BeginForm("searchStorage", "Home", FormMethod.Post, new { @id = "WarehouseForm", role = "form" }))
+    {
+        <div class="row">
+            <div class="col-lg-4">
+                <!--多重查询-->
+                <input type="button" class="btn btn-primary" onclick="$('#getMoreSearchStorage').modal('show')" value="多重查询">
             </div>
-        }
-        <br />
-
-
-        <div class="modal fade" id="getMoreSearchStorage" tabindex="-1" role="dialog" aria-hidden="true">
-            @{
-                Html.RenderPartial("moreSearchStorage");
-            }
+            <div class="col-lg-8">
+                <input type="submit" class="btn btn-primary pull-right" name="BtnSubmit" value="搜索">
+                <input type="text" class="form-control pull-right" placeholder="name" aria-label="name" name="uname" value="">
+                <select class="selectpicker show-tick form-control pull-right" data-live-search="true" name="Select">
+                    <option>商品编号</option>
+                    <option>商品名称</option>
+                    <option>条码编号</option>
+                    <option>商品分类</option>
+                    <option>存储仓库</option>
+                    <option>入库单号</option>
+                    <option>入库员工</option>
+                </select>
+            </div>
         </div>
+    }
+    <br />
 
 
+    <div class="modal fade" id="getMoreSearchStorage" tabindex="-1" role="dialog" aria-hidden="true">
         @{
-            Html.RenderPartial("ExistTable", Model.existTableListViewModel);
+            Html.RenderPartial("moreSearchStorage");
         }
-
     </div>
+
+
+    @{
+        Html.RenderPartial("ExistTable", Model.existTableListViewModel);
+    }
+
+</div>
 
 
 

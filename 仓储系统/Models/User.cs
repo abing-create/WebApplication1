@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -59,6 +60,7 @@ namespace 仓储系统.Models
         /// </summary>
         [FirstNameValidation]
         [StringLength(20, MinimumLength = 5, ErrorMessage = "用户名必须大于5位数小于20位数")]
+        [Index(IsUnique = true)]//唯一约束
         public string U_name { get; set; }
 
         /// <summary>
@@ -106,6 +108,9 @@ namespace 仓储系统.Models
         /// </summary>
         [StringLength(2)]
         public string U_sex { get; set; }
+
+
+        public int U_fail { get; set; }
     }
 
     public class FirstNameValidation : ValidationAttribute

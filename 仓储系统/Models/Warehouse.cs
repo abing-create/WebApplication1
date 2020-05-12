@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -40,12 +41,14 @@ namespace 仓储系统.Models
         /// <summary>
         /// 仓库编号
         /// </summary>
+        [Index(IsUnique = true)]//唯一约束
         public int Wa_Id { get; set; }
 
         /// <summary>
         /// 仓库名称
         /// </summary>
         [StringLength(50)]
+        [Index(IsUnique = true)]//唯一约束
         public string Wa_name { get; set; }
 
         /// <summary>

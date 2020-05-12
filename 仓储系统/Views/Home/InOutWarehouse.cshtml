@@ -1,9 +1,11 @@
 ﻿@using 仓储系统.ViewModels
 @model InOutWarehouseViewModel
 @{
-    ViewBag.Title = "InOutWarehouse";
+    ViewBag.Title = "出库入库";
 }
 
+
+    <h2>@ViewBag.Title</h2>
 @{
     //控制器加载表格代码
     Html.RenderAction("MakeTableSubmit");

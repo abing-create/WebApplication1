@@ -25,6 +25,11 @@ namespace 仓储系统.Controllers
             LoginBusinessLayer loginBusinessLayer = new LoginBusinessLayer();
             if (loginBusinessLayer.IsLogin(loginViewModel.U_name, loginViewModel.U_password))
             {
+                if(loginBusinessLayer.IsFail(loginViewModel.U_name))
+                {
+                    ModelState.AddModelError("CredentialError", "登录错误次数超过五次，请联系管理员修改密码");
+                    return View("Login");
+                }
                 Session["User"] = loginViewModel.U_name;
                 Session["Password"] = loginViewModel.U_password;
                 Session["level"] = loginBusinessLayer.getLevel(loginViewModel.U_name);

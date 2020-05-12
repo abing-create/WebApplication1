@@ -26,12 +26,26 @@ namespace 仓储系统.BusinessLayer
         {
             //UserBusinessLayer userBusinessLayer = new UserBusinessLayer();
             List<User> users = userBusinessLayer.GetUser();
-            User user = users.Where(c => c.U_name == name && c.U_password == password).FirstOrDefault();
+            User user = users.Where(c => c.U_name == name).FirstOrDefault();
             //User user = userBusinessLayer.GetUser(name);
-            if (user == null)
+            if (user == null || user.Equals(new User()) || user.U_password != password)
+            {
                 return false;
+            }
             saveRecord(user.U_Id, name);
             return true;            
+        }
+
+        public bool IsFail(string name)
+        {
+            List<User> users = userBusinessLayer.GetUser();
+            User user = users.Where(c => c.U_name == name).FirstOrDefault();
+            if (user.U_fail > 5)
+            {
+                return true;
+            }
+            user.U_fail = 0;
+            return false;
         }
 
         /// <summary>

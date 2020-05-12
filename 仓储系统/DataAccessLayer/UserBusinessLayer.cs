@@ -115,6 +115,7 @@ namespace 仓储系统.DataAccessLayer
             //return user;
 
             WarehouseERPDAL dB = new WarehouseERPDAL();
+            user.U_fail = 0;
             dB.users.Add(user);
             dB.SaveChanges();
             return user;
@@ -128,6 +129,7 @@ namespace 仓储系统.DataAccessLayer
         public void UpdataUsers(string name, User user)
         {
             WarehouseERPDAL dB = new WarehouseERPDAL();
+            user.U_fail = 0;
             var model = dB.users.Where(c => c.U_name == name).FirstOrDefault();
             if (model != null)
             {

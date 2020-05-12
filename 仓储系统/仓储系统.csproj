@@ -127,6 +127,8 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="BarcodeScanner\BardCodeHooK.cs" />
+    <Compile Include="BarcodeScanner\ScanerHook.cs" />
     <Compile Include="BusinessLayer\InformationBusinessLayer.cs" />
     <Compile Include="BusinessLayer\InOutWarehouseBusinessLayer.cs" />
     <Compile Include="BusinessLayer\LoginBusinessLayer.cs" />

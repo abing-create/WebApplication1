@@ -8,12 +8,28 @@ using 仓储系统.DataAccessLayer;
 using 仓储系统.Models;
 using 仓储系统.BusinessLayer;
 using 仓储系统.Filters;
+using 仓储系统.BarcodeScanner;
 
 namespace 仓储系统.Controllers
 {
     [Login]
     public class HomeController : Controller
     {
+        //扫码枪键盘钩子
+        //private ScanerHook listener = new ScanerHook();
+
+        ////public HomeController()
+        ////{
+        ////    listener.ScanerEvent += Listener_ScanerEvent;
+        ////}
+
+        //private ActionResult Listener_ScanerEvent(ScanerHook.ScanerCodes codes)
+        //{
+        //    //textBox3.Text = codes.Result;
+        //    return RedirectToAction("Attributes");
+
+        //}
+
         #region 全局变量
         public static level level;          //等级!
         private static string Table_Id;     //出入库表单号
