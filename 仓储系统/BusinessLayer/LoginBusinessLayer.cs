@@ -28,10 +28,17 @@ namespace 仓储系统.BusinessLayer
             List<User> users = userBusinessLayer.GetUser();
             User user = users.Where(c => c.U_name == name).FirstOrDefault();
             //User user = userBusinessLayer.GetUser(name);
-            if (user == null || user.Equals(new User()) || user.U_password != password)
+            if (user == null || user.Equals(new User()))
             {
                 return false;
             }
+            else if(user.U_password != password)
+            {
+                user.U_fail++;
+                userBusinessLayer.UpdataFail(user);
+                return false;
+            }
+            user.U_fail = 0;
             saveRecord(user.U_Id, name);
             return true;            
         }
@@ -40,11 +47,10 @@ namespace 仓储系统.BusinessLayer
         {
             List<User> users = userBusinessLayer.GetUser();
             User user = users.Where(c => c.U_name == name).FirstOrDefault();
-            if (user.U_fail > 5)
+            if (!user.Equals(new User()) && user.U_fail > 5)
             {
                 return true;
             }
-            user.U_fail = 0;
             return false;
         }
 

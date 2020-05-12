@@ -135,6 +135,7 @@ namespace 仓储系统.Controllers
 
             UserBusinessLayer userBusinessLayer = new UserBusinessLayer();
             WarehouseBusinessLayer warehouseBusinessLayer = new WarehouseBusinessLayer();
+            OutIntoWareBusinessLayer outIntoWareBusinessLayer1 = new OutIntoWareBusinessLayer();
             
             User user = userBusinessLayer.GetUser(Session["User"].ToString());
             out_Into_Ware.User_id = user.U_Id;//负责人编号
@@ -146,14 +147,16 @@ namespace 仓储系统.Controllers
                 I_type = "入库";
                 IsIntoOutWaretor = true;
                 out_Into_Ware.type = IO_Type.INTO;
-                out_Into_Ware.Table_Id = "INTO" + Table_Id;
+                //out_Into_Ware.Table_Id = "INTO" + Table_Id;
+                out_Into_Ware.Table_Id = outIntoWareBusinessLayer1.GetMaxTable(IO_Type.INTO);
             }
             else if (Sumbit == "商品出库")
             {
                 I_type = "出库";
                 IsIntoOutWaretor = true;
                 out_Into_Ware.type = IO_Type.OUT;
-                out_Into_Ware.Table_Id = "OUT" + Table_Id;
+                //out_Into_Ware.Table_Id = "OUT" + Table_Id;
+                out_Into_Ware.Table_Id = outIntoWareBusinessLayer1.GetMaxTable(IO_Type.OUT);
             }
             //Session["Table_Id"] = out_Into_Ware.Table_Id;
             Table_Id = out_Into_Ware.Table_Id;

@@ -34,6 +34,49 @@ namespace 仓储系统.DataAccessLayer
             return (new Out_Into_ware());
         }
 
+        public string GetMaxTable(IO_Type iO_Type)
+        {
+            string MaxTable;
+            if(iO_Type == IO_Type.INTO)
+            {
+                MaxTable = "INTO";
+            }
+            else
+            {
+                MaxTable = "OUT";
+            }
+            string time = DateTime.Now.ToString("yyyy-MM-dd");
+            MaxTable += System.Text.RegularExpressions.Regex.Replace(time, "[-]", "");
+
+            WarehouseERPDAL dB = new WarehouseERPDAL();
+            var models = dB.out_into_wares.Where(c => c.type == iO_Type).ToList();
+            if(models == null || models.Count == 0)
+            {
+                MaxTable += "0000";
+            }
+            else 
+            {
+                var id = models.Max(t => t.id);
+                var model = dB.out_into_wares.Where(c => c.id == id).FirstOrDefault();
+                if (model.Make_date.Subtract(DateTime.Now).Days != 0)
+                {
+                    MaxTable += "0000";
+                }
+                string str = model.Table_Id.Substring(model.Table_Id.Length - 4, 4);
+                int count = Convert.ToInt32(str);
+                count += 1;
+                str = count.ToString();
+                count = 4 - str.Length;
+                while(count-- > 0)
+                {
+                    str = "0" + str;
+                }
+                MaxTable += str;
+            }            
+
+            return MaxTable;
+        }
+
         /// <summary>
         /// 插入数据到表TblOut_Into_ware
         /// </summary>

@@ -23,11 +23,11 @@ namespace 仓储系统.Controllers
         public ActionResult DoLogin(LoginViewModel loginViewModel)
         {
             LoginBusinessLayer loginBusinessLayer = new LoginBusinessLayer();
-            if (loginBusinessLayer.IsLogin(loginViewModel.U_name, loginViewModel.U_password))
+            if (!loginBusinessLayer.IsFail(loginViewModel.U_name))
             {
-                if(loginBusinessLayer.IsFail(loginViewModel.U_name))
+                if (!loginBusinessLayer.IsLogin(loginViewModel.U_name, loginViewModel.U_password))
                 {
-                    ModelState.AddModelError("CredentialError", "登录错误次数超过五次，请联系管理员修改密码");
+                    ModelState.AddModelError("CredentialError", "账号或者密码错误");
                     return View("Login");
                 }
                 Session["User"] = loginViewModel.U_name;
@@ -35,7 +35,7 @@ namespace 仓储系统.Controllers
                 Session["level"] = loginBusinessLayer.getLevel(loginViewModel.U_name);
                 return RedirectToAction("Information", "Home");//跳转到首页
             }
-            ModelState.AddModelError("CredentialError", "账号或者密码错误");
+            ModelState.AddModelError("CredentialError", "登录错误次数超过五次，请联系管理员修改密码");
             return View("Login");
         }
 

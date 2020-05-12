@@ -131,12 +131,23 @@ namespace 仓储系统.DataAccessLayer
             WarehouseERPDAL dB = new WarehouseERPDAL();
             user.U_fail = 0;
             var model = dB.users.Where(c => c.U_name == name).FirstOrDefault();
-            if (model != null)
+            if (model != null && model.Equals(new User()))
             {
                 //model.U_password = user.U_password;
                 Change(ref model, user);
+                dB.SaveChanges();
             }
-            dB.SaveChanges();
+        }
+
+        public void UpdataFail(User user)
+        {
+            WarehouseERPDAL dB = new WarehouseERPDAL();
+            var model = dB.users.Where(c => c.U_name == user.U_name).FirstOrDefault();
+            if(!model.Equals(new User()))
+            {
+                model.U_fail = user.U_fail;
+                dB.SaveChanges();
+            }
         }
 
         private void Change(ref User model, User user)
@@ -151,6 +162,7 @@ namespace 仓储系统.DataAccessLayer
             model.U_point = user.U_point;
             model.U_post = user.U_post;
             model.U_sex = user.U_sex;
+            model.U_fail = user.U_fail;
         }
 
         /// <summary>
