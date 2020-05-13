@@ -560,6 +560,8 @@ namespace 仓储系统.Controllers
         #endregion
 
         #region 物品界面
+
+        #region 显示界面
         [HttpGet]
         public ActionResult Attributes()
         {
@@ -573,7 +575,9 @@ namespace 仓储系统.Controllers
 
             return View("Attributes", attributesViewModel);
         }
+        #endregion
 
+        #region 搜索物品
         /// <summary>
         /// 搜索物品功能
         /// </summary>
@@ -592,7 +596,9 @@ namespace 仓储系统.Controllers
 
             return View("Attributes", attributesViewModel);
         }
+        #endregion
 
+        #region 添加物品
         /// <summary>
         /// 添加物品的功能
         /// </summary>
@@ -616,6 +622,8 @@ namespace 仓储系统.Controllers
             //如果不是按键操作，刷新本页面
             return PartialView("CreateCommodity"); 
         }
+        #endregion
+
         #endregion
 
         #region 存储界面

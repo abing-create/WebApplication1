@@ -1,101 +1,104 @@
 ﻿@using 仓储系统.ViewModels
 @model InOutWarehouseViewModel
 
-<div class="container dropdown">
-    @using (Html.BeginForm("InOutWarehouse", "Home", FormMethod.Post))
-    {
-        <!--input class="col-lg-2" type="submit" value="制作单号" id="MakeTable" name="Sumbit" /-->
-        <table class="table-borderless">
-            <tr>
-                <td class="col-lg-2">
-                    <select class="selectpicker show-tick form-control" id="sid" name="sid">
-                        <option>条码编号</option>
-                        <option>商品编号</option>
-                        <option>商品名称</option>
-                    </select>
-                </td>
-                <td>
-                    <input class="btn btn-primary" type="submit" value="@Model.manual_type" id="OutWarehouse" name="BtnSubmit" />
-                </td>
-                <td>
-                    <input class="btn btn-primary" type="submit" value="@Model.ok_type" id="OutWarehouse" name="BtnSubmit" />
-                </td>
-                <td>
-                    <input class="btn btn-primary" type="submit" value="@Model.cannel_type" id="OutWarehouse" name="BtnSubmit" />
-                </td>
-            </tr>
-        </table>
-        <table class="table-borderless">
-            <tr>
-                <td class="">
-                    商品编号
-                </td>
-                <td>
-                    <input type="text" class=" " id="Co_Id" name="Co_Id" value="@Model.commodity.Co_Id" />
-                </td>
-                <td>
-                    商品名称
-                </td>
-                <td>
-                    <input type="text" class=" " id="Co_name" name="Co_name" value="@Model.commodity.Co_name" />
-                </td>
-            </tr>
-            <tr>
-                <td class="">
-                    条码编号
-                </td>
-                <td>
-                    <input type="text" class=" " id="Co_bar_code" name="Co_bar_code" value="@Model.commodity.Co_bar_code" />
-                </td>
-                <td class="">
-                    物品数量
-                </td>
-                <td>
-                    <input type="text" class=" " id="Count" name="Count" value="1" />
-                </td>
-            </tr>
-            <tr>
-                <td class="">
-                    物品分类
-                </td>
-                <td>
-                    <input type="text" class="" id="Co_type" name="Co_type" readonly="readonly" value="@Model.commodity.Co_type" />
-                </td>
-                <td class="">
-                    物品规格
-                </td>
-                <td>
-                    <input type="text" class=" " id="Co_specification" name="Co_specification" readonly="readonly" value="@Model.commodity.Co_specification" />
-                </td>
-            </tr>
-            <tr>
-                <td class="">
-                    单价
-                </td>
-                <td>
-                    <input type="text" class=" " id="Co_price" name="Co_price" readonly="readonly" value="@Model.commodity.Co_price" />
-                </td>
-                <td class="">
-                    计量单位
-                </td>
-                <td>
-                    <input type="text" class=" " id="Co_unit" name="Co_unit" readonly="readonly" value="@Model.commodity.Co_unit" />
-                </td>
-            </tr>
-            <tr>
-                <td class="">
-                    重量
-                </td>
-                <td>
-                    <input type="text" class=" " id="Co_weight" name="Co_weight" readonly="readonly" value="@Model.commodity.Co_weight" />
-                </td>
-                <td class="">
-                    备注
-                </td>
-                <td>
-                    <input type="text" class=" " id="Co_note" name="Co_note" readonly="readonly" value="@Model.commodity.Co_note" />
-                </td>
-            </tr>
-        </table>
-    }
-</div>
+    <div class="container dropdown">
+        @using (Html.BeginForm("InOutWarehouse", "Home", FormMethod.Post))
+        {
+            <!--input class="col-lg-2" type="submit" value="制作单号" id="MakeTable" name="Sumbit" /-->
+            <table class="table-borderless">
+                <tr>
+                    <td class="col-lg-2">
+                        <select class="selectpicker show-tick form-control" id="sid" name="sid">
+                            <option>条码编号</option>
+                            <option>商品编号</option>
+                            <option>商品名称</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input class="btn btn-primary" type="submit" value="@Model.manual_type" id="OutWarehouse" name="BtnSubmit" />
+                    </td>
+                    <td>
+                        <input class="btn btn-primary" type="submit" value="@Model.ok_type" id="OutWarehouse" name="BtnSubmit" />
+                    </td>
+                    <td>
+                        <input class="btn btn-primary" type="submit" value="@Model.cannel_type" id="OutWarehouse" name="BtnSubmit" />
+                    </td>
+                </tr>
+            </table>
+
+            <hr />
+
+            <table class="table-borderless">
+                <tr>
+                    <td class="">
+                        商品编号
+                    </td>
+                    <td>
+                        <input type="text" class=" " id="Co_Id" name="Co_Id" value="@Model.commodity.Co_Id" />
+                    </td>
+                    <td>
+                        商品名称
+                    </td>
+                    <td>
+                        <input type="text" class=" " id="Co_name" name="Co_name" value="@Model.commodity.Co_name" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="">
+                        条码编号
+                    </td>
+                    <td>
+                        <input type="text" class=" " id="Co_bar_code" name="Co_bar_code" value="@Model.commodity.Co_bar_code" />
+                    </td>
+                    <td class="">
+                        物品数量
+                    </td>
+                    <td>
+                        <input type="text" class=" " id="Count" name="Count" value="1" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="">
+                        物品分类
+                    </td>
+                    <td>
+                        <input type="text" class="" id="Co_type" name="Co_type" readonly="readonly" value="@Model.commodity.Co_type" />
+                    </td>
+                    <td class="">
+                        物品规格
+                    </td>
+                    <td>
+                        <input type="text" class=" " id="Co_specification" name="Co_specification" readonly="readonly" value="@Model.commodity.Co_specification" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="">
+                        单价
+                    </td>
+                    <td>
+                        <input type="text" class=" " id="Co_price" name="Co_price" readonly="readonly" value="@Model.commodity.Co_price" />
+                    </td>
+                    <td class="">
+                        计量单位
+                    </td>
+                    <td>
+                        <input type="text" class=" " id="Co_unit" name="Co_unit" readonly="readonly" value="@Model.commodity.Co_unit" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="">
+                        重量
+                    </td>
+                    <td>
+                        <input type="text" class=" " id="Co_weight" name="Co_weight" readonly="readonly" value="@Model.commodity.Co_weight" />
+                    </td>
+                    <td class="">
+                        备注
+                    </td>
+                    <td>
+                        <input type="text" class=" " id="Co_note" name="Co_note" readonly="readonly" value="@Model.commodity.Co_note" />
+                    </td>
+                </tr>
+            </table>
+        }
+    </div>

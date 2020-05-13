@@ -131,7 +131,7 @@ namespace 仓储系统.DataAccessLayer
             WarehouseERPDAL dB = new WarehouseERPDAL();
             user.U_fail = 0;
             var model = dB.users.Where(c => c.U_name == name).FirstOrDefault();
-            if (model != null && model.Equals(new User()))
+            if (model != null && !model.Equals(new User()))
             {
                 //model.U_password = user.U_password;
                 Change(ref model, user);
