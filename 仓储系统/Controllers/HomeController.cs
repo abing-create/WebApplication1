@@ -11,6 +11,7 @@ using 仓储系统.Filters;
 using 仓储系统.BarcodeScanner;
 using System.Configuration;
 using PagedList;
+using 仓储系统.GenerateBarcode;
 
 namespace 仓储系统.Controllers
 {
@@ -183,7 +184,17 @@ namespace 仓储系统.Controllers
             inOutWarehouseViewModel.UserName = Session["User"].ToString();
             if (BtnSubmit == "手动入库" || BtnSubmit == "手动出库")
             {
-                if (SelectIntoOut)
+                if (!SelectIntoOut)
+                {
+                    //显示物品的数据
+                    CommodityBusinessLayer commodityBusinessLayer = new CommodityBusinessLayer();
+                    inOutWarehouseViewModel.commodity = commodityBusinessLayer.GetCommodity(sid, commodity);
+                    if (!inOutWarehouseViewModel.commodity.Equals(commodity))
+                    {
+                        SelectIntoOut = true;
+                    }
+                }
+                else
                 {
                     //存储数据到Storage表(出入库单号、物品号、物品数量)
                     StorageBusinessLayer storageBusinessLayer = new StorageBusinessLayer();
@@ -197,16 +208,6 @@ namespace 仓储系统.Controllers
 
                     SelectIntoOut = false;
                     inOutWarehouseViewModel.commodity = new Commodity();
-                }
-                else
-                {
-                    //显示物品的数据
-                    CommodityBusinessLayer commodityBusinessLayer = new CommodityBusinessLayer();
-                    inOutWarehouseViewModel.commodity = commodityBusinessLayer.GetCommodity(sid, commodity);
-                    if (!inOutWarehouseViewModel.commodity.Equals(commodity))
-                    {
-                        SelectIntoOut = true;
-                    }
                 }
             }
             else
@@ -598,7 +599,22 @@ namespace 仓储系统.Controllers
             //每页显示多少条
             int pageSize = int.Parse(ConfigurationManager.AppSettings["pageSize"]);
 
-            attributesViewModel.commodities = commodityBusinessLayer.GetCommodity().ToPagedList(pageNumber, pageSize);
+            List<Commodity> commodities = commodityBusinessLayer.GetCommodity();
+            List<CommPathViewModel> commPathViewModels = new List<CommPathViewModel>();
+            string path;
+            foreach (var com in commodities)
+            {
+                path = Server.MapPath("/image/");
+                if (!System.IO.File.Exists(path))
+                {
+                    //如果不存在这个文件,则创建
+                    BarCode barCode = new BarCode();
+                    barCode.Code(com.Co_bar_code, path);
+                }
+                commPathViewModels.Add(new CommPathViewModel() { commodity = com, path = "/image/" + com.Co_bar_code + ".jpg" });
+            }
+            attributesViewModel.commPathViewModels = commPathViewModels.ToPagedList(pageNumber, pageSize);
+            //attributesViewModel.commodities = commodities.ToPagedList(pageNumber, pageSize);
 
             attributesViewModel.commoditie = new Commodity();
 
@@ -616,6 +632,8 @@ namespace 仓储系统.Controllers
         {
             if (BtnSubmit != "Attributes")
                 RedirectToAction("view");
+            if(name == null || name == "")
+                return RedirectToAction("Attributes");
             //如果BtnSubmit是触发的搜索按键
             AttributesViewModel attributesViewModel = new AttributesViewModel();
             attributesViewModel.IsSearch = true;
@@ -628,7 +646,22 @@ namespace 仓储系统.Controllers
             //每页显示多少条
             int pageSize = int.Parse(ConfigurationManager.AppSettings["pageSize"]);
 
-            attributesViewModel.commodities = commodityBusinessLayer.GetCommodity(Select, name).ToPagedList(pageNumber, pageSize);
+            //attributesViewModel.commodities = commodityBusinessLayer.GetCommodity(Select, name).ToPagedList(pageNumber, pageSize);
+            List<Commodity> commodities = commodityBusinessLayer.GetCommodity(Select, name);
+            List<CommPathViewModel> commPathViewModels = new List<CommPathViewModel>();
+            string path;
+            foreach (var com in commodities)
+            {
+                path = Server.MapPath("/image/");
+                if (!System.IO.File.Exists(path))
+                {
+                    //如果不存在这个文件,则创建
+                    BarCode barCode = new BarCode();
+                    barCode.Code(com.Co_bar_code, path);
+                }
+                commPathViewModels.Add(new CommPathViewModel() { commodity = com, path = "/image/" + com.Co_bar_code + ".jpg" });
+            }
+            attributesViewModel.commPathViewModels = commPathViewModels.ToPagedList(pageNumber, pageSize);
 
             attributesViewModel.commoditie = new Commodity();
 
@@ -648,12 +681,20 @@ namespace 仓储系统.Controllers
             CommodityBusinessLayer commodityBusinessLayer = new CommodityBusinessLayer();
             if (BtnSubmit == "添加")
             {
-                commodityBusinessLayer.InsertCommodity(model);
+                //如果没有填写条码号，将默认以当前时间创建一个条码号
+                if(model.Co_bar_code == null || model.Co_bar_code == "")
+                {
+                    model.Co_bar_code = DateTime.Now.ToString("yyMMddHHmmss");
+                }
+                //保存图片地址
+                string path = Server.MapPath("/image/");
+                commodityBusinessLayer.InsertCommodity(model, path);
                 return RedirectToAction("Attributes");
             }
             else if (BtnSubmit == "提交更改")
             {
-                commodityBusinessLayer.UpdataCommoditys(model.Co_Id.ToString(), model);
+                string path = Server.MapPath("/image/");
+                commodityBusinessLayer.UpdataCommoditys(model.Co_Id.ToString(), model, path);
                 return RedirectToAction("Attributes");
             }
 
@@ -794,6 +835,8 @@ namespace 仓储系统.Controllers
         [HttpPost]
         public ActionResult searchStorage(string Select, string uname, string BtnSubmit, int? page)
         {
+            if(uname == null || uname == "")
+                return RedirectToAction("RedirectStorage");
             MyStorageBusinessLayer storageBusinessLayer = new MyStorageBusinessLayer();
             //判断是否为管理员，是管理员则为空，不是则为none，对应修改按钮是否显示
             bool Display = (level.Admin == (level)Session["level"]);
@@ -811,6 +854,8 @@ namespace 仓储系统.Controllers
         [HttpPost]
         public ActionResult moreSearchStorage(SearchStorageViewModel searchStorageViewModel, string BtnSubmit)
         {
+            if(searchStorageViewModel.Equals(new SearchStorageViewModel()))
+                return RedirectToAction("RedirectStorage");
             IsSearchExist = true;
             S_userMember.Clear();
             S_commodityMember.Clear();
@@ -1000,7 +1045,8 @@ namespace 仓储系统.Controllers
                     case "物品":
                         //Commodity表的删除操作
                         CommodityBusinessLayer commodityBusinessLayer = new CommodityBusinessLayer();
-                        commodityBusinessLayer.DeleteCommodity(D_id);
+                        string path = Server.MapPath("/image/");
+                        commodityBusinessLayer.DeleteCommodity(D_id, path);
                         return RedirectToAction("Attributes");
                     case "用户":
                         UserBusinessLayer userBusinessLayer = new UserBusinessLayer();

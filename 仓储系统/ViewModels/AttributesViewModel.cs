@@ -12,10 +12,14 @@ namespace 仓储系统.ViewModels
     /// </summary>
     public class AttributesViewModel : LayoutViewModel
     {
-        public IPagedList<Commodity> commodities { get; set; }
+       // public IPagedList<Commodity> commodities { get; set; }
+
+        public IPagedList<CommPathViewModel> commPathViewModels { get; set; }
 
         public Commodity commoditie { get; set; }
 
         public bool IsSearch { get; set; }
+
+        //public string path { get; set; }
     }
 }

@@ -6,6 +6,12 @@
     ViewBag.Title = "物品设置";
 }
 
+<script>
+    function getPath(name) {
+        return "~/image/" + name + ".jpg";
+    }
+</script>
+
 <h2> @ViewBag.Title</h2>
 <div class="container dropdown">
 
@@ -48,52 +54,53 @@
             <th scope="col">备注</th>
             <th scope="col">操作</th>
         </tr>
-        @foreach (var item in Model.commodities)
+        @foreach (var item in Model.commPathViewModels)
         {
             <tr>
-                <td>@item.Co_Id</td>
-                <td>@item.Co_name</td>
-                <td>@item.Co_bar_code</td>
-                <td>@item.Co_type</td>
-                <td>@item.Co_specification</td>
-                <td>@item.Co_price</td>
-                <td>@item.Co_unit</td>
-                <td>@item.Co_weight</td>
+                <td>@item.commodity.Co_Id</td>
+                <td>@item.commodity.Co_name</td>
+                <td>@item.commodity.Co_bar_code</td>
+                <td>@item.commodity.Co_type</td>
+                <td>@item.commodity.Co_specification</td>
+                <td>@item.commodity.Co_price</td>
+                <td>@item.commodity.Co_unit</td>
+                <td>@item.commodity.Co_weight</td>
                 <td>...</td>
                 <td>
-                    <a href="#s_@item.Co_Id" data-toggle="modal" name="">查看</a>
-                    <a href="#u_@item.Co_Id" data-toggle="modal" name="">修改</a>
-                    <a href="#d_@item.Co_Id" data-toggle="modal" name="">删除</a>
+                    <a href="#s_@item.commodity.Co_Id" data-toggle="modal" name="">查看</a>
+                    <a href="#u_@item.commodity.Co_Id" data-toggle="modal" name="">修改</a>
+                    <a href="#d_@item.commodity.Co_Id" data-toggle="modal" name="">删除</a>
+                    <a href="@item.path">条码</a>
                     <!--查看-->
-                    <div class="modal fade" id="s_@item.Co_Id" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal fade" id="s_@item.commodity.Co_Id" tabindex="-1" role="dialog" aria-hidden="true">
                         @{
-                            Html.RenderPartial("DisplayCommodity", item);
+                            Html.RenderPartial("DisplayCommodity", item.commodity);
                         }
                     </div>
                     <!--修改-->
-                    <div class="modal fade" id="u_@item.Co_Id" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal fade" id="u_@item.commodity.Co_Id" tabindex="-1" role="dialog" aria-hidden="true">
                         @{
-                            Html.RenderPartial("UpdataCommodity", item);
+                            Html.RenderPartial("UpdataCommodity", item.commodity);
                         }
                     </div>
                     <!--删除-->
-                    <div class="modal fade" id="d_@item.Co_Id" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal fade" id="d_@item.commodity.Co_Id" tabindex="-1" role="dialog" aria-hidden="true">
                         @{
-                            Html.RenderPartial("DeleteItem", new DeleteViewModel() { D_id = item.Co_Id.ToString(), D_name = item.Co_name, T_name = "物品" });
+                            Html.RenderPartial("DeleteItem", new DeleteViewModel() { D_id = item.commodity.Co_Id.ToString(), D_name = item.commodity.Co_name, T_name = "物品" });
                         }
                     </div>
                 </td>
             </tr>
         }
     </table>
-    每页 @Model.commodities.PageSize 条记录，共 @Model.commodities.PageCount 页，当前第 @Model.commodities.PageNumber 页
+    每页 @Model.commPathViewModels.PageSize 条记录，共 @Model.commPathViewModels.PageCount 页，当前第 @Model.commPathViewModels.PageNumber 页
     @if (true)
     {
-        @Html.PagedListPager(Model.commodities, page => Url.Action("searchAttrbutetes", new { page }))
+        @Html.PagedListPager(Model.commPathViewModels, page => Url.Action("searchAttrbutetes", new { page }))
     }
     else
     {
-        @Html.PagedListPager(Model.commodities, page => Url.Action("Attributes", new { page }))
+        @Html.PagedListPager(Model.commPathViewModels, page => Url.Action("Attributes", new { page }))
     }
 
     <div class="modal fade" id="addCommodity" tabindex="-1" role="dialog" aria-hidden="true">

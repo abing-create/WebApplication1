@@ -1,0 +1,27 @@
+﻿@{
+    Layout = null;
+}
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <div id="img1">
+        @*实现图片的盒子*@
+
+    </div>
+    <a href="~/image/200517003242.jpg">aa</a>
+    <img border="0" src="~/image/200517003242.jpg" alt="picture" width="160" height="100">
+    @using (Html.BeginForm("Index", "Zxing", FormMethod.Post, new { @id = "delete-form", role = "form" }))
+    {
+        <p>
+            显示文本<input type="text" id="text1" name="name1" value="" /> @*文本框*@
+            <input type="submit" onclick="qqq()" name="name11" value="一维码生成" />@*一维码生成按钮*@
+            <input type="button" onclick="www()" name="name12" value="二维码生成" />@*二维码生成按钮*@
+        </p>
+    }
+</body>
+</html>

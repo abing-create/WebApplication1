@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using 仓储系统.GenerateBarcode;
 using 仓储系统.Models;
 
 namespace 仓储系统.DataAccessLayer
@@ -136,16 +137,27 @@ namespace 仓储系统.DataAccessLayer
         /// </summary>
         /// <param name="commodity">插入的数据</param>
         /// <returns></returns>
-        public  Commodity InsertCommodity(Commodity commodity)
+        public  bool InsertCommodity(Commodity commodity, string path)
         {
             //dB.commoditys.Add(commodity);
             //dB.SaveChanges();
             //return commodity;
+            using (WarehouseERPDAL dB = new WarehouseERPDAL())
+            {
+                try
+                {
+                    dB.commoditys.Add(commodity);
+                    dB.SaveChanges();
+                    BarCode barcode = new BarCode();
+                    barcode.Code(commodity.Co_bar_code, path);
 
-            WarehouseERPDAL dB = new WarehouseERPDAL();
-            dB.commoditys.Add(commodity);
-            dB.SaveChanges();
-            return commodity;
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    return false;
+                }
+            }
         }
 
         private void Change(ref Commodity model, Commodity commodity)
@@ -166,15 +178,31 @@ namespace 仓储系统.DataAccessLayer
         /// </summary>
         /// <param name="name" Commodity的U_nam名字</param>
         /// <param name="commodity">更新成的表</param>
-        public void UpdataCommoditys(string id,  Commodity commodity)
+        public bool UpdataCommoditys(string id,  Commodity commodity, string path)
         {
-            WarehouseERPDAL dB = new WarehouseERPDAL();
-            var model = dB.commoditys.Where(c => c.Co_Id.ToString() == id).FirstOrDefault();
-            if (model != null)
+            using (WarehouseERPDAL dB = new WarehouseERPDAL())
             {
-                Change(ref model, commodity);
+                try
+                {
+                    var model = dB.commoditys.Where(c => c.Co_Id.ToString() == id).FirstOrDefault();
+                    if (model != null && !model.Equals(new Commodity()))
+                    {
+                        BarCode barCode = new BarCode();
+                        if (model.Co_bar_code != commodity.Co_bar_code)
+                        {
+                            barCode.DeleteFile(path + model.Co_bar_code + ".jdg");
+                            barCode.Code(commodity.Co_bar_code, path);
+                        }
+                        Change(ref model, commodity);
+                    }
+                    dB.SaveChanges();
+                    return true;
+                }
+                catch(Exception e)
+                {
+                    return false;
+                }
             }
-            dB.SaveChanges();
         }
 
         /// <summary>
@@ -192,13 +220,17 @@ namespace 仓储系统.DataAccessLayer
         /// 移除名称为编号为id的物品
         /// </summary>
         /// <param name="id"></param>
-        public void DeleteCommodity(string id)
+        public void DeleteCommodity(string id, string path)
         {
             //int my_id = Convert.ToInt32(id);
             WarehouseERPDAL dB = new WarehouseERPDAL();
             var model = dB.commoditys.Where(c => c.Co_Id.ToString() == id).FirstOrDefault();
-            if(model != null)
+            if (model != null && !model.Equals(new Commodity()))
+            {
+                BarCode barCode = new BarCode();
+                barCode.DeleteFile(path);
                 dB.commoditys.Remove(model);
+            }
             dB.SaveChanges();
         }
     }
