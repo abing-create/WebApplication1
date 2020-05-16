@@ -1,4 +1,5 @@
 ﻿@using 仓储系统.ViewModels
+@using PagedList.Mvc;
 @model ExistTableListViewModel
 
 <div class="container">
@@ -18,54 +19,57 @@
                 <th scope="col" colspan="2">操作</th>
             </tr>
             @*@foreach (ExistTableViewModel item in Model.existTableViewModels)
+                    {
+                <tr>
+                    <td>@item.commodity.Co_Id</td>
+                    <td>@item.commodity.Co_name</td>
+                    <td>@item.commodity.Co_bar_code</td>
+                    <td>@item.W_name</td>
+                    <td>@item.exist.Count</td>
+                    <td>@item.exist.IO_Id</td>
+                    <td>@item.U_name</td>
+                    <td>@item.exist.IntoDate.ToString("yyyy-MM-dd")</td>
+                    <td>@item.commodity.Co_type</td>
+                    <td>@item.commodity.Co_price</td>*@
+            @for (int i = 0; i < Model.iPagedLists.Count(); i++)
             {
-        <tr>
-            <td>@item.commodity.Co_Id</td>
-            <td>@item.commodity.Co_name</td>
-            <td>@item.commodity.Co_bar_code</td>
-            <td>@item.W_name</td>
-            <td>@item.exist.Count</td>
-            <td>@item.exist.IO_Id</td>
-            <td>@item.U_name</td>
-            <td>@item.exist.IntoDate.ToString("yyyy-MM-dd")</td>
-            <td>@item.commodity.Co_type</td>
-            <td>@item.commodity.Co_price</td>*@
-            @for (int i = 0; i < Model.existTableViewModels.Count(); i++)
-            { 
-        <tr>
-            <td>@Model.existTableViewModels[i].commodity.Co_Id</td>
-            <td>@Model.existTableViewModels[i].commodity.Co_name</td>
-            <td>@Model.existTableViewModels[i].commodity.Co_bar_code</td>
-            <td>@Model.existTableViewModels[i].W_name</td>
-            <td>@Model.existTableViewModels[i].exist.Count</td>
-            <td>@Model.existTableViewModels[i].exist.IO_Id</td>
-            <td>@Model.existTableViewModels[i].U_name</td>
-            <td>@Model.existTableViewModels[i].exist.IntoDate.ToString("yyyy-MM-dd")</td>
-            <td>@Model.existTableViewModels[i].commodity.Co_type</td>
-            <td>@Model.existTableViewModels[i].commodity.Co_price</td>
-            <td>
-                <a href="#s_@i" data-toggle="modal" name="">查看</a>
-                <a href="#l_@i" data-toggle="modal" name="">报损</a>
-                <a href="#u_@i" data-toggle="modal" style="display:@Model.Display" name="">修改</a>
-                <div class="modal fade" id="s_@i" tabindex="-1" role="dialog" aria-hidden="true">
-                @{
-                    Html.RenderPartial("DisplayExist", @Model.existTableViewModels[i]);
-                }
-            </div>
-            <div class="modal fade" id="l_@i" tabindex="-1" role="dialog" aria-hidden="true">
-                @{
-                    Html.RenderPartial("LossExist", @Model.existTableViewModels[i]);
-                }
-            </div>
-            <div class="modal fade" id="u_@i" tabindex="-1" role="dialog" aria-hidden="true">
-                @{
-                    Html.RenderPartial("UpdataExist", @Model.existTableViewModels[i]);
-                }
-            </div>
-            </td>
-        </tr>
+                <tr>
+                    <td>@Model.iPagedLists[i].commodity.Co_Id</td>
+                    <td>@Model.iPagedLists[i].commodity.Co_name</td>
+                    <td>@Model.iPagedLists[i].commodity.Co_bar_code</td>
+                    <td>@Model.iPagedLists[i].W_name</td>
+                    <td>@Model.iPagedLists[i].exist.Count</td>
+                    <td>@Model.iPagedLists[i].exist.IO_Id</td>
+                    <td>@Model.iPagedLists[i].U_name</td>
+                    <td>@Model.iPagedLists[i].exist.IntoDate.ToString("yyyy-MM-dd")</td>
+                    <td>@Model.iPagedLists[i].commodity.Co_type</td>
+                    <td>@Model.iPagedLists[i].commodity.Co_price</td>
+                    <td>
+                        <a href="#s_@i" data-toggle="modal" name="">查看</a>
+                        <a href="#l_@i" data-toggle="modal" name="">报损</a>
+                        <a href="#u_@i" data-toggle="modal" style="display:@Model.Display" name="">修改</a>
+                        <div class="modal fade" id="s_@i" tabindex="-1" role="dialog" aria-hidden="true">
+                            @{
+                                Html.RenderPartial("DisplayExist", @Model.iPagedLists[i]);
+                            }
+                        </div>
+                        <div class="modal fade" id="l_@i" tabindex="-1" role="dialog" aria-hidden="true">
+                            @{
+                                Html.RenderPartial("LossExist", @Model.iPagedLists[i]);
+                            }
+                        </div>
+                        <div class="modal fade" id="u_@i" tabindex="-1" role="dialog" aria-hidden="true">
+                            @{
+                                Html.RenderPartial("UpdataExist", @Model.iPagedLists[i]);
+                            }
+                        </div>
+                    </td>
+                </tr>
             }
         </table>
+
+        每页 @Model.iPagedLists.PageSize 条记录，共 @Model.iPagedLists.PageCount 页，当前第 @Model.iPagedLists.PageNumber 页
+        @Html.PagedListPager(Model.iPagedLists, page => Url.Action("Storage", new { page }))
     </div>
 </div>
 

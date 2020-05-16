@@ -9,6 +9,8 @@ using 仓储系统.Models;
 using 仓储系统.BusinessLayer;
 using 仓储系统.Filters;
 using 仓储系统.BarcodeScanner;
+using System.Configuration;
+using PagedList;
 
 namespace 仓储系统.Controllers
 {
@@ -31,10 +33,15 @@ namespace 仓储系统.Controllers
         //}
 
         #region 全局变量
-        public static level level;          //等级!
-        private static string Table_Id;     //出入库表单号
-        private static int userId = 0;      //登录者编号!
-        private static int wareId = 0;      //仓库编号!
+        public static bool NoChangePage = false;        //是否改变页码
+        private static int page;                        //表格显示的页码
+        public static level level;                      //等级!
+        private static string Table_Id;                 //出入库表单号
+        private static int userId = 0;                  //登录者编号!
+        private static int wareId = 0;                  //仓库编号!
+
+        //用户信息界面
+        private static bool IsShowRecordTable = false;    //是否显示用户登录信息的表格
 
         //出入库界面信息
         private static bool IsIntoOutWaretor = false;   //是否按下出库或者入库的按钮
@@ -299,6 +306,7 @@ namespace 仓储系统.Controllers
         #region 用户信息
         public ActionResult Information()
         {
+            HomeController.page = 1;
             //Session["LoginRecord"] = false;
 
             //个人信息页面视图模型
@@ -319,10 +327,13 @@ namespace 仓储系统.Controllers
             switch (select)
             {
                 case "查询记录":
-                    Session["LoginRecord"] = !Convert.ToBoolean(Session["LoginRecord"]);
+                    //Session["LoginRecord"] = !Convert.ToBoolean(Session["LoginRecord"]);
+                    IsShowRecordTable = !IsShowRecordTable;
                     break;
                 case "修改信息":
                     Session["LoginRecord"] = false;
+                    break;
+                default:
                     break;
             }
 
@@ -444,30 +455,37 @@ namespace 仓储系统.Controllers
 
         }
 
-        public ActionResult LoginRecord()
+        public ActionResult LoginRecord(int? page)
         {
             //如果Session["LoginRecord"]为true,则显示usertable,每次都触发information都给改变Session["LoginRecord"]取反
-            if (Session["LoginRecord"] != null && Convert.ToBoolean(Session["LoginRecord"]))
+            if (IsShowRecordTable)
             {
-                RecordListViewModel recordListViewModel = new RecordListViewModel();
+                //RecordListViewModel recordListViewModel = new RecordListViewModel();
                 RecordBusinessLayer recordBusinessLayer = new RecordBusinessLayer();
-                recordListViewModel.records = new List<RecordViewModel>();
+                //recordListViewModel.records = new List<RecordViewModel>();
                 List<Record> records;
                 if ((level)Session["level"] == level.Admin)
                     records = recordBusinessLayer.GetRecord();
                 else
                     records = recordBusinessLayer.GetRecord(Session["User"].ToString());
-                foreach (Record Irecord in records)
-                {
-                    recordListViewModel.records.Add(new RecordViewModel(Irecord));
-                }
-                return PartialView("LoginRecord", recordListViewModel);
+                //foreach (Record Irecord in records)
+                //{
+                //    recordListViewModel.records.Add(new RecordViewModel(Irecord));
+                //}
+                //return PartialView("LoginRecord", recordListViewModel);
+                //第几页
+                int pageNumber =page ?? 1;
+                //每页显示多少条
+                int pageSize = int.Parse(ConfigurationManager.AppSettings["pageSize"]);
+                //通过ToPagedList扩展方法进行分页
+                IPagedList<Record> pagedList = records.ToPagedList(pageNumber, pageSize);
+                return PartialView(pagedList);
             }
-            Session["LoginRecord"] = false;
+            //IsShowRecordTable = false;
             return new EmptyResult();
         }
 
-        public ActionResult UserTable()
+        public ActionResult UserTable(int? page)
         {
             //如果Session["UserTable"]为true,则显示usertable,每次都触发information都给改变Session["UserTable"]取反
             if (Session["UserTable"] != null && Convert.ToBoolean(Session["UserTable"]))
@@ -475,13 +493,17 @@ namespace 仓储系统.Controllers
                 //UserListViewModel userListViewModel = new UserListViewModel();
                 //UserBusinessLayer userBusinessLayer = new UserBusinessLayer();
                 //userListViewModel.users = userBusinessLayer.GetUser();
+                //第几页
+                int pageNumber = page ?? 1;
+                //每页显示多少条
+                int pageSize = int.Parse(ConfigurationManager.AppSettings["pageSize"]);
 
                 UserListViewModel userListViewModel = new UserListViewModel();
                 UserBusinessLayer userBusinessLayer = new UserBusinessLayer();
                 if(IsSearchPeople)
-                    userListViewModel.users = userBusinessLayer.GetUsers(S_select, S_name);//得到指定条件的人;
+                    userListViewModel.users = userBusinessLayer.GetUsers(S_select, S_name).ToPagedList(pageNumber, pageSize);//得到指定条件的人;
                 else
-                    userListViewModel.users = userBusinessLayer.GetUser();
+                    userListViewModel.users = userBusinessLayer.GetUser().ToPagedList(pageNumber, pageSize);
 
                 return PartialView("UserTable", userListViewModel);
             }
@@ -562,14 +584,21 @@ namespace 仓储系统.Controllers
         #region 物品界面
 
         #region 显示界面
-        [HttpGet]
-        public ActionResult Attributes()
+        //[HttpGet]
+        public ActionResult Attributes(int? page)
         {
             AttributesViewModel attributesViewModel = new AttributesViewModel();
+            attributesViewModel.IsSearch = false;
             attributesViewModel.UserName = Session["User"].ToString();
 
             CommodityBusinessLayer commodityBusinessLayer = new CommodityBusinessLayer();
-            attributesViewModel.commodities = commodityBusinessLayer.GetCommodity();
+
+            //第几页
+            int pageNumber = page ?? 1;
+            //每页显示多少条
+            int pageSize = int.Parse(ConfigurationManager.AppSettings["pageSize"]);
+
+            attributesViewModel.commodities = commodityBusinessLayer.GetCommodity().ToPagedList(pageNumber, pageSize);
 
             attributesViewModel.commoditie = new Commodity();
 
@@ -583,14 +612,23 @@ namespace 仓储系统.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult searchAttrbutetes(string Select, string name, string BtnSubmit)
+        public ActionResult searchAttrbutetes(string Select, string name, string BtnSubmit, int? page)
         {
+            if (BtnSubmit != "Attributes")
+                RedirectToAction("view");
             //如果BtnSubmit是触发的搜索按键
             AttributesViewModel attributesViewModel = new AttributesViewModel();
+            attributesViewModel.IsSearch = true;
             attributesViewModel.UserName = Session["User"].ToString();//继承的，显示右边的用户名
 
             CommodityBusinessLayer commodityBusinessLayer = new CommodityBusinessLayer();
-            attributesViewModel.commodities = commodityBusinessLayer.GetCommodity(Select, name);
+
+            //第几页
+            int pageNumber = page ?? 1;
+            //每页显示多少条
+            int pageSize = int.Parse(ConfigurationManager.AppSettings["pageSize"]);
+
+            attributesViewModel.commodities = commodityBusinessLayer.GetCommodity(Select, name).ToPagedList(pageNumber, pageSize);
 
             attributesViewModel.commoditie = new Commodity();
 
@@ -629,8 +667,8 @@ namespace 仓储系统.Controllers
         #region 存储界面
 
         #region 存储界面显示
-        [HttpGet]
-        public ActionResult Storage()
+        //[HttpGet]
+        public ActionResult Storage(int? page)
         {
             //StorageViewModel storageViewModel = new StorageViewModel();
             //storageViewModel.existTableListViewModel = new ExistTableListViewModel();
@@ -641,22 +679,28 @@ namespace 仓储系统.Controllers
             //判断是否为管理员，是管理员则为空，不是则为none，对应修改按钮是否显示
             bool Display = (level.Admin == (level)Session["level"]);
             //获取显示的数据
-            StorageViewModel storageViewMode1 = storageBusinessLayer.GetStorageViewModel(Display, Session["User"].ToString());
+            int pageNumber = page ?? 1;
+            int pageSize = int.Parse(ConfigurationManager.AppSettings["pageSize"]);
+            StorageViewModel storageViewMode1 = storageBusinessLayer.GetStorageViewModel(Display, Session["User"].ToString(), pageNumber); 
+            storageViewMode1.existTableListViewModel.iPagedLists = storageViewMode1.existTableListViewModel.existTableViewModels.ToPagedList(pageNumber, pageSize);
+
 
             return View("Storage", storageViewMode1);
         }
         #endregion
 
         #region 重定向专用 
-        [HttpGet]
-        public ActionResult RedirectStorage()
+        //[HttpGet]
+        public ActionResult RedirectStorage(int? page)
         {
             MyStorageBusinessLayer storageBusinessLayer = new MyStorageBusinessLayer();
             //判断是否为管理员，是管理员则为空，不是则为none，对应修改按钮是否显示
             bool Display = (level.Admin == (level)Session["level"]);
             //获取显示的数据
             StorageViewModel storageViewMode1;
-            while(IsSearchExist)
+            int pageSize = int.Parse(ConfigurationManager.AppSettings["pageSize"]);
+            int pageNumber = page ?? 1;
+            while (IsSearchExist)
             {
                 //获取user id
                 string U_id = null;
@@ -671,7 +715,7 @@ namespace 仓储系统.Controllers
                     }
 
                 //获取全部exist的数据
-                storageViewMode1 = storageBusinessLayer.GetStorageViewModel(Display, Session["User"].ToString());
+                storageViewMode1 = storageBusinessLayer.GetStorageViewModel(Display, Session["User"].ToString(), pageNumber);
 
                 //获取comm id集合
                 List<Commodity> commodities = new List<Commodity>();
@@ -734,11 +778,13 @@ namespace 仓储系统.Controllers
                     }
                 }
 
-               // storageViewMode1 = storageBusinessLayer.GetStorageViewModel(Display, Session["User"].ToString());
+                // storageViewMode1 = storageBusinessLayer.GetStorageViewModel(Display, Session["User"].ToString());
+                storageViewMode1.existTableListViewModel.iPagedLists = storageViewMode1.existTableListViewModel.existTableViewModels.ToPagedList(pageNumber, pageSize);
                 return View("Storage", storageViewMode1);
             }
 
-            storageViewMode1 = storageBusinessLayer.GetStorageViewModel(Display, Session["User"].ToString());
+            storageViewMode1 = storageBusinessLayer.GetStorageViewModel(Display, Session["User"].ToString()); 
+            storageViewMode1.existTableListViewModel.iPagedLists = storageViewMode1.existTableListViewModel.existTableViewModels.ToPagedList(pageNumber, pageSize);
             return View("Storage", storageViewMode1);
         }
 
@@ -746,13 +792,16 @@ namespace 仓储系统.Controllers
 
         #region 单项搜索
         [HttpPost]
-        public ActionResult searchStorage(string Select, string uname, string BtnSubmit)
+        public ActionResult searchStorage(string Select, string uname, string BtnSubmit, int? page)
         {
             MyStorageBusinessLayer storageBusinessLayer = new MyStorageBusinessLayer();
             //判断是否为管理员，是管理员则为空，不是则为none，对应修改按钮是否显示
             bool Display = (level.Admin == (level)Session["level"]);
             //获取显示的数据
             StorageViewModel storageViewMode1 = storageBusinessLayer.GetStorageViewModel(Display, Session["User"].ToString(), Select, uname);
+            int pageSize = int.Parse(ConfigurationManager.AppSettings["pageSize"]);
+            int pageNumber = page ?? 1;
+            storageViewMode1.existTableListViewModel.iPagedLists = storageViewMode1.existTableListViewModel.existTableViewModels.ToPagedList(pageNumber, pageSize);
 
             return View("Storage", storageViewMode1);
         }
@@ -830,7 +879,7 @@ namespace 仓储系统.Controllers
 
         #region 仓库界面
         //[AdminFilter]
-        public ActionResult Warehouse()
+        public ActionResult Warehouse(int? page)
         {
             WarehouseViewModel warehouseViewModel = new WarehouseViewModel();
             //判断是否是管理人员，是则有权限进行修改
@@ -841,8 +890,20 @@ namespace 仓储系统.Controllers
 
             warehouseViewModel.UserName = Session["User"].ToString();
 
+            //第几页
+            int pageNumber = page ?? 1;
+            if(NoChangePage)
+            {
+                pageNumber = HomeController.page;
+                NoChangePage = false;
+            }
+            HomeController.page = pageNumber;
+
+            //每页显示多少条
+            int pageSize = int.Parse(ConfigurationManager.AppSettings["pageSize"]);
+
             WarehouseBusinessLayer warehouseBusinessLayer = new WarehouseBusinessLayer();
-            warehouseViewModel.warehouses = warehouseBusinessLayer.GetWarehouse();
+            warehouseViewModel.warehouses = warehouseBusinessLayer.GetWarehouse().ToPagedList(pageNumber, pageSize);
 
             return View("Warehouse", warehouseViewModel);
         }
@@ -859,26 +920,18 @@ namespace 仓储系统.Controllers
 
             warehouseViewModel.UserName = Session["User"].ToString();
 
-            WarehouseBusinessLayer warehouseBusinessLayer = new WarehouseBusinessLayer();
-            warehouseViewModel.warehouses = warehouseBusinessLayer.GetWarehouse(wareName);
+            WarehouseBusinessLayer warehouseBusinessLayer = new WarehouseBusinessLayer();//第几页
+
+            int pageNumber = 1;
+            //每页显示多少条
+            int pageSize = int.Parse(ConfigurationManager.AppSettings["pageSize"]);
+            warehouseViewModel.warehouses = warehouseBusinessLayer.GetWarehouse(wareName).ToPagedList(pageNumber, pageSize);
 
             return View("Warehouse", warehouseViewModel);
         }
-
+            
         /// <summary>
-        /// 添加仓库的页面
-        /// </summary>
-        /// <returns></returns>
-        //public ActionResult CreateWarehouse()
-        //{
-        //    CreateWarehouseViewModel createWarehouseViewModel = new CreateWarehouseViewModel();
-        //    createWarehouseViewModel.warehouse = new Warehouse();
-
-        //    return PartialView("CreateWarehouse", createWarehouseViewModel);
-        //}
-
-        /// <summary>
-        /// 添加仓库页面的操作
+        /// 添加、修改仓库页面的操作
         /// </summary>
         /// <param name="model"></param>
         /// <param name="BtnSubmit"></param>
@@ -891,11 +944,14 @@ namespace 仓储系统.Controllers
             WarehouseBusinessLayer warehouseBusinessLayer = new WarehouseBusinessLayer();
             if (BtnSubmit == "添加")
             {
+                //添加页面
                 warehouseBusinessLayer.InsertWarehouse(model);
                 return RedirectToAction("Warehouse");
             }
             else if (BtnSubmit == "提交更改")
             {
+                //修改页面
+                NoChangePage = true;
                 warehouseBusinessLayer.InputWarehouse(model.Wa_name, model);
                 return RedirectToAction("Warehouse");
             }
@@ -903,7 +959,7 @@ namespace 仓储系统.Controllers
             //如果不是按键操作，刷新本页面
             CreateWarehouseViewModel createWarehouseViewModel = new CreateWarehouseViewModel();
             createWarehouseViewModel.warehouse = new Warehouse();
-            return PartialView("CreateWarehouse", createWarehouseViewModel); ;
+            return PartialView("CreateWarehouse", createWarehouseViewModel); 
         }
 
         [HttpPost]

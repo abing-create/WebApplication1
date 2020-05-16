@@ -1,5 +1,6 @@
 ﻿@using 仓储系统.Models
 @using 仓储系统.ViewModels
+@using PagedList.Mvc;
 @model UserListViewModel
 
 
@@ -46,7 +47,7 @@
                 <th scope="col">员工性别</th>
                 <th scope="col" colspan="2">操作</th>
             </tr>
-            @foreach (User item in Model.users)
+            @foreach (var item in Model.users)
             {
                 <tr>
                     <td>@item.U_Id</td>
@@ -82,5 +83,8 @@
                 </tr>
             }
         </table>
+        每页 @Model.users.PageSize 条记录，共 @Model.users.PageCount 页，当前第 @Model.users.PageNumber 页
+        @Html.PagedListPager(Model.users, page => Url.Action("Information", new { page }))
+
     </div>
 </div>

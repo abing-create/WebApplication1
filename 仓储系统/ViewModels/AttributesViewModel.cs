@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PagedList;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,8 +12,10 @@ namespace 仓储系统.ViewModels
     /// </summary>
     public class AttributesViewModel : LayoutViewModel
     {
-        public List<Commodity> commodities { get; set; }
+        public IPagedList<Commodity> commodities { get; set; }
 
         public Commodity commoditie { get; set; }
+
+        public bool IsSearch { get; set; }
     }
 }

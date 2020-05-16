@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Index</h2>
+<div>
+    <form id="myForm">
+        <div>
+            @Html.Label("Name", "姓名")
+            @Html.TextBox("Name", "Darren")
+        </div>
+        <div>
+            @Html.Label("Age", "年龄")
+            @Html.TextBox("Age", "21")
+        </div>
+    </form>
+    <div>
+        <button id="btn">提交</button>
+    </div>
+
+</div>
+<div id="result">.......</div>
+@section scripts
+{
+    <script type="text/javascript">
+        $(function() {
+            $('#btn').on("click", function() {
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetInfo","Ajax")',
+                    data: $('#myForm').serialize(),
+                    dataType: 'html',
+                    success: function(data) {
+                        $('#result').html(data);//传递到id号result的div
+                    }
+                });
+            });
+        });
+    </script>
+}

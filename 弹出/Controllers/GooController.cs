@@ -1,5 +1,7 @@
-﻿using System;
+﻿using PagedList;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -12,15 +14,28 @@ namespace 弹出.Content
         // GET: Goo
         public ActionResult Index()
         {
-            CostomViewModel costomViewModel = new CostomViewModel();
-            costomViewModel.CustomerId = "abign";
-            costomViewModel.CompanyName = "ggfgg";
-            return View("Index", costomViewModel);
+            
+            return View();
         }
 
-        public ActionResult Test()
+        public ActionResult People(int? page)
         {
-            return PartialView();
+            List<Person> people = new List<Person>();
+            for(int i = 0; i  < 50; i++)
+            {
+                people.Add(new Person() {name = "user", age = i });
+            }
+            //people = people.OrderBy(x => x.age);
+
+            //第几页
+            int pageNumber = page ?? 1;
+            //每页显示多少条
+            int pageSize = int.Parse(ConfigurationManager.AppSettings["pageSize"]);            
+            //通过ToPagedList扩展方法进行分页
+            IPagedList<Person> pagedList = people.ToPagedList(pageNumber, pageSize);
+
+            //将分页处理后的列表传给View
+            return PartialView(pagedList);
         }
 
 

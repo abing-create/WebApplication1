@@ -1,5 +1,6 @@
 ﻿@using 仓储系统.ViewModels
 @using 仓储系统.Models
+@using PagedList.Mvc;
 @model AttributesViewModel
 @{
     ViewBag.Title = "物品设置";
@@ -47,7 +48,7 @@
             <th scope="col">备注</th>
             <th scope="col">操作</th>
         </tr>
-        @foreach (Commodity item in Model.commodities)
+        @foreach (var item in Model.commodities)
         {
             <tr>
                 <td>@item.Co_Id</td>
@@ -85,6 +86,15 @@
             </tr>
         }
     </table>
+    每页 @Model.commodities.PageSize 条记录，共 @Model.commodities.PageCount 页，当前第 @Model.commodities.PageNumber 页
+    @if (true)
+    {
+        @Html.PagedListPager(Model.commodities, page => Url.Action("searchAttrbutetes", new { page }))
+    }
+    else
+    {
+        @Html.PagedListPager(Model.commodities, page => Url.Action("Attributes", new { page }))
+    }
 
     <div class="modal fade" id="addCommodity" tabindex="-1" role="dialog" aria-hidden="true">
         @{

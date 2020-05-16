@@ -1,5 +1,6 @@
 ﻿@using 仓储系统.ViewModels
 @using 仓储系统.Models
+@using PagedList.Mvc;
 @model WarehouseViewModel
 @{
     ViewBag.Title = "仓库管理";
@@ -33,7 +34,7 @@
             <th scope="col">可用容量</th>
             <th scope="col">操作</th>
         </tr>
-        @foreach (Warehouse item in Model.warehouses)
+        @foreach (var item in Model.warehouses)
         {
             <tr>
                 <td>@item.Wa_Id</td>
@@ -66,6 +67,10 @@
             </tr>
         }
     </table>
+
+    每页 @Model.warehouses.PageSize 条记录，共 @Model.warehouses.PageCount 页，当前第 @Model.warehouses.PageNumber 页
+    @Html.PagedListPager(Model.warehouses, page => Url.Action("Warehouse", new { page }))
+
     <div class=" col">
         <div class="modal fade" id="addWarehouse" tabindex="-1" role="dialog" aria-hidden="true">
             @{

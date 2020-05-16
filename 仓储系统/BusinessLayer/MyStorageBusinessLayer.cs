@@ -5,6 +5,8 @@ using System.Web;
 using 仓储系统.ViewModels;
 using 仓储系统.Models;
 using 仓储系统.DataAccessLayer;
+using PagedList;
+using System.Configuration;
 
 namespace 仓储系统.BusinessLayer
 {
@@ -15,14 +17,15 @@ namespace 仓储系统.BusinessLayer
         /// </summary>
         /// <param name="U_name"></param>
         /// <returns></returns>
-        public StorageViewModel GetStorageViewModel(bool Display, string U_name)
+        public StorageViewModel GetStorageViewModel(bool Display, string U_name, int pageNumber = 1)
         {
             StorageViewModel storageViewModel = new StorageViewModel();
             storageViewModel.UserName = U_name;
             storageViewModel.existTableListViewModel = new ExistTableListViewModel();
             storageViewModel.existTableListViewModel.Display = Display ? "" : "none";
-            storageViewModel.existTableListViewModel.existTableViewModels = new List<ExistTableViewModel>();
-                        
+            //storageViewModel.existTableListViewModel.existTableViewModels = new List<ExistTableViewModel>();
+            List<ExistTableViewModel> existTableViewModels = new List<ExistTableViewModel>();
+
             ExistBusinessLayer existBusinessLayer = new ExistBusinessLayer();
             CommodityBusinessLayer commodityBusinessLayer = new CommodityBusinessLayer();
             OutIntoWareBusinessLayer outIntoWareBusinessLayer = new OutIntoWareBusinessLayer();
@@ -45,8 +48,13 @@ namespace 仓储系统.BusinessLayer
                 existTableViewModel.W_name = warehouseBusinessLayer.GetWarehouse("仓库编号", item.W_id.ToString()).FirstOrDefault().Wa_name;
                 existTableViewModel.commodity = commodityBusinessLayer.GetCommodity("商品编号", item.Co_id.ToString()).FirstOrDefault();
 
-                storageViewModel.existTableListViewModel.existTableViewModels.Add(existTableViewModel);
+                //storageViewModel.existTableListViewModel.existTableViewModels.Add(existTableViewModel);
+                existTableViewModels.Add(existTableViewModel);
             }
+            
+            //每页显示多少条
+            //int pageSize = int.Parse(ConfigurationManager.AppSettings["pageSize"]);
+            storageViewModel.existTableListViewModel.existTableViewModels = existTableViewModels;
 
             return storageViewModel;
         }
@@ -58,13 +66,14 @@ namespace 仓储系统.BusinessLayer
         /// <param name="Select">属性</param>
         /// <param name="name">属性值</param>
         /// <returns></returns>
-        public StorageViewModel GetStorageViewModel(bool Display, string U_name, string Select, string name)
+        public StorageViewModel GetStorageViewModel(bool Display, string U_name, string Select, string name, int pageNumber = 1)
         {
             StorageViewModel storageViewModel = new StorageViewModel();
             storageViewModel.UserName = U_name;
             storageViewModel.existTableListViewModel = new ExistTableListViewModel();
             storageViewModel.existTableListViewModel.Display = Display ? "" : "none";
-            storageViewModel.existTableListViewModel.existTableViewModels = new List<ExistTableViewModel>();
+            //storageViewModel.existTableListViewModel.existTableViewModels = new List<ExistTableViewModel>();
+            List<ExistTableViewModel> existTableViewModels = new List<ExistTableViewModel>();
 
             ExistBusinessLayer existBusinessLayer = new ExistBusinessLayer();
             CommodityBusinessLayer commodityBusinessLayer = new CommodityBusinessLayer();
@@ -114,8 +123,13 @@ namespace 仓储系统.BusinessLayer
                 existTableViewModel.commodity = commodityBusinessLayer.GetCommodities(commodityMember).FirstOrDefault();
 
 
-                storageViewModel.existTableListViewModel.existTableViewModels.Add(existTableViewModel);
+                //storageViewModel.existTableListViewModel.existTableViewModels.Add(existTableViewModel);
+                existTableViewModels.Add(existTableViewModel);
             }
+
+            //每页显示多少条
+            //int pageSize = int.Parse(ConfigurationManager.AppSettings["pageSize"]);
+            storageViewModel.existTableListViewModel.existTableViewModels = existTableViewModels;
 
             return storageViewModel;
         }

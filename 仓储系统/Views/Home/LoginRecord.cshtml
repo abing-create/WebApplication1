@@ -1,6 +1,7 @@
-﻿@using 仓储系统.ViewModels
-@model 仓储系统.ViewModels.RecordListViewModel
+﻿@using PagedList.Mvc;
+@model PagedList.IPagedList<仓储系统.Models.Record>
 
+<link href="~/Content/PagedList.css" rel="stylesheet" />
 
 
 <h3 class="text-center">登录记录</h3>
@@ -10,12 +11,15 @@
         <th scope="col">员工姓名</th>
         <th scope="col">登录日期</th>
     </tr>
-    @foreach (RecordViewModel item in @Model.records)
+    @foreach (var item in @Model)
     {
         <tr>
-            <td>@item.record.U_id</td>
-            <td>@item.record.U_name</td>
-            <td>@item.record.Record_date</td>
+            <td>@item.U_id</td>
+            <td>@item.U_name</td>
+            <td>@item.Record_date</td>
         </tr>
     }
 </table>
+
+每页 @Model.PageSize 条记录，共 @Model.PageCount 页，当前第 @Model.PageNumber 页
+@Html.PagedListPager(Model, page => Url.Action("Information", new { page }))

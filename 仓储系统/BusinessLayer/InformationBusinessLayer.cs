@@ -5,6 +5,8 @@ using System.Web;
 using 仓储系统.Models;
 using 仓储系统.DataAccessLayer;
 using 仓储系统.ViewModels;
+using PagedList;
+using System.Configuration;
 
 namespace 仓储系统.BusinessLayer
 {
@@ -29,6 +31,30 @@ namespace 仓储系统.BusinessLayer
             else
                 informationViewModel.users = new List<User>();
             return informationViewModel;
+        }
+
+        /// <summary>
+        /// 获取LoginRecord视图（表格）的model
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="isAdmin"></param>
+        /// <param name="useName"></param>
+        /// <returns></returns>
+        public IPagedList<Record> GetPagedList(int? page, bool isAdmin, string useName)
+        {
+            RecordBusinessLayer recordBusinessLayer = new RecordBusinessLayer();
+            List<Record> records;
+            if (isAdmin)
+                records = recordBusinessLayer.GetRecord();
+            else
+                records = recordBusinessLayer.GetRecord(useName);
+            //第几页
+            int pageNumber = page ?? 1;
+            //每页显示多少条
+            int pageSize = int.Parse(ConfigurationManager.AppSettings["pageSize"]);
+            //通过ToPagedList扩展方法进行分页
+            IPagedList<Record> pagedList = records.ToPagedList(pageNumber, pageSize);
+            return pagedList;
         }
     }
 }

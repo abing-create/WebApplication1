@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PagedList;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,6 +9,6 @@ namespace 仓储系统.ViewModels
 {
     public class UserListViewModel
     {
-        public List<User> users { get; set; }
+        public IPagedList<User> users { get; set; }
     }
 }
